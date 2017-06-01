@@ -5,9 +5,16 @@ class arrosageAuto extends eqLogic {
 		$return = array();
 		$return['log'] = 'arrosageAuto';
 		$return['launchable'] = 'ok';
-		$return['state'] = 'nok';
-	
 		$return['state'] = 'ok';
+		foreach(eqLogic::byType('arrosageAuto') as $zone){
+			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
+				$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
+				if (!is_object($cron)) 	{	
+					$return['state'] = 'nok';
+					return $return;
+				}
+			}
+		}
 		return $return;
 	}
 	public static function deamon_start($_debug = false) {
@@ -18,10 +25,74 @@ class arrosageAuto extends eqLogic {
 			return;
 		if ($deamon_info['state'] == 'ok') 
 			return;
+		foreach(eqLogic::byType('arrosageAuto') as $zone){
+			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
+				$Schedule=$zone->NextStart();
+				$cron = $zone->CreateCron($Schedule, 'pull');
+			}
+		}
 	}
 	public static function deamon_stop() {	
-		
+		foreach(eqLogic::byType('arrosageAuto') as $zone){
+			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
+			if (is_object($cron)) 	
+				$cron->remove();
+		}
 	}
+	public function postSave() {
+		$isArmed=self::AddCommande($this,"Etat activation","isArmed","info","binary",false,'lock');
+		$isArmed->event(true);
+		$isArmed->setCollectDate(date('Y-m-d H:i:s'));
+		$isArmed->save();
+		$Armed=self::AddCommande($this,"Activer","armed","action","other",true,'lock');
+		$Armed->setValue($isArmed->getId());
+		$Armed->setConfiguration('state', '1');
+		$Armed->setConfiguration('armed', '1');
+		$Armed->save();
+		$Released=self::AddCommande($this,"Désactiver","released","action","other",true,'lock');
+		$Released->setValue($isArmed->getId());
+		$Released->save();
+		$Released->setConfiguration('state', '0');
+		$Released->setConfiguration('armed', '1');
+		self::deamon_stop();
+	}	
+	public function postRemove() {
+		$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $this->getId()));
+		if (is_object($cron)) 	
+			$cron->remove();
+	}
+	public static function pull($_option){
+		$zone=eqLogic::byId($_option['id']);
+		if(is_object($zone)){
+			if(!$zone->getCmd(null,'isArmed')->execCmd())
+				exit;
+      			//On verifie que l'on a toujours le cron associé
+      			$cron = cron::byClassAndFunction('reveil', 'pull',array('id' => $zone->getId()));
+     		 	if (!is_object($cron))
+				exit;
+			if($zone->EvaluateCondition()){
+				foreach($zone->getConfiguration('action') as $cmd){
+					$zone->ExecuteAction($cmd,'');
+					//Calcule du temps d'arrosage et crétion de cron stop
+					$PowerTime=$zone->EvaluateTime();
+					log::add('ChauffeEau','info','Estimation du temps d\'activation '.$PowerTime);
+					$Schedule= $zone->TimeToShedule($PowerTime);
+					$zone->CreateCron($Schedule, 'EndChauffe');
+				}
+			}
+		}
+	}
+	public function TimeToShedule($Time) {
+		$Heure=round($Time/3600);
+		$Minute=round(($Time-($Heure*3600))/60);
+		$Shedule = new DateTime();
+		$Shedule->add(new DateInterval('PT'.$Time.'S'));
+		return  $Shedule->format("i H d m *");
+	} 
+	public function EvaluateTime() {
+		$time=0;
+		return round($time);
+	} 
 	public function ExecuteAction($Action) {	
 		foreach($Action as $cmd){
 			if (isset($cmd['enable']) && $cmd['enable'] == 0)
@@ -60,14 +131,8 @@ class arrosageAuto extends eqLogic {
 			}
 		return $cron;
 	}
-	public function EvaluateCondition($Evenement,$Saison,$TypeGestion){
-		foreach($this->getConfiguration('condition') as $condition){
-			if($condition['evaluation']!=$Evenement && $condition['evaluation']!='all')
-				continue;
-			if($condition['saison']!=$Saison && $condition['saison']!='all')
-				continue;
-			if(stripos($condition['TypeGestion'],$TypeGestion) === false && $condition['TypeGestion']!='all')	
-				continue;		
+	private function EvaluateCondition(){
+		foreach($this->getConfiguration('condition') as $condition){	
 			if (isset($condition['enable']) && $condition['enable'] == 0)
 				continue;
 			$_scenario = null;
@@ -91,6 +156,19 @@ class arrosageAuto extends eqLogic {
 		}
 		return true;
 	}
+	
+	private function NextStart(){
+		$ConigSchedule=$this->getConfiguration('Schedule');
+		$offset=0;
+		for($day=0;$day<7;$day++){
+			if($ConigSchedule[date('w')+$day]){
+				$offset=$day;
+				break;
+			}
+		}
+		$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j")+$offset , date("Y"));
+		$this->CreateCron(date('i H d m w Y',$timestamp), 'pull');
+	}
 	public static function AddCommande($eqLogic,$Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Template='') {
 		$Commande = $eqLogic->getCmd(null,$_logicalId);
 		if (!is_object($Commande))
@@ -109,29 +187,8 @@ class arrosageAuto extends eqLogic {
 		$Commande->save();
 		return $Commande;
 	}
-	public function postSave() {
-		$isArmed=self::AddCommande($this,"Etat activation","isArmed","info","binary",false,'lock');
-		$isArmed->event(true);
-		$isArmed->setCollectDate(date('Y-m-d H:i:s'));
-		$isArmed->save();
-		$Armed=self::AddCommande($this,"Activer","armed","action","other",true,'lock');
-		$Armed->setValue($isArmed->getId());
-		$Armed->setConfiguration('state', '1');
-		$Armed->setConfiguration('armed', '1');
-		$Armed->save();
-		$Released=self::AddCommande($this,"Désactiver","released","action","other",true,'lock');
-		$Released->setValue($isArmed->getId());
-		$Released->save();
-		$Released->setConfiguration('state', '0');
-		$Released->setConfiguration('armed', '1');
-		self::deamon_stop();
-	}	
-	public function postRemove() {
-	}
 }
 class arrosageAutoCmd extends cmd {
-    public function execute($_options = null) {
-		
-	}
+	public function execute($_options = null) {}
 }
 ?>
