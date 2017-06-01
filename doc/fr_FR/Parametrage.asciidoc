@@ -1,0 +1,49 @@
+Comme pour tous les plugins, nous allons commencer par créer un groupe de zone avec le bouton Ajouter.
+Après avoir nommé ce groupe, nous allons pouvoir commencer à mettre en place nos zones.
+
+==== Configuration générale Jeedom
+
+image::../images/ConfigurationGeneral.jpg[]
+* Nom : le nom a déjà été paramétré mais vous avez la possibilité de le changer
+* Objet parent : ce paramètre permet d'ajouter l'équipement dans un objet Jeedom
+* Catégorie : déclare l'équipement dans une catégorie
+* Visible : permet de rendre l'équipement visible dans le Dashboard
+* Activer : permet d'activer l'équipement
+* Jour / Nuit : Activation de la gestion en jour / nuit
+* Position du soleil : Activation de la gestion en fonction de la position du soleil
+* Présence : permet de définir des pauses aléatoires dans la séquence de fermeture des arrosageAuto de la zone
+* Héliotrope : choisir l'équipement Héliotrope à prendre en compte pour ce groupe de zone
+* Délai au lever du jour (min) : délai avant (-) ou après (+) à l'heure du lever du jour
+* Délai à la tombée de la nuit (min) : délai avant (-) ou après (+) à l'heure de la tombée de la nuit
+* Délais de réévaluation (min) : Délais d'attente avant réévaluation si les conditions ne sont pas respectées
+
+==== Définition de l'angle d'exposition au soleil 
+Nous allons maintenant déterminer l'angle d'exposition au soleil.
+Cette etape est importante pour le fonctionement de la gestion en fonction de la position du soleil.
+
+image::../images/ConfigurationMap.jpg[]
+Sur votre fenêtre doit apparaitre 3 curseurs.
+Ces 3 curseurs vont donc former notre angle
+Le point central doit etre obligatoirement placé au dessus de notre fenêtre.
+Les 2 autres vont former l'ange et peuvent être placés n'importe où à l'extérieur de la maison 
+Attention toutefois a bien respecter la droite et la gauche de votre fenêtre vue de l'exterieur
+
+==== Conditions d'exécution
+Dans nos differentes gestions, nous pouvons choisir des conditions
+Toutes les conditions, de la gestion active, doivent être respectées pour que les actions soient executées
+
+image::../images/ConfigurationCondition.jpg[]
+Pour vous aider a la configuration des conditions, un editeur est ajouté.
+
+image::../images/ConfigurationConditionEditeur.jpg[]
+image::../images/ConfigurationConditionEditeur2.jpg[]
+
+Il vous reste 2 champs à configurer
+
+* Choisir sur quel gestion on veut que notre condition soit respectée
+* Choisir pour quel action on veut que notre condition soit respectée
+
+==== Actions d'ouverture et de fermeture
+
+image::../images/ConfigurationAction.jpg[]
+Choisissez les actionsàa mener sans oublier de configurer leur valeurs

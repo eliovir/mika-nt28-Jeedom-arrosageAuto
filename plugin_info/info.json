@@ -1,0 +1,9 @@
+{
+	"id" : "arrosageAuto",
+	"name" : "Gestion de l'arrosage automatique",
+	"licence" : "AGPL",
+	"author" : "Halbout Michael",
+	"require" : "2.4",
+	"category" : "automatisation",
+	"hasOwnDeamon" : true
+}

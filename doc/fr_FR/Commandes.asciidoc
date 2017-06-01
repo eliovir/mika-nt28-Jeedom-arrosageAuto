@@ -1,0 +1,23 @@
+Pour chaque équipement, le plugin va créer des commandes.
+
+image::../images/arrosageAuto_screenshot_Widget.jpg[]
+
+=== Le mode et son état
+
+Ces 2 commandes vont permettre de basculer le plugin en mode "été" ou "hiver".
+C'est à vous de déterminer à quel moment il faut gérer ce changement.
+
+image::../images/ModeClose.png[]
+L'icône ci-dessus montre le mode "été", le volet est fermé lorsque le soleil est dans la fenêtre.
+
+image::../images/ModeOpen.png[]	
+L'icône ci-dessus montre le mode "hiver", le volet est ouvert lorsque le soleil est dans la fenêtre.
+
+=== la position du soleil
+Cette commande nous informe si le soleil est dans la fenêtre ou pas.
+ 
+image::../images/SunInWindows.png[]	
+Dans la fenêtre.
+
+image::../images/SunOutWindows.png[]	
+Hors fenêtre.
