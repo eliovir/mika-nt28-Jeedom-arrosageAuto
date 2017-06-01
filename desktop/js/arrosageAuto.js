@@ -1,36 +1,25 @@
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $("#table_condition").sortable({axis: "y", cursor: "move", items: ".ConditionGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
-$("#table_ouverture").sortable({axis: "y", cursor: "move", items: ".ActionGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
-$("#table_fermeture").sortable({axis: "y", cursor: "move", items: ".ActionGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+$("#table_action").sortable({axis: "y", cursor: "move", items: ".ActionGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 
 function saveEqLogic(_eqLogic) {
 	_eqLogic.configuration.condition=new Object();
 	_eqLogic.configuration.action=new Object();
 	var ConditionArray= new Array();
 	var OpenArray= new Array();
-	var CloseArray= new Array();
 	$('#conditiontab .ConditionGroup').each(function( index ) {
 		ConditionArray.push($(this).getValues('.expressionAttr')[0])
 	});
-	$('#ouverturetab .ActionGroup').each(function( index ) {
+	$('#actiontab .ActionGroup').each(function( index ) {
 		OpenArray.push($(this).getValues('.expressionAttr')[0])
 	});
-	$('#fermeturetab .ActionGroup').each(function( index ) {
-		CloseArray.push($(this).getValues('.expressionAttr')[0])
-	});
 	_eqLogic.configuration.condition=ConditionArray;
-	_eqLogic.configuration.action.open=OpenArray;
-	_eqLogic.configuration.action.close=CloseArray;
+	_eqLogic.configuration.action=OpenArray;
    	return _eqLogic;
 }
 function printEqLogic(_eqLogic) {
 	$('.ConditionGroup').remove();
 	$('.ActionGroup').remove();
-	$('.eqLogicAttr[data-l1key=configuration][data-l2key=Droite]').val(JSON.stringify(_eqLogic.configuration.Droite));
-	$('.eqLogicAttr[data-l1key=configuration][data-l2key=Centre]').val(JSON.stringify(_eqLogic.configuration.Centre));
-	$('.eqLogicAttr[data-l1key=configuration][data-l2key=Gauche]').val(JSON.stringify(_eqLogic.configuration.Gauche));
-	if (typeof(_eqLogic.configuration.heliotrope) !== 'undefined' && _eqLogic.configuration.heliotrope!='') 
-		TraceMapZone(_eqLogic);
 	if (typeof(_eqLogic.configuration.condition) !== 'undefined') {
 		for(var index in _eqLogic.configuration.condition) { 
 			if( (typeof _eqLogic.configuration.condition[index] === "object") && (_eqLogic.configuration.condition[index] !== null) )
@@ -38,17 +27,9 @@ function printEqLogic(_eqLogic) {
 		}
 	}
 	if (typeof(_eqLogic.configuration.action) !== 'undefined') {
-		if (typeof(_eqLogic.configuration.action.open) !== 'undefined') {
-			for(var index in _eqLogic.configuration.action.open) { 
-				if( (typeof _eqLogic.configuration.action.open[index] === "object") && (_eqLogic.configuration.action.open[index] !== null) )
-					addAction(_eqLogic.configuration.action.open[index],$('#ouverturetab').find('table tbody'));
-			}
-		}
-		if (typeof(_eqLogic.configuration.action.close) !== 'undefined') {
-			for(var index in _eqLogic.configuration.action.close) { 
-				if( (typeof _eqLogic.configuration.action.close[index] === "object") && (_eqLogic.configuration.action.close[index] !== null) )
-					addAction(_eqLogic.configuration.action.close[index],$('#fermeturetab').find('table tbody'));
-			}
+		for(var index in _eqLogic.configuration.action) { 
+			if( (typeof _eqLogic.configuration.action[index] === "object") && (_eqLogic.configuration.action[index] !== null) )
+				addAction(_eqLogic.configuration.action[index],$('#actiontab').find('table tbody'));
 		}
 	}	
 }
@@ -65,32 +46,7 @@ function addCondition(_condition,_el) {
 				.append($('<span class="input-group-btn">')
 					.append($('<a class="btn btn-warning btn-sm listCmdCondition">')
 						.append($('<i class="fa fa-list-alt">'))))))
-		.append($('<td>')
-			.append($('<select class="expressionAttr form-control input-sm cmdCondition" data-l1key="TypeGestion" />')
-			       .append($('<option value="all">')
-					.text('{{Position du soleil et Jour / Nuit}}'))
-			       .append($('<option value="Helioptrope">')
-					.text('{{Position du soleil}}'))
-			       .append($('<option value="DayNight">')
-					.text('{{Jour / Nuit}}'))
-			       .append($('<option value="Day">')
-					.text('{{Jour}}'))
-			       .append($('<option value="Night">')
-					.text('{{Nuit}}')))
-			.append($('<select class="expressionAttr form-control input-sm cmdCondition" data-l1key="saison" />')
-			       .append($('<option value="all">')
-					.text('{{Toutes les saisons}}'))
-			       .append($('<option value="été">')
-					.text('{{Eté}}'))
-			       .append($('<option value="hiver">')
-					.text('{{Hivers}}')))
-			.append($('<select class="expressionAttr form-control input-sm cmdCondition" data-l1key="evaluation" />')
-			       .append($('<option value="all">')
-					.text('{{Ouverture et Fermeture}}'))
-			       .append($('<option value="close">')
-					.text('{{Fermeture}}'))
-			       .append($('<option value="open">')
-					.text('{{Ouverture}}'))))	
+		.append($('<td>'))	
 		.append($('<td>'));
 
         _el.append(tr);
