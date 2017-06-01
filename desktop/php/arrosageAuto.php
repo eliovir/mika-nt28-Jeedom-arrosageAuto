@@ -146,6 +146,59 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 									<input type="checkbox" class="eqLogicAttr" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>
 								</div>
 							</div>
+							<div class="form-group">
+							<label class="col-sm-2 control-label">{{Configurer l'heure du reveil}}
+								<sup>
+									<i class="fa fa-question-circle tooltips" title="Configurer l'heure du réveil"></i>
+								</sup>
+							</label>
+							<div class="col-md-8 input-group">
+								<label class="checkbox-inline">
+									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="1" />
+									{{Lundi}}
+								</label>
+								<label class="checkbox-inline">
+									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="2" />
+									{{Mardi}}
+								</label>
+								<label class="checkbox-inline">
+									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="3" />
+									{{Mercredi}}
+								</label>
+								<label class="checkbox-inline">
+									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="4" />
+									{{Jeudi}}
+								</label>
+								<label class="checkbox-inline">
+									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="5" />
+									{{Vendredi}}
+								</label>
+								<label class="checkbox-inline">
+									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="6" />
+									{{Samedi}}
+								</label>
+								<label class="checkbox-inline">
+									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="0" />
+									{{Dimanche}}
+								</label>
+							</div>
+							<div class="col-sm-0 input-group">
+								<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Schedule" data-l3key="Heure" >
+									<?php
+										for($loop=0; $loop<24; $loop++){
+											echo '<option value="'.$loop.'">'.$loop.'</option>';
+                                         					}
+									?>
+								</select>
+								<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Schedule" data-l3key="Minute" >
+									<?php
+										for($loop=0; $loop<60; $loop++){
+											echo '<option value="'.$loop.'">'.$loop.'</option>';
+                                         					}
+									?>
+								</select>
+							</div>
+						</div>
 						</fieldset>
 					</form>
 				</div>		
@@ -175,10 +228,10 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 						<tbody></tbody>
 					</table>
 				</div>				
-				<div role="tabpanel" class="tab-pane" id="ouverturetab">
+				<div role="tabpanel" class="tab-pane" id="actiontab">
 					<form class="form-horizontal">
 						<fieldset>
-							<legend>{{Les actions d'ouverture :}}
+							<legend>{{Les actions :}}
 								<sup>
 									<i class="fa fa-question-circle tooltips" title="Saisir toutes les actions à mener à l'ouverture"></i>
 								</sup>
@@ -189,7 +242,7 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 							</legend>
 						</fieldset>
 					</form>					
-					<table id="table_ouverture" class="table table-bordered table-condensed">
+					<table id="table_action" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
 								<th></th>
@@ -200,32 +253,6 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 						<tbody></tbody>
 					</table>
 				</div>		
-				<div role="tabpanel" class="tab-pane" id="fermeturetab">
-					<form class="form-horizontal">
-						<fieldset>
-							<legend>{{Les actions de fermeture :}}
-								<sup>
-									<i class="fa fa-question-circle tooltips" title="Saisir toutes les actions à mener à la fermeture"></i>
-								</sup>
-								<a class="btn btn-success btn-xs ActionAttr" data-action="add" style="margin-left: 5px;">
-									<i class="fa fa-plus-circle"></i>
-									{{Ajouter une Action}}
-								</a>
-							</legend>
-
-						</fieldset>
-					</form>							
-					<table id="table_fermeture" class="table table-bordered table-condensed">
-						<thead>
-							<tr>
-								<th></th>
-								<th>Action</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
-				</div>
 				<div role="tabpanel" class="tab-pane" id="commandtab">	
 					<table id="table_cmd" class="table table-bordered table-condensed">
 					    <thead>
