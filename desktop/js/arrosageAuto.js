@@ -12,7 +12,7 @@ function saveEqLogic(_eqLogic) {
 	$('#conditiontab .ConditionGroup').each(function( index ) {
 		ConditionArray.push($(this).getValues('.expressionAttr')[0])
 	});
-	$('#Prorgamationtab .ProgramationGroup').each(function( index ) {
+	$('#programationtab .ProgramationGroup').each(function( index ) {
 		ProgramationArray.push($(this).getValues('.expressionAttr')[0])
 	});
 	
