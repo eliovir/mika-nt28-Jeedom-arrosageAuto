@@ -184,7 +184,7 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 								<sup>
 									<i class="fa fa-question-circle tooltips" title="Saisir toutes les programations pour la zone"></i>
 								</sup>
-								<a class="btn btn-success btn-xs programationAttr" data-action="add" style="margin-left: 5px;">
+								<a class="btn btn-success btn-xs ProgramationAttr" data-action="add" style="margin-left: 5px;">
 									<i class="fa fa-plus-circle"></i>
 									{{Ajouter une programation}}
 								</a>
