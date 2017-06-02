@@ -7,17 +7,23 @@
 	}
 ?>
 <div class="col-sm-6">
-	<legend>Type de plantation
-		<a class="btn btn-success btn-xs pull-right cursor" id="bt_AddTypePlantation"><i class="fa fa-check"></i> {{Ajouter}}</a>
-	</legend>
 	<form>
 		<fieldset>
 			<div class="form-group">
 				<label class="col-lg-4 control-label">{{Debit de l'arriver d'eau}}</label>
 				<div class="col-lg-4">
-					<input type="text" class="configKey "  data-l1key="debit" />
+					<input type="text" class="configKey"  data-l1key="debit" />
 				</div>
 			</div>
+		</fieldset>
+	</form>
+</div>
+ <div class="col-sm-6">
+	<legend>Type de plantation
+		<a class="btn btn-success btn-xs pull-right cursor" id="bt_AddTypePlantation"><i class="fa fa-check"></i> {{Ajouter}}</a>
+	</legend>
+	<form>
+		<fieldset>
 			<div class="form-group">
 				<table id="table_type_plantation" class="table table-bordered table-condensed tablesorter">
 					<thead>
@@ -39,7 +45,7 @@
 		url: "core/ajax/config.ajax.php",
 		data: {
 			action:'getKey',
-			key:'{"TypePlantation":""}',
+			key:'{"configuration":""}',
 			plugin:'arrosageAuto',
 		},
 		dataType: 'json',
@@ -52,8 +58,18 @@
 				return;
 			}
 			if (data.result['configuration']!=''){
-				$.each(data.result['configuration'], function( key, value ){
-					AddTypePlantation($('#table_type_plantation tbody'),value);	
+				var TypePlantation= new Object(); 
+				$.each(data.result['configuration'], function(param, id ){
+					$.each(id, function(TypePlantationkey,value ){
+						if (typeof(TypePlantation[TypePlantationkey]) === 'undefined')
+							TypePlantation[TypePlantationkey]= new Object();
+						if (typeof(TypePlantation[TypePlantationkey]['configuration']) === 'undefined')
+							TypePlantation[TypePlantationkey]['configuration']= new Object();
+						TypePlantation[TypePlantationkey]['configuration'][param]=value;
+					});
+				});
+				$.each(TypePlantation, function(id,data){
+					AddTypePlantation($('#table_type_plantation tbody'),data);	
 				});
 			}
 		}
@@ -64,15 +80,6 @@
 	$('#bt_RemoveTypePlantation').on('click',function(){
 		$(this).closest('tr').remove();
 	});
-	function arrosageAuto_preSaveConfiguration(_config){
-		_config.TypePlantation=new Object();
-		var TypePlantationArray= new Array();
-		$('#table_type_plantation tbody tr').each(function( index ) {
-			TypePlantationArray.push($(this).getValues('.TypePlantationconfigKey')[0])
-		});
-		_config.TypePlantation=TypePlantationArray;
-		return _config;
-	};
 	function AddTypePlantation(_el,data){
 		var tr=$('<tr>')
 			.append($('<td>')
@@ -80,11 +87,11 @@
 					.append($('<span class="input-group-btn">')
 						.append($('<a class="btn btn-default btn-sm bt_RemoveTypePlantation">')
 							.append($('<i class="fa fa-minus-circle">'))))
-					.append($('<input class="TypePlantationconfigKey form-control input-sm" data-l1key="type">'))))
+					.append($('<input class="configKey form-control input-sm "data-l1key="configuration" data-l2key="type">'))))
 			.append($('<td>')
-				.append($('<input class="TypePlantationconfigKey form-control input-sm" data-l1key="volume">')));
+				.append($('<input class="configKey form-control input-sm" data-l1key="configuration" data-l2key="volume">')));
 	
 		_el.append(tr);
-		_el.find('tr:last').setValues(data, '.TypePlantationconfigKey');
+		_el.find('tr:last').setValues(data, '.configKey');
 	}
 </script>
