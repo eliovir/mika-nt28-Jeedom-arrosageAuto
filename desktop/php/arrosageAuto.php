@@ -195,7 +195,7 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 							</legend>
 						</fieldset>
 					</form>			
-					<table id="table_condition" class="table table-bordered table-condensed">
+					<table id="table_programation" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
 								<th></th>
