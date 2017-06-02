@@ -1,4 +1,5 @@
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+$("#table_Prorgamationtab").sortable({axis: "y", cursor: "move", items: ".ProgramationGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $("#table_condition").sortable({axis: "y", cursor: "move", items: ".ConditionGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $("#table_action").sortable({axis: "y", cursor: "move", items: ".ActionGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 
@@ -7,13 +8,19 @@ function saveEqLogic(_eqLogic) {
 	_eqLogic.configuration.action=new Object();
 	var ConditionArray= new Array();
 	var OpenArray= new Array();
+	var ProrgamationArray= new Array();
 	$('#conditiontab .ConditionGroup').each(function( index ) {
 		ConditionArray.push($(this).getValues('.expressionAttr')[0])
 	});
+	$('#Prorgamationtab .ProgramationGroup').each(function( index ) {
+		ProrgamationArray.push($(this).getValues('.ProgramationAttr')[0])
+	});
+	
 	$('#actiontab .ActionGroup').each(function( index ) {
 		OpenArray.push($(this).getValues('.expressionAttr')[0])
 	});
 	_eqLogic.configuration.condition=ConditionArray;
+	_eqLogic.configuration.programation=ConditionArray;
 	_eqLogic.configuration.action=OpenArray;
    	return _eqLogic;
 }
@@ -24,6 +31,12 @@ function printEqLogic(_eqLogic) {
 		for(var index in _eqLogic.configuration.condition) { 
 			if( (typeof _eqLogic.configuration.condition[index] === "object") && (_eqLogic.configuration.condition[index] !== null) )
 				addCondition(_eqLogic.configuration.condition[index],$('#conditiontab').find('table tbody'));
+		}
+	}
+	if (typeof(_eqLogic.configuration.programation) !== 'undefined') {
+		for(var index in _eqLogic.configuration.programation) { 
+			if( (typeof _eqLogic.configuration.programation[index] === "object") && (_eqLogic.configuration.programation[index] !== null) )
+				addProgramation(_eqLogic.configuration.programation[index],$('#Prorgamationtab').find('table tbody'));
 		}
 	}
 	if (typeof(_eqLogic.configuration.action) !== 'undefined') {
@@ -75,7 +88,7 @@ function addAction(_action,  _el) {
   
 }
 function addProgramation(_programation,  _el) {
-	var tr = $('<tr>')
+	var tr = $('<tr class="ProgramationGroup">')
 		.append($('<td>')
 			.append($('<label class="checkbox-inline">')
 				.append($('<input type="checkbox" class="ProgramationAttr" data-l1key="Schedule" data-l3key="1" />'))
