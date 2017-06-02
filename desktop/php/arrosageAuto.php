@@ -184,9 +184,9 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 								<sup>
 									<i class="fa fa-question-circle tooltips" title="Saisir toutes les programations pour la zone"></i>
 								</sup>
-								<a class="btn btn-success btn-xs conditionAttr" data-action="add" style="margin-left: 5px;">
+								<a class="btn btn-success btn-xs programationAttr" data-action="add" style="margin-left: 5px;">
 									<i class="fa fa-plus-circle"></i>
-									{{Ajouter une Condition}}
+									{{Ajouter une programation}}
 								</a>
 							</legend>
 						</fieldset>
@@ -194,10 +194,8 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 					<table id="table_programation" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
-								<th></th>
-								<th>Condition</th>
-								<th>Paramètre d'évaluation</th>
-								<th></th>
+								<th>Jour actif</th>
+								<th>Heure</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
