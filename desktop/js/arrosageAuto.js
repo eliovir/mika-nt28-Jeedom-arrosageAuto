@@ -293,7 +293,7 @@ $("body").on('click', ".listAction", function() {
 	});
 }); 
 $("body").on('click', ".listCmdAction", function() {
-	var el = $(this).closest('.form-group').find('.expressionAttr[data-l1key=cmd]');
+	var el = $(this).closest('td').find('.expressionAttr[data-l1key=cmd]');
 	jeedom.cmd.getSelectModal({cmd: {type: 'action'}}, function (result) {
 		el.value(result.human);
 		jeedom.cmd.displayActionOption(el.value(), '', function (html) {
