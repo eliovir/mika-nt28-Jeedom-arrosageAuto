@@ -89,11 +89,15 @@ function addAction(_action,  _el) {
 }
 function addProgramation(_programation,  _el) {
 	var Heure=$('<select class="expressionAttr form-control" data-l1key="Heure" >');
-	for(i=0; i>24;i++)
-		Heure.append($('<option value="'+i+'">'+i+'</option>'));	
+	for(i=0; i>24;i++){
+		Heure.append($('<option value="'+i+'">')
+			.text(i));	
+	}
 	var Minute=$('<select class="expressionAttr form-control" data-l1key="Heure" >');
-	for(i=0; i>60;i++)
-		Minute.append($('<option value="'+i+'">'+i+'</option>'));
+	for(i=0; i>60;i++){
+		Minute.append($('<option value="'+i+'">')
+			.text(i));	
+	}
 	var tr = $('<tr class="ProgramationGroup">')
 		.append($('<td>')
 			.append($('<span class="input-group-btn">')
