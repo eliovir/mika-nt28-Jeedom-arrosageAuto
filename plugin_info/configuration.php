@@ -71,7 +71,7 @@
 					.append($('<span class="input-group-btn">')
 						.append($('<a class="btn btn-default btn-sm bt_RemoveTypePlantation">')
 							.append($('<i class="fa fa-minus-circle">'))))
-					.append($('<input class="configKey form-control input-sm" data-l1key="configuration" data-l2key="type">')))
+					.append($('<input class="configKey form-control input-sm" data-l1key="configuration" data-l2key="type">'))))
 			.append($('<td>')
 				.append($('<input class="configKey form-control input-sm" data-l1key="configuration" data-l2key="volume">')));
 	
