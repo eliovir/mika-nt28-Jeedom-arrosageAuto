@@ -68,6 +68,10 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 					<i class="fa fa-list-alt"></i> Commandes</a>
 			</li>
 			<li role="presentation" class="">
+				<a href="#programationtab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+					<i class="fa fa-map"></i> {{Programation}}</a>
+			</li>
+			<li role="presentation" class="">
 				<a href="#conditiontab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
 					<i class="fa fa-map"></i> {{Conditions d'exécution}}</a>
 			</li>
@@ -147,61 +151,62 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 								</div>
 							</div>
 							<div class="form-group">
-							<label class="col-sm-2 control-label">{{Configurer l'heure du reveil}}
-								<sup>
-									<i class="fa fa-question-circle tooltips" title="Configurer l'heure du réveil"></i>
-								</sup>
-							</label>
-							<div class="col-md-8 input-group">
-								<label class="checkbox-inline">
-									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="1" />
-									{{Lundi}}
+								<label class="col-sm-2 control-label" >
+									{{Type d'arrosage}}
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Choisissez les type d'arrosage pour cette zone" style="font-size : 1em;color:grey;"></i>
+									</sup>
 								</label>
-								<label class="checkbox-inline">
-									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="2" />
-									{{Mardi}}
-								</label>
-								<label class="checkbox-inline">
-									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="3" />
-									{{Mercredi}}
-								</label>
-								<label class="checkbox-inline">
-									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="4" />
-									{{Jeudi}}
-								</label>
-								<label class="checkbox-inline">
-									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="5" />
-									{{Vendredi}}
-								</label>
-								<label class="checkbox-inline">
-									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="6" />
-									{{Samedi}}
-								</label>
-								<label class="checkbox-inline">
-									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Schedule" data-l3key="0" />
-									{{Dimanche}}
-								</label>
+								<div class="col-sm-5">
+									<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TypeArrosage" >
+										<?php
+											foreach(config::byKey('configuration','arrosageAuto')['type'] as $type){
+												echo '<option value="'.$type.'">.'$type.'</option>';
+											}
+										?>
+									</select>	
+								</div>
 							</div>
-							<div class="col-sm-0 input-group">
-								<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Schedule" data-l3key="Heure" >
-									<?php
-										for($loop=0; $loop<24; $loop++){
-											echo '<option value="'.$loop.'">'.$loop.'</option>';
-                                         					}
-									?>
-								</select>
-								<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Schedule" data-l3key="Minute" >
-									<?php
-										for($loop=0; $loop<60; $loop++){
-											echo '<option value="'.$loop.'">'.$loop.'</option>';
-                                         					}
-									?>
-								</select>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" >
+									{{Debit d'arrosage}}
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Saisir le debit des gicleurs" style="font-size : 1em;color:grey;"></i>
+									</sup>
+								</label>
+								<div class="col-sm-5">
+									<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DebitGicler" />	
+								</div>
 							</div>
-						</div>
 						</fieldset>
 					</form>
 				</div>		
+				<div role="tabpanel" class="tab-pane" id="Prorgamationtab">
+					<form class="form-horizontal">
+						<fieldset>
+							<legend>{{Les programations de la zone :}}
+								<sup>
+									<i class="fa fa-question-circle tooltips" title="Saisir toutes les programations pour la zone"></i>
+								</sup>
+								<a class="btn btn-success btn-xs conditionAttr" data-action="add" style="margin-left: 5px;">
+									<i class="fa fa-plus-circle"></i>
+									{{Ajouter une Condition}}
+								</a>
+							</legend>
+						</fieldset>
+					</form>			
+					<table id="table_condition" class="table table-bordered table-condensed">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Condition</th>
+								<th>Paramètre d'évaluation</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>						
 				<div role="tabpanel" class="tab-pane" id="conditiontab">
 					<form class="form-horizontal">
 						<fieldset>
