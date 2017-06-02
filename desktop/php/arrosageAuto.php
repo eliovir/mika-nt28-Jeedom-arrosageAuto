@@ -194,6 +194,7 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 					<table id="table_programation" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
+								<th></th>
 								<th>Jour actif</th>
 								<th>Heure</th>
 							</tr>
