@@ -64,6 +64,15 @@
 	$('#bt_RemoveTypePlantation').on('click',function(){
 		$(this).closest('tr').remove();
 	});
+	function arrosageAuto_preSaveConfiguration(_config){
+		_config.TypePlantation=new Object();
+		var TypePlantationArray= new Array();
+		$('#table_type_plantation tbody tr').each(function( index ) {
+			TypePlantationArray.push($(this).getValues('.TypePlantationconfigKey')[0])
+		});
+		_config.TypePlantation=TypePlantationArray;
+		return _config;
+	};
 	function AddTypePlantation(_el,data){
 		var tr=$('<tr>')
 			.append($('<td>')
@@ -71,11 +80,11 @@
 					.append($('<span class="input-group-btn">')
 						.append($('<a class="btn btn-default btn-sm bt_RemoveTypePlantation">')
 							.append($('<i class="fa fa-minus-circle">'))))
-					.append($('<input class="configKey form-control input-sm" data-l1key="configuration" data-l2key="type">'))))
+					.append($('<input class="TypePlantationconfigKey form-control input-sm" data-l1key="type">'))))
 			.append($('<td>')
-				.append($('<input class="configKey form-control input-sm" data-l1key="configuration" data-l2key="volume">')));
+				.append($('<input class="TypePlantationconfigKey form-control input-sm" data-l1key="volume">')));
 	
 		_el.append(tr);
-		_el.find('tr:last').setValues(data, '.configKey[data-l1key=configuration]');
+		_el.find('tr:last').setValues(data, '.TypePlantationconfigKey');
 	}
 </script>
