@@ -8,19 +8,19 @@ function saveEqLogic(_eqLogic) {
 	_eqLogic.configuration.action=new Object();
 	var ConditionArray= new Array();
 	var OpenArray= new Array();
-	var ProrgamationArray= new Array();
+	var ProgramationArray= new Array();
 	$('#conditiontab .ConditionGroup').each(function( index ) {
 		ConditionArray.push($(this).getValues('.expressionAttr')[0])
 	});
 	$('#Prorgamationtab .ProgramationGroup').each(function( index ) {
-		ProrgamationArray.push($(this).getValues('.expressionAttr')[0])
+		ProgramationArray.push($(this).getValues('.expressionAttr')[0])
 	});
 	
 	$('#actiontab .ActionGroup').each(function( index ) {
 		OpenArray.push($(this).getValues('.expressionAttr')[0])
 	});
 	_eqLogic.configuration.condition=ConditionArray;
-	_eqLogic.configuration.programation=ConditionArray;
+	_eqLogic.configuration.programation=ProgramationArray;
 	_eqLogic.configuration.action=OpenArray;
    	return _eqLogic;
 }
