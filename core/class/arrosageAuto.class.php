@@ -162,16 +162,21 @@ class arrosageAuto extends eqLogic {
 	}
 	
 	private function NextStart(){
-		$ConigSchedule=$this->getConfiguration('Schedule');
-		$offset=0;
-		for($day=0;$day<7;$day++){
-			if($ConigSchedule[date('w')+$day]){
-				$offset=$day;
-				break;
+		$nextTime=null;
+		foreach($this->getConfiguration('progaramation') as $ConigSchedule){
+			$offset=0;
+			for($day=0;$day<7;$day++){
+				if($ConigSchedule[date('w')+$day]){
+					$offset=$day;
+					break;
+				}
 			}
+			$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j")+$offset , date("Y"));
+			if($nextTime>$timestamp)
+				$nextTime=$timestamp;
 		}
-		$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j")+$offset , date("Y"));
-		$this->CreateCron(date('i H d m w Y',$timestamp), 'pull');
+		if($nextTime != null)
+			$this->CreateCron(date('i H d m w Y',$nextTime), 'pull');
 	}
 	public static function AddCommande($eqLogic,$Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Template='') {
 		$Commande = $eqLogic->getCmd(null,$_logicalId);
