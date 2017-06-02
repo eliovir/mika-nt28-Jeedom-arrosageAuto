@@ -90,6 +90,10 @@ function addAction(_action,  _el) {
 function addProgramation(_programation,  _el) {
 	var tr = $('<tr class="ProgramationGroup">')
 		.append($('<td>')
+			.append($('<span class="input-group-btn">')
+				.append($('<a class="btn btn-default ProgramationAttr btn-sm" data-action="remove">')
+					.append($('<i class="fa fa-minus-circle">')))))
+		.append($('<td>')
 			.append($('<label class="checkbox-inline">')
 				.append($('<input type="checkbox" class="ProgramationAttr" data-l1key="Schedule" data-l3key="1" />'))
 				.text('{{Lundi}}'))
@@ -124,6 +128,12 @@ $('body').on('focusout','.expressionAttr[data-l1key=cmd]', function (event) {
     jeedom.cmd.displayActionOption($(this).value(), init(expression[0].options), function (html) {
         el.closest('.ActionGroup').find('.actionOptions').html(html);
     })
+});
+$('body').on('click','.ProgramationAttr[data-action=add]',function(){
+	addProgramation({},$(this).closest('.tab-pane').find('table'));
+});
+$('body').on('click','.ProgramationAttr[data-action=remove]',function(){
+	$(this).closest('tr').remove();
 });
 $('body').on('click','.conditionAttr[data-action=add]',function(){
 	addCondition({},$(this).closest('.tab-pane').find('table'));
