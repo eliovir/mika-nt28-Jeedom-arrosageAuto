@@ -90,8 +90,12 @@ class arrosageAuto extends eqLogic {
 		return  $Shedule->format("i H d m *");
 	} 
 	public function EvaluateTime() {
-		$time=0;
-		return round($time);
+		$DebitPmp=config::byKey('debit','arrosageAuto');
+		$DebitGicler=$this->getConfiguration('DebitGicler');
+		$TypeArrosage=config::byKey('configuration','arrosageAuto');
+		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
+		$QtsEau=$TypeArrosage['volume'][$key]; 
+		return round($QtsEau/$DebitGicler);
 	} 
 	public function ExecuteAction($Action) {	
 		foreach($Action as $cmd){
