@@ -39,7 +39,7 @@
 		url: "core/ajax/config.ajax.php",
 		data: {
 			action:'getKey',
-			key:'{"configuration":""}',
+			key:'{"TypePlantation":""}',
 			plugin:'arrosageAuto',
 		},
 		dataType: 'json',
