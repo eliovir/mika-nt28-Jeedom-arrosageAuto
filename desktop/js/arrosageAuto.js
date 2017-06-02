@@ -74,6 +74,37 @@ function addAction(_action,  _el) {
         _el.find('tr:last').setValues(_action, '.expressionAttr');
   
 }
+function addProgramation(_programation,  _el) {
+	var tr = $('<tr>')
+		.append($('<td>')
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="ProgramationAttr" data-l1key="Schedule" data-l3key="1" />'))
+				.text('{{Lundi}}'))
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="ProgramationAttr" data-l1key="Schedule" data-l3key="2" />'))
+				.text('{{Mardi}}'))
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="ProgramationAttr" data-l1key="Schedule" data-l3key="3" />'))
+				.text('{{Mercredi}}'))
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="ProgramationAttr" data-l1key="Schedule" data-l3key="4" />'))
+				.text('{{Jeudi}}'))
+			.append($('<label class="checkbox-inline">')
+				.append($('input type="checkbox" class="ProgramationAttr" data-l1key="Schedule" data-l3key="5" />'))
+				.text('{{Vendredi}}'))
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="ProgramationAttr" data-l1key="Schedule" data-l3key="6" />'))
+				.text('{{Samedi}}'))
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="ProgramationAttr" data-l1key="Schedule" data-l3key="0" />'))
+				.text('{{Dimanche}}')))
+		.append($('<td>')
+			.append($('<select class="ProgramationAttr form-control" data-l1key="Schedule" data-l3key="Heure" >'))
+			.append($('<select class="ProgramationAttr form-control" data-l1key="Schedule" data-l3key="Minute" >')));
+        _el.append(tr);
+        _el.find('tr:last').setValues(_programation, '.ProgramationAttr');
+				
+}
 $('body').on('focusout','.expressionAttr[data-l1key=cmd]', function (event) {
     var expression = $(this).closest('.ActionGroup').getValues('.expressionAttr');
     var el = $(this);
