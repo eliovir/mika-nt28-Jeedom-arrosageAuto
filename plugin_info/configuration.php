@@ -76,6 +76,6 @@
 				.append($('<input class="configKey form-control input-sm" data-l1key="configuration" data-l2key="volume">')));
 	
 		_el.append(tr);
-		_el.find('tr:last').setValues(data, '.configKey');
+		_el.find('tr:last').setValues(data, '.configKey[data-l1key=configuration]');
 	}
 </script>
