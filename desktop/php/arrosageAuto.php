@@ -76,12 +76,8 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 					<i class="fa fa-map"></i> {{Conditions d'exécution}}</a>
 			</li>
 			<li role="presentation" class="">
-				<a href="#ouverturetab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+				<a href="#actiontab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
 					<i class="fa fa-map"></i> {{Actions d'ouverture}}</a>
-			</li>
-			<li role="presentation" class="">
-				<a href="#fermeturetab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-					<i class="fa fa-map"></i> {{Actions de fermeture}}</a>
 			</li>
 		</ul>
 			<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
@@ -181,7 +177,7 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 						</fieldset>
 					</form>
 				</div>		
-				<div role="tabpanel" class="tab-pane" id="Prorgamationtab">
+				<div role="tabpanel" class="tab-pane" id="programationtab">
 					<form class="form-horizontal">
 						<fieldset>
 							<legend>{{Les programations de la zone :}}
