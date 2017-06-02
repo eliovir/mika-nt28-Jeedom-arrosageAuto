@@ -161,7 +161,7 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 									<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TypeArrosage" >
 										<?php
 											foreach(config::byKey('configuration','arrosageAuto')['type'] as $type){
-												echo '<option value="'.$type.'">.'$type.'</option>';
+												echo '<option value="'.$type.'">'.$type.'</option>';
 											}
 										?>
 									</select>	
