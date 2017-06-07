@@ -97,7 +97,7 @@ class arrosageAuto extends eqLogic {
 		$TypeArrosage=config::byKey('configuration','arrosageAuto');
 		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
 		$QtsEau=$TypeArrosage['volume'][$key]; 
-		$QtsEau=$QtsEau/count($this->getConfiguration('progaramation'));
+		//$QtsEau=$QtsEau/count($this->getConfiguration('programation'));
 		return round($QtsEau/$DebitGicler);
 	} 
 	public function ExecuteAction($Action, $Type) {	
@@ -165,7 +165,7 @@ class arrosageAuto extends eqLogic {
 	
 	private function NextStart(){
 		$nextTime=null;
-		foreach($this->getConfiguration('progaramation') as $ConigSchedule){
+		foreach($this->getConfiguration('programation') as $ConigSchedule){
 			$offset=0;
 			for($day=0;$day<7;$day++){
 				if($ConigSchedule[date('w')+$day]){
