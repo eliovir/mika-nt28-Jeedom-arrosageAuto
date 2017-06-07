@@ -197,6 +197,20 @@ class arrosageAuto extends eqLogic {
 	}
 }
 class arrosageAutoCmd extends cmd {
-	public function execute($_options = null) {}
+		public function execute($_options = null) {
+		$Listener=cmd::byId(str_replace('#','',$this->getValue()));
+		if (is_object($Listener)) {	
+			switch($this->getLogicalId()){
+				case 'armed':
+					$Listener->event(true);
+				break;
+				case 'released':
+					$Listener->event(false);
+				break;
+			}
+			$Listener->setCollectDate(date('Y-m-d H:i:s'));
+			$Listener->save();
+		}
+	}
 }
 ?>
