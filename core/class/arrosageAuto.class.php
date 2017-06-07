@@ -26,8 +26,14 @@ class arrosageAuto extends eqLogic {
 		if ($deamon_info['state'] == 'ok') 
 			return;
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
-			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd())
-				$zone->NextStart();
+			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
+				$nextTime=$zone->NextStart();
+				if($nextTime != null){
+					$timestamp=$zone->CheckPompe($nextTime);
+					$cron=$zone->CreateCron(date('i H d m w Y',$timestamp),array('action' => 'start'));
+					log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+				}
+			}
 		}
 	}
 	public static function deamon_stop() {	
@@ -119,14 +125,18 @@ class arrosageAuto extends eqLogic {
 					$Schedule= $zone->TimeToShedule($PowerTime);
 					$zone->CreateCron($Schedule, array('action' => 'stop'));
 				}
-				if($_option['action'] == 'stop')
-					$zone->NextStart();
+				if($_option['action'] == 'stop')[
+					$nextTime=$zone->NextStart();
+					if($nextTime != null){
+						$timestamp=$zone->CheckPompe($nextTime);
+						$cron=$zone->CreateCron(date('i H d m w Y',$timestamp),array('action' => 'start'));
+						log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+					}
+				}
 			}
 		}
 	}
 	public function TimeToShedule($Time) {
-		$Heure=round($Time/3600);
-		$Minute=round(($Time-($Heure*3600))/60);
 		$Shedule = new DateTime();
 		$Shedule->add(new DateInterval('PT'.$Time.'S'));
 		return  $Shedule->format("i H d m *");
@@ -205,13 +215,21 @@ class arrosageAuto extends eqLogic {
 	private function CheckPompe($nextTime){
 		//Chercher toutes les branche active en meme temps
 		$DebitGiclers=$this->getConfiguration('DebitGicler');
+		
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
+			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
+			if (is_object($cron)){	
+				$Time=$zone->EvaluateTime();
+				$nextStart=$zone->NextStart();
+				$nextStop=$nextStart+$Time;
+				if($nextStart>$nextTime && $nextStop<$nextTime)
+					$DebitGiclers+=$zone->getConfiguration('DebitGicler');
+			}
 		}
 		$DebitPmp=config::byKey('debit','arrosageAuto');
 		if($DebitPmp<$DebitGiclers)
 			return false;
-		log::add('arrosageAuto','info',$this->getHumanName().' : '.$DebitPmp.'>'.$DebitGiclers);
-		return true;
+		return $nextTime;
 	}
 	private function NextStart(){
 		$nextTime=null;
@@ -232,10 +250,7 @@ class arrosageAuto extends eqLogic {
 			if($nextTime>$timestamp)
 				$nextTime=$timestamp;
 		}
-		if($nextTime != null){
-			$cron=$this->CreateCron(date('i H d m w Y',$nextTime),array('action' => 'start'));
-			log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
-		}
+		return $nextTime;
 	}
 	public static function AddCommande($eqLogic,$Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Template='') {
 		$Commande = $eqLogic->getCmd(null,$_logicalId);
@@ -263,7 +278,12 @@ class arrosageAutoCmd extends cmd {
 			switch($this->getLogicalId()){
 				case 'armed':
 					$Listener->event(true);
-					$this->getEqLogic()->NextStart();
+					$nextTime=$this->getEqLogic()->NextStart();
+					if($nextTime != null){
+						$timestamp=$this->getEqLogic()->CheckPompe($nextTime);
+						$cron=$this->getEqLogic()->CreateCron(date('i H d m w Y',$timestamp),array('action' => 'start'));
+						log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+					}
 				break;
 				case 'released':
 					$Listener->event(false);
