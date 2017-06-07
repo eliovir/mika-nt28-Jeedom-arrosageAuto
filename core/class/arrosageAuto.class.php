@@ -7,7 +7,7 @@ class arrosageAuto extends eqLogic {
 		$return['launchable'] = 'ok';
 		$return['state'] = 'ok';
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
-			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
+			if($zone->getIsEnable() /*&& $zone->getCmd(null,'isArmed')->execCmd()*/){
 				$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
 				if (!is_object($cron)) 	{	
 					$return['state'] = 'nok';
@@ -26,7 +26,7 @@ class arrosageAuto extends eqLogic {
 		if ($deamon_info['state'] == 'ok') 
 			return;
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
-			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd())
+			if($zone->getIsEnable()/* && $zone->getCmd(null,'isArmed')->execCmd()*/)
 				$zone->NextStart();
 		}
 	}
