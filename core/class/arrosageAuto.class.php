@@ -125,7 +125,7 @@ class arrosageAuto extends eqLogic {
 					$Schedule= $zone->TimeToShedule($PowerTime);
 					$zone->CreateCron($Schedule, array('action' => 'stop'));
 				}
-				if($_option['action'] == 'stop')[
+				if($_option['action'] == 'stop'){
 					$nextTime=$zone->NextStart();
 					if($nextTime != null){
 						$timestamp=$zone->CheckPompe($nextTime);
