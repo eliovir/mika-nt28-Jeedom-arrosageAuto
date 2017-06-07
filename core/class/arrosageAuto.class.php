@@ -97,6 +97,7 @@ class arrosageAuto extends eqLogic {
 		$TypeArrosage=config::byKey('configuration','arrosageAuto');
 		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
 		$QtsEau=$TypeArrosage['volume'][$key]; 
+		$QtsEau=$QtsEau/count($this->getConfiguration('progaramation'));
 		return round($QtsEau/$DebitGicler);
 	} 
 	public function ExecuteAction($Action, $Type) {	
