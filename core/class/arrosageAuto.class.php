@@ -174,8 +174,10 @@ class arrosageAuto extends eqLogic {
 			if($nextTime>$timestamp)
 				$nextTime=$timestamp;
 		}
-		if($nextTime != null)
+		if($nextTime != null){
 			$this->CreateCron(date('i H d m w Y',$nextTime), 'pull',array('action' => 'start'));
+			log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage');
+		}
 	}
 	public static function AddCommande($eqLogic,$Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Template='') {
 		$Commande = $eqLogic->getCmd(null,$_logicalId);
