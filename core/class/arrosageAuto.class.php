@@ -90,7 +90,6 @@ class arrosageAuto extends eqLogic {
 		return  $Shedule->format("i H d m *");
 	} 
 	public function EvaluateTime() {
-		$DebitPmp=config::byKey('debit','arrosageAuto');
 		$DebitGicler=$this->getConfiguration('DebitGicler');
 		$TypeArrosage=config::byKey('configuration','arrosageAuto');
 		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
@@ -161,7 +160,16 @@ class arrosageAuto extends eqLogic {
 		log::add('arrosageAuto','info',$this->getHumanName().' : Les conditions sont remplies');
 		return true;
 	}
-	
+	private function CheckPompe($nextTime){
+		//Chercher toutes les branche active en meme temps
+		$DebitGiclers=$this->getConfiguration('DebitGicler');
+		foreach(eqLogic::byType('arrosageAuto') as $zone){
+		}
+		$DebitPmp=config::byKey('debit','arrosageAuto');
+		if($DebitPmp<$DebitGiclers)
+			return false;
+		return true;
+	}
 	private function NextStart(){
 		$nextTime=null;
 		foreach($this->getConfiguration('programation') as $ConigSchedule){
@@ -172,14 +180,16 @@ class arrosageAuto extends eqLogic {
 					break;
 				}
 			}
-			while(mktime()>$timestamp){
-				$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j")+$offset , date("Y"));
-				$offset++;
+			while(!$this->CheckPompe($nextTime)){
+				while(mktime()>$timestamp){
+					$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j")+$offset , date("Y"));
+					$offset++;
+				}
+				if($nextTime == null)
+					$nextTime=$timestamp;
+				if($nextTime>$timestamp)
+					$nextTime=$timestamp;
 			}
-			if($nextTime == null)
-				$nextTime=$timestamp;
-			if($nextTime>$timestamp)
-				$nextTime=$timestamp;
 		}
 		if($nextTime != null){
 			$cron=$this->CreateCron(date('i H d m w Y',$nextTime),array('action' => 'start'));
