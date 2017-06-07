@@ -1,14 +1,11 @@
-= Gestion de arrosageAuto
+= Gestion de l'arrosage automatiqe
 
 == Description
-Ce plugin a pour but de gérer facilement et automatiquement vos arrosageAuto.
-Celui-ci est entièrement basé sur le plugin Heliotrope qui est un prérequis pour son utilisation.
+Ce plugin a pour but de gérer facilement et automatiquement votre arrosage automatique.
 
 Une fois configuré :
 
-* le plugin gérera automatiquement l'ouverture et la fermerture de vos arrosageAuto au lever du soleil et à la tombée de la nuit
-* en mode été, il fermera les arrosageAuto lorsque le soleil sera dans la fenêtre afin de préserver une température idéale dans la maison
-* en mode hiver, il ouvrira les arrosageAuto pour permettre au soleil de chauffer la pièce et faire des économies d'énergie.
+* le plugin gérera automatiquement l'arrosage selon le type de plantation et le debit de vos turbines ou goutte a goutte
 
 == Commandes et widgets
 include::Commandes.asciidoc[]
