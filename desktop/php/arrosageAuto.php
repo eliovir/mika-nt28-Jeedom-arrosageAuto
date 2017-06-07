@@ -68,16 +68,16 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 					<i class="fa fa-list-alt"></i> Commandes</a>
 			</li>
 			<li role="presentation" class="">
+				<a href="#programationtab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+					<i class="fa fa-map"></i> {{Programation}}</a>
+			</li>
+			<li role="presentation" class="">
 				<a href="#conditiontab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-					<i class="fa fa-map"></i> {{Conditions d'exécution}}</a>
+					<i class="fa fa-map"></i> {{Conditions}}</a>
 			</li>
 			<li role="presentation" class="">
-				<a href="#ouverturetab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-					<i class="fa fa-map"></i> {{Actions d'ouverture}}</a>
-			</li>
-			<li role="presentation" class="">
-				<a href="#fermeturetab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-					<i class="fa fa-map"></i> {{Actions de fermeture}}</a>
+				<a href="#actiontab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+					<i class="fa fa-map"></i> {{Actions}}</a>
 			</li>
 		</ul>
 			<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
@@ -146,9 +146,62 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 									<input type="checkbox" class="eqLogicAttr" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" >
+									{{Type d'arrosage}}
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Choisissez les type d'arrosage pour cette zone" style="font-size : 1em;color:grey;"></i>
+									</sup>
+								</label>
+								<div class="col-sm-5">
+									<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TypeArrosage" >
+										<?php
+											foreach(config::byKey('configuration','arrosageAuto')['type'] as $type){
+												echo '<option value="'.$type.'">'.$type.'</option>';
+											}
+										?>
+									</select>	
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" >
+									{{Debit d'arrosage}}
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Saisir le debit des gicleurs" style="font-size : 1em;color:grey;"></i>
+									</sup>
+								</label>
+								<div class="col-sm-5">
+									<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DebitGicler" />	
+								</div>
+							</div>
 						</fieldset>
 					</form>
 				</div>		
+				<div role="tabpanel" class="tab-pane" id="programationtab">
+					<form class="form-horizontal">
+						<fieldset>
+							<legend>{{Les programations de la zone :}}
+								<sup>
+									<i class="fa fa-question-circle tooltips" title="Saisir toutes les programations pour la zone"></i>
+								</sup>
+								<a class="btn btn-success btn-xs ProgramationAttr" data-action="add" style="margin-left: 5px;">
+									<i class="fa fa-plus-circle"></i>
+									{{Ajouter une programation}}
+								</a>
+							</legend>
+						</fieldset>
+					</form>			
+					<table id="table_programation" class="table table-bordered table-condensed">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Jour actif</th>
+								<th>Heure</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>						
 				<div role="tabpanel" class="tab-pane" id="conditiontab">
 					<form class="form-horizontal">
 						<fieldset>
@@ -175,10 +228,10 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 						<tbody></tbody>
 					</table>
 				</div>				
-				<div role="tabpanel" class="tab-pane" id="ouverturetab">
+				<div role="tabpanel" class="tab-pane" id="actiontab">
 					<form class="form-horizontal">
 						<fieldset>
-							<legend>{{Les actions d'ouverture :}}
+							<legend>{{Les actions :}}
 								<sup>
 									<i class="fa fa-question-circle tooltips" title="Saisir toutes les actions à mener à l'ouverture"></i>
 								</sup>
@@ -189,43 +242,18 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 							</legend>
 						</fieldset>
 					</form>					
-					<table id="table_ouverture" class="table table-bordered table-condensed">
+					<table id="table_action" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
 								<th></th>
 								<th>Action</th>
-								<th></th>
+								<th>Valeur</th>
+								<th>Execution</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
 					</table>
 				</div>		
-				<div role="tabpanel" class="tab-pane" id="fermeturetab">
-					<form class="form-horizontal">
-						<fieldset>
-							<legend>{{Les actions de fermeture :}}
-								<sup>
-									<i class="fa fa-question-circle tooltips" title="Saisir toutes les actions à mener à la fermeture"></i>
-								</sup>
-								<a class="btn btn-success btn-xs ActionAttr" data-action="add" style="margin-left: 5px;">
-									<i class="fa fa-plus-circle"></i>
-									{{Ajouter une Action}}
-								</a>
-							</legend>
-
-						</fieldset>
-					</form>							
-					<table id="table_fermeture" class="table table-bordered table-condensed">
-						<thead>
-							<tr>
-								<th></th>
-								<th>Action</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
-				</div>
 				<div role="tabpanel" class="tab-pane" id="commandtab">	
 					<table id="table_cmd" class="table table-bordered table-condensed">
 					    <thead>
