@@ -162,8 +162,7 @@ class arrosageAuto extends eqLogic {
 		}
 	}
 	public function CreateCron($Schedule, $option=array()) {
-		$option['id']= $this->getId();
-		$cron = cron::byClassAndFunction('arrosageAuto', 'pull',$option);
+		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('id' => $this->getId()));
 		if (!is_object($cron)) {
 			$cron = new cron();
 			$cron->setClass('arrosageAuto');
@@ -171,6 +170,7 @@ class arrosageAuto extends eqLogic {
 			$cron->setEnable(1);
 			$cron->setDeamon(0);
 		}
+		$option['id']= $this->getId();
 		$cron->setOption($option);
 		$cron->setSchedule($Schedule);
 		$cron->save();
