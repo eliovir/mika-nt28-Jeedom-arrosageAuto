@@ -8,7 +8,7 @@ class arrosageAuto extends eqLogic {
 		$return['state'] = 'ok';
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
-				$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
+				$cron = cron::byClassAndFunction('arrosageAuto', 'pull'/*,array('id' => $zone->getId())*/);
 				if (!is_object($cron)) 	{	
 					$return['state'] = 'nok';
 					return $return;
