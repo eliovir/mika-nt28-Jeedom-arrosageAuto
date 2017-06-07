@@ -106,7 +106,7 @@ function addProgramation(_programation,  _el) {
 			.text(i));	
 	}
 	var tr = $('<tr class="ProgramationGroup">')
-		.($('<td>')
+		.append($('<td>')
 			.append($('<span class="input-group-btn">')
 				.append($('<a class="btn btn-default ProgramationAttr btn-sm" data-action="remove">')
 					.append($('<i class="fa fa-minus-circle">')))))
