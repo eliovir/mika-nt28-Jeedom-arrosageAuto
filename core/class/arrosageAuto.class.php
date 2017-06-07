@@ -224,15 +224,13 @@ class arrosageAuto extends eqLogic {
 				}
 			}
 			do{
-				do{
-					$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j")+$offset , date("Y"));
-					$offset++;
-				}while(mktime()>$timestamp);
-				if($nextTime == null)
-					$nextTime=$timestamp;
-				if($nextTime>$timestamp)
-					$nextTime=$timestamp;
-			}while(!$this->CheckPompe($nextTime));
+				$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j")+$offset , date("Y"));
+				$offset++;
+			}while(mktime()>$timestamp);
+			if($nextTime == null)
+				$nextTime=$timestamp;
+			if($nextTime>$timestamp)
+				$nextTime=$timestamp;
 		}
 		if($nextTime != null){
 			$cron=$this->CreateCron(date('i H d m w Y',$nextTime),array('action' => 'start'));
