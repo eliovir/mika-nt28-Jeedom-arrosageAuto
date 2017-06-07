@@ -223,7 +223,7 @@ class arrosageAuto extends eqLogic {
 					break;
 				}
 			}
-			while(!$this->CheckPompe($nextTime)){
+			do{
 				while(mktime()>$timestamp){
 					$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j")+$offset , date("Y"));
 					$offset++;
@@ -232,7 +232,7 @@ class arrosageAuto extends eqLogic {
 					$nextTime=$timestamp;
 				if($nextTime>$timestamp)
 					$nextTime=$timestamp;
-			}
+			}while(!$this->CheckPompe($nextTime));
 		}
 		if($nextTime != null){
 			log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
