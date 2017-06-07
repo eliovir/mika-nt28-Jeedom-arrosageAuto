@@ -210,6 +210,7 @@ class arrosageAuto extends eqLogic {
 		$DebitPmp=config::byKey('debit','arrosageAuto');
 		if($DebitPmp<$DebitGiclers)
 			return false;
+		log::add('arrosageAuto','info',$this->getHumanName().' : '.$DebitPmp.'>'.$DebitGiclers);
 		return true;
 	}
 	private function NextStart(){
