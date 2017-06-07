@@ -65,7 +65,7 @@ class arrosageAuto extends eqLogic {
 			if(!$zone->getCmd(null,'isArmed')->execCmd())
 				exit;
       			//On verifie que l'on a toujours le cron associé
-      			$cron = cron::byClassAndFunction('reveil', 'pull',array('id' => $zone->getId()));
+      			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
      		 	if (!is_object($cron))
 				exit;
 			if(!$zone->EvaluateCondition())
@@ -123,14 +123,14 @@ class arrosageAuto extends eqLogic {
 	}
 	public function CreateCron($Schedule, $option=array()) {
 		$option['id']= $this->getId();
-		$cron =cron::byClassAndFunction('arrosageAuto', 'pull', $option);
-			if (!is_object($cron)) {
-				$cron = new cron();
-				$cron->setClass('arrosageAuto');
-				$cron->setFunction('pull');
-				$cron->setEnable(1);
-				$cron->setDeamon(0);
-			}
+		$cron = cron::byClassAndFunction('arrosageAuto', 'pull',$option);
+		if (!is_object($cron)) {
+			$cron = new cron();
+			$cron->setClass('arrosageAuto');
+			$cron->setFunction('pull');
+			$cron->setEnable(1);
+			$cron->setDeamon(0);
+		}
 		$cron->setOption($option);
 		$cron->setSchedule($Schedule);
 		$cron->save();
