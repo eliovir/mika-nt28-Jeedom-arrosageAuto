@@ -7,8 +7,8 @@ class arrosageAuto extends eqLogic {
 		$return['launchable'] = 'ok';
 		$return['state'] = 'ok';
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
-			if($zone->getIsEnable() /*&& $zone->getCmd(null,'isArmed')->execCmd()*/){
-				$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
+			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
+				$cron = cron::byClassAndFunction('arrosageAuto', 'pull'/*,array('id' => $zone->getId()*/));
 				if (!is_object($cron)) 	{	
 					$return['state'] = 'nok';
 					return $return;
@@ -26,7 +26,7 @@ class arrosageAuto extends eqLogic {
 		if ($deamon_info['state'] == 'ok') 
 			return;
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
-			if($zone->getIsEnable()/* && $zone->getCmd(null,'isArmed')->execCmd()*/)
+			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd())
 				$zone->NextStart();
 		}
 	}
@@ -64,7 +64,6 @@ class arrosageAuto extends eqLogic {
 		if(is_object($zone)){
 			if(!$zone->getCmd(null,'isArmed')->execCmd())
 				exit;
-      			//On verifie que l'on a toujours le cron associé
       			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
      		 	if (!is_object($cron))
 				exit;
@@ -73,7 +72,6 @@ class arrosageAuto extends eqLogic {
 			foreach($zone->getConfiguration('action') as $cmd){
 				$zone->ExecuteAction($cmd,$_option['action']);
 				if($_option['action'] == 'start'){
-					//Calcule du temps d'arrosage et crétion de cron stop
 					$PowerTime=$zone->EvaluateTime();
 					log::add('ChauffeEau','info','Estimation du temps d\'activation '.$PowerTime);
 					$Schedule= $zone->TimeToShedule($PowerTime);
@@ -97,6 +95,7 @@ class arrosageAuto extends eqLogic {
 		$TypeArrosage=config::byKey('configuration','arrosageAuto');
 		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
 		$QtsEau=$TypeArrosage['volume'][$key]; 
+		//Ajouter la verification du nombre de start dans la journée pour repartir la quantité 
 		//$QtsEau=$QtsEau/count($this->getConfiguration('programation'));
 		return round($QtsEau/$DebitGicler);
 	} 
