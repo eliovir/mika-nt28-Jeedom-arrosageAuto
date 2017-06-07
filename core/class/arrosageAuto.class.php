@@ -8,7 +8,7 @@ class arrosageAuto extends eqLogic {
 		$return['state'] = 'ok';
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
-				$cron = cron::byClassAndFunction('arrosageAuto', 'pull'/*,array('id' => $zone->getId())*/);
+				$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
 				if (!is_object($cron)) 	{	
 					$return['state'] = 'nok';
 					return $return;
@@ -265,9 +265,13 @@ class arrosageAutoCmd extends cmd {
 			switch($this->getLogicalId()){
 				case 'armed':
 					$Listener->event(true);
+					$this->getEqLogic()->NextStart();
 				break;
 				case 'released':
 					$Listener->event(false);
+					$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('id' => $this->getEqLogic()->getId()));
+					if (is_object($cron)) 
+						$cron->remove();
 				break;
 			}
 			$Listener->setCollectDate(date('Y-m-d H:i:s'));
