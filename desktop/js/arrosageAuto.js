@@ -36,7 +36,7 @@ function printEqLogic(_eqLogic) {
 	if (typeof(_eqLogic.configuration.programation) !== 'undefined') {
 		for(var index in _eqLogic.configuration.programation) { 
 			if( (typeof _eqLogic.configuration.programation[index] === "object") && (_eqLogic.configuration.programation[index] !== null) )
-				addProgramation(_eqLogic.configuration.programation[index],$('#Prorgamationtab').find('table tbody'));
+				addProgramation(_eqLogic.configuration.programation[index],$('#programationtab').find('table tbody'));
 		}
 	}
 	if (typeof(_eqLogic.configuration.action) !== 'undefined') {
@@ -93,7 +93,7 @@ function addProgramation(_programation,  _el) {
 		Heure.append($('<option value="'+i+'">')
 			.text(i));	
 	}
-	var Minute=$('<select class="expressionAttr form-control" data-l1key="Heure" >');
+	var Minute=$('<select class="expressionAttr form-control" data-l1key="Minute" >');
 	for(i=0; i>60;i++){
 		Minute.append($('<option value="'+i+'">')
 			.text(i));	
