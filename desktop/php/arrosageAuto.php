@@ -73,11 +73,11 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 			</li>
 			<li role="presentation" class="">
 				<a href="#conditiontab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-					<i class="fa fa-map"></i> {{Conditions d'exécution}}</a>
+					<i class="fa fa-map"></i> {{Conditions}}</a>
 			</li>
 			<li role="presentation" class="">
 				<a href="#actiontab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-					<i class="fa fa-map"></i> {{Actions d'ouverture}}</a>
+					<i class="fa fa-map"></i> {{Actions}}</a>
 			</li>
 		</ul>
 			<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
