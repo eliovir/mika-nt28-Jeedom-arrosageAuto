@@ -224,10 +224,10 @@ class arrosageAuto extends eqLogic {
 				}
 			}
 			do{
-				while(mktime()>$timestamp){
+				do{
 					$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j")+$offset , date("Y"));
 					$offset++;
-				}
+				}while(mktime()>$timestamp);
 				if($nextTime == null)
 					$nextTime=$timestamp;
 				if($nextTime>$timestamp)
