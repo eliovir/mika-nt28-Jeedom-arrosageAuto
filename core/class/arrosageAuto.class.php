@@ -50,8 +50,7 @@ class arrosageAuto extends eqLogic {
 			$vcolor = 'mcmdColor';
 		}
 		$cmdColor='';
-		$NextChauffe='';
-		$tempBallon='';
+		$Next='';
 		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('id' => $this->getId()));
 		if (is_object($cron)){
 			$_option=$cron->getOption();
