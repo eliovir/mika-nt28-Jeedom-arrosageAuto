@@ -37,6 +37,49 @@ class arrosageAuto extends eqLogic {
 				$cron->remove();
 		}
 	}
+	public function toHtml($_version = 'dashboard') {
+		if ($this->getIsEnable() != 1) {
+			return '';
+		}
+		$version = jeedom::versionAlias($_version);
+		if ($this->getDisplay('hideOn' . $version) == 1) {
+			return '';
+		}
+		$vcolor = 'cmdColor';
+		if ($version == 'mobile') {
+			$vcolor = 'mcmdColor';
+		}
+		$cmdColor='';
+		$NextChauffe='';
+		$tempBallon='';
+		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('id' => $this->getId()));
+		if (is_object($cron)){
+			$_option=$cron->getOption();
+			$Next=$_option['action'].' : '.$cron->getNextRunDate();
+		}
+		$cmdColor = ($this->getPrimaryCategory() == '') ? '' : jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
+		$replace_eqLogic = array(
+			'#id#' => $this->getId(),
+			'#background_color#' => $this->getBackgroundColor(jeedom::versionAlias($_version)),
+			'#humanname#' => $this->getHumanName(),
+			'#name#' => $this->getName(),
+			'#height#' => $this->getDisplay('height', 'auto'),
+			'#width#' => $this->getDisplay('width', 'auto'),
+			'#cmdColor#' => $cmdColor,
+			'#Next#' => $Next
+		);
+		foreach ($this->getCmd() as $cmd) {
+			if ($cmd->getDisplay('hideOn' . $version) == 1) 
+				continue;
+			$replace_eqLogic['#'.$cmd->getLogicalId().'#']= $cmd->toHtml($_version, $cmdColor);
+		}
+		return $this->postToHtml($_version, template_replace($replace_eqLogic, getTemplate('core', jeedom::versionAlias($version), 'eqLogic', 'arrosageAuto')));
+	}
+	public static $_widgetPossibility = array('custom' => array(
+	        'visibility' => true,
+	        'displayName' => true,
+	        'optionalParameters' => true,
+	));
 	public function postSave() {
 		$isArmed=self::AddCommande($this,"Etat activation","isArmed","info","binary",false,'lock');
 		$isArmed->event(true);
