@@ -26,6 +26,7 @@ function saveEqLogic(_eqLogic) {
 }
 function printEqLogic(_eqLogic) {
 	$('.ConditionGroup').remove();
+	$('.ProgramationGroup').remove();
 	$('.ActionGroup').remove();
 	if (typeof(_eqLogic.configuration.condition) !== 'undefined') {
 		for(var index in _eqLogic.configuration.condition) { 
