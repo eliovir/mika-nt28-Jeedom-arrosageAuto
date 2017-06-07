@@ -77,8 +77,10 @@ class arrosageAuto extends eqLogic {
 					$PowerTime=$zone->EvaluateTime();
 					log::add('ChauffeEau','info','Estimation du temps d\'activation '.$PowerTime);
 					$Schedule= $zone->TimeToShedule($PowerTime);
-					$zone->CreateCron($Schedule, 'pull', array('action' => 'stop'));
+					$zone->CreateCron($Schedule, array('action' => 'stop'));
 				}
+				if($_option['action'] == 'stop')
+					$zone->NextStart();
 			}
 		}
 	}
@@ -118,19 +120,19 @@ class arrosageAuto extends eqLogic {
 			}
 		}
 	}
-	public function CreateCron($Schedule, $logicalId, $option=array()) {
+	public function CreateCron($Schedule, $option=array()) {
 		$option['id']= $this->getId();
-		$cron =cron::byClassAndFunction('arrosageAuto', $logicalId, $option);
+		$cron =cron::byClassAndFunction('arrosageAuto', 'pull', $option);
 			if (!is_object($cron)) {
 				$cron = new cron();
 				$cron->setClass('arrosageAuto');
-				$cron->setFunction($logicalId);
+				$cron->setFunction('pull');
 				$cron->setEnable(1);
 				$cron->setDeamon(0);
 			}
-			$cron->setOption($option);
-			$cron->setSchedule($Schedule);
-			$cron->save();
+		$cron->setOption($option);
+		$cron->setSchedule($Schedule);
+		$cron->save();
 		return $cron;
 	}
 	private function EvaluateCondition(){
@@ -170,13 +172,18 @@ class arrosageAuto extends eqLogic {
 					break;
 				}
 			}
-			$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j")+$offset , date("Y"));
+			while(mktime()>$timestamp){
+				$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j")+$offset , date("Y"));
+				$offset++;
+			}
+			if($nextTime == null)
+				$nextTime=$timestamp;
 			if($nextTime>$timestamp)
 				$nextTime=$timestamp;
 		}
 		if($nextTime != null){
-			$this->CreateCron(date('i H d m w Y',$nextTime), 'pull',array('action' => 'start'));
-			log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage');
+			$cron=$this->CreateCron(date('i H d m w Y',$nextTime),array('action' => 'start'));
+			log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
 		}
 	}
 	public static function AddCommande($eqLogic,$Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Template='') {
