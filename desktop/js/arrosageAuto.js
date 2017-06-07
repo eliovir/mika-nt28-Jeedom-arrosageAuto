@@ -96,18 +96,17 @@ function addAction(_action,  _el) {
   }
 function addProgramation(_programation,  _el) {
 	var Heure=$('<select class="expressionAttr form-control" data-l1key="Heure" >');
-	for(i=0; i>24;i++){
-		alert(i);
-		Heure.add($('<option value="'+i+'">')
+	for(var i=0; i>24;i++){
+		Heure.append($('<option value="'+i+'">')
 			.text(i));	
 	}
 	var Minute=$('<select class="expressionAttr form-control" data-l1key="Minute" >');
-	for(i=0; i>60;i++){
-		Minute.add($('<option value="'+i+'">')
+	for(var i=0; i>60;i++){
+		Minute.append($('<option value="'+i+'">')
 			.text(i));	
 	}
 	var tr = $('<tr class="ProgramationGroup">')
-		.append($('<td>')
+		.($('<td>')
 			.append($('<span class="input-group-btn">')
 				.append($('<a class="btn btn-default ProgramationAttr btn-sm" data-action="remove">')
 					.append($('<i class="fa fa-minus-circle">')))))
