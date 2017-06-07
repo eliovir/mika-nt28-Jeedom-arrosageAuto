@@ -247,7 +247,8 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 							<tr>
 								<th></th>
 								<th>Action</th>
-								<th></th>
+								<th>Valeur</th>
+								<th>Execution</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
