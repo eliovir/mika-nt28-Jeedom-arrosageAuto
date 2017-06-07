@@ -26,10 +26,8 @@ class arrosageAuto extends eqLogic {
 		if ($deamon_info['state'] == 'ok') 
 			return;
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
-			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
-				$Schedule=$zone->NextStart();
-				$cron = $zone->CreateCron($Schedule, 'pull',array('action' => 'start'));
-			}
+			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd())
+				$zone->NextStart();
 		}
 	}
 	public static function deamon_stop() {	
