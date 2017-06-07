@@ -7,8 +7,55 @@ Une fois configuré :
 
 * le plugin gérera automatiquement l'arrosage selon le type de plantation et le debit de vos turbines ou goutte a goutte
 
+== Configuration
+
+image::../images/Configuration.jpg[]
+
+Personaliser votre liste de type de plantation en y saisissant un nom et la quantité (L/m²) d'eau necéssaire a l'arrosage.
+Le debit de la pompe est utilé pour determiner si on peut lancer 2 zone en meme temps, ou reporter l'arrosage.
+
 == Commandes et widgets
-include::Commandes.asciidoc[]
+Pour chaque zone d'arrosage créer, le plugin va créer des commandes.
+* L'activation et desactivation de la gestion
+
+image::../images/arrosageAuto_screenshot_Widget.jpg[]
 
 == Paramétrage
-include::Parametrage.asciidoc[]
+
+image::../images/MesZones.jpg[]
+
+Comme pour tous les plugins, nous allons commencer par créer une zone avec le bouton Ajouter. 
+Mainenant nous pouvons configurer notre zone d'arrosage
+
+=== Configuration générale Jeedom
+
+image::../images/General.jpg[]
+
+* Nom : le nom a déjà été paramétré mais vous avez la possibilité de le changer
+* Objet parent : ce paramètre permet d’ajouter l’équipement dans un objet Jeedom
+* Catégorie : déclare l’équipement dans une catégorie
+* Visible : permet de rendre l’équipement visible dans le Dashboard
+* Activer : permet d’activer l’équipement
+* Type d'arrosage : Sélectioner le type de plantation a arroser
+* Debit d'arrosage : Saisir le debit des turbines ou goutte à goutte
+
+=== Programation
+
+image::../images/Programation.jpg[]
+
+Nous pouvons pour chaque zone determiner plusieur crenaux d'arrosage.
+La quantité total d'arrosage defini sera repartie entre ces zone.
+
+=== Conditions
+
+image::../images/Conditions.jpg[]
+
+Pour chaque zone, nous pouvons choisir des conditions 
+Toutes les conditions doivent être respectées pour que les actions soient executées
+Pour vous aider a la configuration des conditions, un editeur est ajouté.
+
+=== Actions
+
+image::../images/Actions.jpg[]
+
+Choisissez les actions à mener sans oublier de configurer leur valeurs et a l'etape auquel on veut qu'elle s'execute
