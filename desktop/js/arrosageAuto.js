@@ -82,20 +82,28 @@ function addAction(_action,  _el) {
 					.append($('<a class="btn btn-success btn-sm listCmdAction">')
 						.append($('<i class="fa fa-list-alt">'))))))
 		.append($('<td>')
-		       .append($(jeedom.cmd.displayActionOption(init(_action.cmd, ''), _action.options))));
+		       .append($(jeedom.cmd.displayActionOption(init(_action.cmd, ''), _action.options))))
+		.append($('<td>')
+			.append($('<select class="expressionAttr form-control" data-l1key="Type">')
+				.append($('<option value="">')
+					.text('{{Tous}}'))
+				.append($('<option value="start">')
+					.text('{{Start}}'))
+				.append($('<option value="stop">')
+					.text('{{Stop}}'))));
         _el.append(tr);
         _el.find('tr:last').setValues(_action, '.expressionAttr');
-  
-}
+  }
 function addProgramation(_programation,  _el) {
 	var Heure=$('<select class="expressionAttr form-control" data-l1key="Heure" >');
 	for(i=0; i>24;i++){
-		Heure.append($('<option value="'+i+'">')
+		alert(i);
+		Heure.add($('<option value="'+i+'">')
 			.text(i));	
 	}
 	var Minute=$('<select class="expressionAttr form-control" data-l1key="Minute" >');
 	for(i=0; i>60;i++){
-		Minute.append($('<option value="'+i+'">')
+		Minute.add($('<option value="'+i+'">')
 			.text(i));	
 	}
 	var tr = $('<tr class="ProgramationGroup">')
