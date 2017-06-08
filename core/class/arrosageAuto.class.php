@@ -121,25 +121,23 @@ class arrosageAuto extends eqLogic {
 				log::add('arrosageAuto','info','Les conditions ne sont pas evalué');
 				exit;
 			}
-			foreach($zone->getConfiguration('action') as $cmd){
-				$Action = cache::byKey('arrosageAuto::Action::'.$zone->getId());
-				if($Action->getValue('') != 'start'){
-					$zone->ExecuteAction($cmd,'start');
-					$PowerTime=$zone->EvaluateTime();
-					log::add('arrosageAuto','info','Estimation du temps d\'activation '.$PowerTime.'s');
-					$Schedule= $zone->TimeToShedule($PowerTime);
-					$zone->CreateCron($Schedule);
-			      		cache::set('arrosageAuto::Action::'.$zone->getId(), 'start', 0);
-				}
-				else{
-					$zone->ExecuteAction($cmd,'stop');
-					$nextTime=$zone->NextStart();
-					if($nextTime != null){
-						$timestamp=$zone->CheckPompe($nextTime);
-						$cron=$zone->CreateCron(date('i H d m w Y',$timestamp));
-						log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
-			      			cache::set('arrosageAuto::Action::'.$zone->getId(), 'stop', 0);
-					}
+			$Action = cache::byKey('arrosageAuto::Action::'.$zone->getId());
+			if($Action->getValue('') != 'start'){
+				$zone->ExecuteAction('start');
+				$PowerTime=$zone->EvaluateTime();
+				log::add('arrosageAuto','info','Estimation du temps d\'activation '.$PowerTime.'s');
+				$Schedule= $zone->TimeToShedule($PowerTime);
+				$zone->CreateCron($Schedule);
+				cache::set('arrosageAuto::Action::'.$zone->getId(), 'start', 0);
+			}
+			else{
+				$zone->ExecuteAction('stop');
+				$nextTime=$zone->NextStart();
+				if($nextTime != null){
+					$timestamp=$zone->CheckPompe($nextTime);
+					$cron=$zone->CreateCron(date('i H d m w Y',$timestamp));
+					log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+					cache::set('arrosageAuto::Action::'.$zone->getId(), 'stop', 0);
 				}
 			}
 		}
@@ -158,8 +156,8 @@ class arrosageAuto extends eqLogic {
 		//$QtsEau=$QtsEau/count($this->getConfiguration('programation'));
 		return round($QtsEau*3600/$DebitGicler);
 	} 
-	public function ExecuteAction($Action, $Type) {	
-		foreach($Action as $cmd){
+	public function ExecuteAction($Type) {	
+		foreach($this->getConfiguration('action') as $cmd){
 			if (isset($cmd['enable']) && $cmd['enable'] == 0)
 				continue;
 			if ($cmd['Type'] != $Type && $Type !='')
