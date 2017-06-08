@@ -29,7 +29,7 @@ class arrosageAuto extends eqLogic {
 				if($nextTime != null){
 					$timestamp=$zone->CheckPompe($nextTime);
 					$cron=$zone->CreateCron(date('i H d m w Y',$timestamp));
-				//	log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+					log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
 				}
 			}
 		}
@@ -55,11 +55,11 @@ class arrosageAuto extends eqLogic {
 		}
 		$cmdColor='';
 		$Next='';
-	/*	$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getId()));
+		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getId()));
 		if (is_object($cron)){
 			$_option=$cron->getOption();
 			$Next=$_option['action'].' : '.$cron->getNextRunDate();
-		}*/
+		}
 		$cmdColor = ($this->getPrimaryCategory() == '') ? '' : jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
 		$replace_eqLogic = array(
 			'#id#' => $this->getId(),
@@ -136,7 +136,7 @@ class arrosageAuto extends eqLogic {
 				if($nextTime != null){
 					$timestamp=$zone->CheckPompe($nextTime);
 					$cron=$zone->CreateCron(date('i H d m w Y',$timestamp));
-					//log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+					log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
 					cache::set('arrosageAuto::Action::'.$zone->getId(), 'stop', 0);
 				}
 			}
@@ -153,7 +153,12 @@ class arrosageAuto extends eqLogic {
 		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
 		$QtsEau=$TypeArrosage['volume'][$key]; 
 		//Ajouter la verification du nombre de start dans la journée pour repartir la quantité 
-		//$QtsEau=$QtsEau/count($this->getConfiguration('programation'));
+		$NbZone=0;
+		foreach($this->getConfiguration('programation') as $programation){
+			if($programation[date('w')])
+				$NbZone++;
+		}
+		$QtsEau=$QtsEau/$NbZone;
 		return round($QtsEau*3600/$DebitGicler);
 	} 
 	public function ExecuteAction($Type) {	
@@ -219,9 +224,7 @@ class arrosageAuto extends eqLogic {
 		return true;
 	}
 	private function CheckPompe($nextTime){
-		//Chercher toutes les branche active en meme temps
-		$DebitGiclers=$this->getConfiguration('DebitGicler');
-		
+		$DebitGiclers=$this->getConfiguration('DebitGicler');		
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $zone->getId()));
 			if (is_object($cron)){	
@@ -288,7 +291,7 @@ class arrosageAutoCmd extends cmd {
 					if($nextTime != null){
 						$timestamp=$this->getEqLogic()->CheckPompe($nextTime);
 						$cron=$this->getEqLogic()->CreateCron(date('i H d m w Y',$timestamp));
-						//log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+						log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
 					}
 				break;
 				case 'released':
