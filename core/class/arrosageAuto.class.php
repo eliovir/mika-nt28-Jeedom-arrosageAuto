@@ -142,12 +142,12 @@ class arrosageAuto extends eqLogic {
 			}
 		}
 	}
-	public function TimeToShedule($Time) {
+	private function TimeToShedule($Time) {
 		$Shedule = new DateTime();
 		$Shedule->add(new DateInterval('PT'.$Time.'S'));
 		return  $Shedule->format("i H d m w Y");
 	} 
-	public function EvaluateTime() {
+	private function EvaluateTime() {
 		$DebitGicler=$this->getConfiguration('DebitGicler');
 		$TypeArrosage=config::byKey('configuration','arrosageAuto');
 		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
@@ -161,7 +161,7 @@ class arrosageAuto extends eqLogic {
 		$QtsEau=$QtsEau/$NbZone;
 		return round($QtsEau*3600/$DebitGicler);
 	} 
-	public function ExecuteAction($Type) {	
+	private function ExecuteAction($Type) {	
 		foreach($this->getConfiguration('action') as $cmd){
 			if (isset($cmd['enable']) && $cmd['enable'] == 0)
 				continue;
@@ -182,7 +182,7 @@ class arrosageAuto extends eqLogic {
 			}
 		}
 	}
-	public function CreateCron($Schedule) {
+	private function CreateCron($Schedule) {
 		$option['Zone_id']= $this->getId();
 		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', $option);
 		if (!is_object($cron)) {
@@ -196,6 +196,32 @@ class arrosageAuto extends eqLogic {
 		$cron->setSchedule($Schedule);
 		$cron->save();
 		return $cron;
+	}
+	private function getMeteoParameter($search){
+		$meteo=eqLogic::byId(str_replace('#','',config::byKey('meteo','arrosageAuto')));
+		if(is_object($meteo)){
+			switch($meteo->getEqType_name()){
+				case 'forecastio':
+					$plugin=array(
+						'windBearing' => array(
+							'id' =>'windBearing'
+							'nom' =>'Direction du Vent'),
+						'humidity' => array(
+							'id' =>'humidity'
+							'nom' =>'Humidité'),
+						'precipIntensity' => array(
+							'id' =>'precipIntensity'
+							'nom' =>'Intensité de Précipitation'),
+						'precipProbability' => array(
+							'id' =>'precipProbability'
+							'nom' =>'Probabilité de Précipitation')
+					);
+					return $meteo->getCmd(null,$plugin[$search]['id'])->execCmd();
+				default:
+					return false;
+			}
+		}
+		return false;
 	}
 	private function EvaluateCondition(){
 		foreach($this->getConfiguration('condition') as $condition){	
