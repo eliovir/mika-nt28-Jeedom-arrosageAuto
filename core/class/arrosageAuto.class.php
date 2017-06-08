@@ -108,21 +108,21 @@ class arrosageAuto extends eqLogic {
 	public static function pull($_option){
 		$zone=eqLogic::byId($_option['Zone_id']);
 		if(is_object($zone)){
-			if(!$zone->getCmd(null,'isArmed')->execCmd()){
-				log::add('arrosageAuto','info','La zone est desactivé');
-				exit;
-			}
       			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $zone->getId()));
      		 	if (!is_object($cron)){
 				log::add('arrosageAuto','info','Le cron n\'existe pas');
 				exit;
 			}
-			if(!$zone->EvaluateCondition()){
-				log::add('arrosageAuto','info','Les conditions ne sont pas evalué');
-				exit;
-			}
 			$Action = cache::byKey('arrosageAuto::Action::'.$zone->getId());
 			if($Action->getValue('') != 'start'){
+				if(!$zone->EvaluateCondition()){
+					log::add('arrosageAuto','info','Les conditions ne sont pas evalué');
+					exit;
+				}
+				if(!$zone->getCmd(null,'isArmed')->execCmd()){
+					log::add('arrosageAuto','info','La zone est desactivé');
+					exit;
+				}
 				$zone->ExecuteAction('start');
 				$PowerTime=$zone->EvaluateTime();
 				log::add('arrosageAuto','info','Estimation du temps d\'activation '.$PowerTime.'s');
