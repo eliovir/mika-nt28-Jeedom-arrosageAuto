@@ -155,7 +155,7 @@ class arrosageAuto extends eqLogic {
 		$QtsEau=$TypeArrosage['volume'][$key]; 
 		//Ajouter la verification du nombre de start dans la journée pour repartir la quantité 
 		//$QtsEau=$QtsEau/count($this->getConfiguration('programation'));
-		return round($QtsEau/$DebitGicler)*3600;
+		return round($QtsEau*3600/$DebitGicler);
 	} 
 	public function ExecuteAction($Action, $Type) {	
 		foreach($Action as $cmd){
