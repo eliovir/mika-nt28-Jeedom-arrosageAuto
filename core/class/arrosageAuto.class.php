@@ -151,7 +151,7 @@ class arrosageAuto extends eqLogic {
 		$Shedule->add(new DateInterval('PT'.$Time.'S'));
 		return  $Shedule->format("i H d m w Y");
 	} 
-	private function EvaluateTime($plui) {
+	private function EvaluateTime($plui=0) {
 		$DebitGicler=$this->getConfiguration('DebitGicler');
 		$TypeArrosage=config::byKey('configuration','arrosageAuto');
 		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
