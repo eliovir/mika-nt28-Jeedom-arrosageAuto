@@ -115,16 +115,20 @@ class arrosageAuto extends eqLogic {
 			}
 			$Action = cache::byKey('arrosageAuto::Action::'.$zone->getId());
 			if($Action->getValue('') != 'start'){
-				if(!$zone->EvaluateCondition()){
-					log::add('arrosageAuto','info','Les conditions ne sont pas evalué');
-					exit;
-				}
 				if(!$zone->getCmd(null,'isArmed')->execCmd()){
 					log::add('arrosageAuto','info','La zone est desactivé');
 					exit;
 				}
+				if(!$zone->EvaluateCondition()){
+					log::add('arrosageAuto','info','Les conditions ne sont pas evalué');
+					exit;
+				}
+				if($plui=$zone->CheckMeteo() === false){
+					log::add('arrosageAuto','info','La météo n\'est pas idéal pour l\'arrosage');
+					exit;
+				}
 				$zone->ExecuteAction('start');
-				$PowerTime=$zone->EvaluateTime();
+				$PowerTime=$zone->EvaluateTime($plui);
 				log::add('arrosageAuto','info','Estimation du temps d\'activation '.$PowerTime.'s');
 				$Schedule= $zone->TimeToShedule($PowerTime);
 				$zone->CreateCron($Schedule);
@@ -147,7 +151,7 @@ class arrosageAuto extends eqLogic {
 		$Shedule->add(new DateInterval('PT'.$Time.'S'));
 		return  $Shedule->format("i H d m w Y");
 	} 
-	private function EvaluateTime() {
+	private function EvaluateTime($plui) {
 		$DebitGicler=$this->getConfiguration('DebitGicler');
 		$TypeArrosage=config::byKey('configuration','arrosageAuto');
 		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
@@ -159,7 +163,7 @@ class arrosageAuto extends eqLogic {
 				$NbZone++;
 		}
 		$QtsEau=$QtsEau/$NbZone;
-		return round($QtsEau*3600/$DebitGicler);
+		return round(($QtsEau-$plui)*3600/$DebitGicler);
 	} 
 	private function ExecuteAction($Type) {	
 		foreach($this->getConfiguration('action') as $cmd){
@@ -197,6 +201,15 @@ class arrosageAuto extends eqLogic {
 		$cron->save();
 		return $cron;
 	}
+	private function CheckMeteo(){
+		if($this->getMeteoParameter('precipProbability')>40)
+			return false;
+		if($this->getMeteoParameter('windSpeed')>30)
+			return false;
+		if($this->getMeteoParameter('humidity')>60)
+			return false;
+		return $this->getMeteoParameter('precipIntensity');
+	}
 	private function getMeteoParameter($search){
 		$meteo=eqLogic::byId(str_replace('#','',config::byKey('meteo','arrosageAuto')));
 		if(is_object($meteo)){
@@ -206,6 +219,9 @@ class arrosageAuto extends eqLogic {
 						'windBearing' => array(
 							'id' =>'windBearing'
 							'nom' =>'Direction du Vent'),
+						'windSpeed' => array(
+							'id' =>'windSpeed'
+							'nom' =>'Vitesse du Vent'),
 						'humidity' => array(
 							'id' =>'humidity'
 							'nom' =>'Humidité'),
