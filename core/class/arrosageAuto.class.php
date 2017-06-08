@@ -8,7 +8,7 @@ class arrosageAuto extends eqLogic {
 		$return['state'] = 'ok';
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
-				$cron = cron::byClassAndFunction('arrosageAuto', 'pull'/*,array('id' => $zone->getId())*/);
+				$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $zone->getId()));
 				if (!is_object($cron)) 	{	
 					$return['state'] = 'nok';
 				}
@@ -37,7 +37,7 @@ class arrosageAuto extends eqLogic {
 	}
 	public static function deamon_stop() {	
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
-			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
+			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $zone->getId()));
 			if (is_object($cron)) 	
 				$cron->remove();
 		}
@@ -56,7 +56,7 @@ class arrosageAuto extends eqLogic {
 		}
 		$cmdColor='';
 		$Next='';
-		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('id' => $this->getId()));
+		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getId()));
 		if (is_object($cron)){
 			$_option=$cron->getOption();
 			$Next=$_option['action'].' : '.$cron->getNextRunDate();
@@ -102,7 +102,7 @@ class arrosageAuto extends eqLogic {
 		self::deamon_stop();
 	}	
 	public function postRemove() {
-		$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $this->getId()));
+		$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $this->getId()));
 		if (is_object($cron)) 	
 			$cron->remove();
 	}
@@ -113,7 +113,7 @@ class arrosageAuto extends eqLogic {
 				log::add('arrosageAuto','info','La zone est desactivé');
 				exit;
 			}
-      			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
+      			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $zone->getId()));
      		 	if (!is_object($cron)){
 				log::add('arrosageAuto','info','Le cron n\'existe pas');
 				exit;
@@ -177,7 +177,7 @@ class arrosageAuto extends eqLogic {
 		}
 	}
 	public function CreateCron($Schedule, $option=array()) {
-		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('id' => $this->getId()));
+		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getId()));
 		if (!is_object($cron)) {
 			$cron = new cron();
 			$cron->setClass('arrosageAuto');
@@ -185,7 +185,7 @@ class arrosageAuto extends eqLogic {
 			$cron->setEnable(1);
 			$cron->setDeamon(0);
 		}
-		$option['id']= $this->getId();
+		$option['Zone_id']= $this->getId();
 		$cron->setOption($option);
 		$cron->setSchedule($Schedule);
 		$cron->save();
@@ -222,7 +222,7 @@ class arrosageAuto extends eqLogic {
 		$DebitGiclers=$this->getConfiguration('DebitGicler');
 		
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
-			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
+			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $zone->getId()));
 			if (is_object($cron)){	
 				$Time=$zone->EvaluateTime();
 				$nextStart=$zone->NextStart();
@@ -292,7 +292,7 @@ class arrosageAutoCmd extends cmd {
 				break;
 				case 'released':
 					$Listener->event(false);
-					$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('id' => $this->getEqLogic()->getId()));
+					$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getEqLogic()->getId()));
 					if (is_object($cron)) 
 						$cron->remove();
 				break;
