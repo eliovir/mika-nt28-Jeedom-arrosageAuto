@@ -28,7 +28,7 @@ class arrosageAuto extends eqLogic {
 				$nextTime=$zone->NextStart();
 				if($nextTime != null){
 					$timestamp=$zone->CheckPompe($nextTime);
-					$cron=$zone->CreateCron(date('i H d m w Y',$timestamp)/*,array('action' => 'start')*/);
+					$cron=$zone->CreateCron(date('i H d m w Y',$timestamp));
 					log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
 				}
 			}
@@ -123,20 +123,23 @@ class arrosageAuto extends eqLogic {
 			}
 			foreach($zone->getConfiguration('action') as $cmd){
 				$zone->ExecuteAction($cmd,$_option['action']);
-				//if($_option['action'] == 'start'){
+				$Action = cache::byKey('arrosageAuto::Action::'.$zone->getId());
+				if($Action->getValue('') != 'start'){
 					$PowerTime=$zone->EvaluateTime();
 					log::add('arrosageAuto','info','Estimation du temps d\'activation '.$PowerTime);
 					$Schedule= $zone->TimeToShedule($PowerTime);
-					$zone->CreateCron($Schedule/*, array('action' => 'stop')*/);
-				/*}
-				if($_option['action'] == 'stop'){
+					$zone->CreateCron($Schedule);
+			      		cache::set('arrosageAuto::Action::'.$zone->getId(), 'start', 0);
+				}
+				else{
 					$nextTime=$zone->NextStart();
 					if($nextTime != null){
 						$timestamp=$zone->CheckPompe($nextTime);
-						$cron=$zone->CreateCron(date('i H d m w Y',$timestamp),array('action' => 'start');
-						log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+						$cron=$zone->CreateCron(date('i H d m w Y',$timestamp));
+						log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+			      			cache::set('arrosageAuto::Action::'.$zone->getId(), 'stop', 0);
 					}
-				}*/
+				}
 			}
 		}
 	}
@@ -175,8 +178,9 @@ class arrosageAuto extends eqLogic {
 			}
 		}
 	}
-	public function CreateCron($Schedule, $option=array()) {
-		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getId()));
+	public function CreateCron($Schedule) {
+		$option['Zone_id']= $this->getId();
+		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', $option);
 		if (!is_object($cron)) {
 			$cron = new cron();
 			$cron->setClass('arrosageAuto');
@@ -184,7 +188,6 @@ class arrosageAuto extends eqLogic {
 			$cron->setEnable(1);
 			$cron->setDeamon(0);
 		}
-		$option['Zone_id']= $this->getId();
 		$cron->setOption($option);
 		$cron->setSchedule($Schedule);
 		$cron->save();
@@ -285,7 +288,7 @@ class arrosageAutoCmd extends cmd {
 					$nextTime=$this->getEqLogic()->NextStart();
 					if($nextTime != null){
 						$timestamp=$this->getEqLogic()->CheckPompe($nextTime);
-						$cron=$this->getEqLogic()->CreateCron(date('i H d m w Y',$timestamp)/*,array('action' => 'start')*/);
+						$cron=$this->getEqLogic()->CreateCron(date('i H d m w Y',$timestamp));
 						log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
 					}
 				break;
