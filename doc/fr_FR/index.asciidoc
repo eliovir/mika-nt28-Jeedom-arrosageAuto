@@ -14,6 +14,13 @@ image::../images/Configuration.jpg[]
 Personaliser votre liste de type de plantation en y saisissant un nom et la quantité (L/m²) d'eau necéssaire a l'arrosage.
 Le debit de la pompe est utilé pour determiner si on peut lancer 2 zone en meme temps, ou reporter l'arrosage.
 
+== Condition météorologique
+
+Le plugin interdit l'arrosage si
+* Le vent est supperieur a 40km/h
+* La probabilité de pluis supperieur a 30%
+* L'humidité supperieur a 60%
+
 == Commandes et widgets
 Pour chaque zone d'arrosage créer, le plugin va créer des commandes.
 * L'activation et desactivation de la gestion
