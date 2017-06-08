@@ -29,7 +29,7 @@ class arrosageAuto extends eqLogic {
 				if($nextTime != null){
 					$timestamp=$zone->CheckPompe($nextTime);
 					$cron=$zone->CreateCron(date('i H d m w Y',$timestamp));
-					log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+				//	log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
 				}
 			}
 		}
@@ -55,11 +55,11 @@ class arrosageAuto extends eqLogic {
 		}
 		$cmdColor='';
 		$Next='';
-		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getId()));
+	/*	$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getId()));
 		if (is_object($cron)){
 			$_option=$cron->getOption();
 			$Next=$_option['action'].' : '.$cron->getNextRunDate();
-		}
+		}*/
 		$cmdColor = ($this->getPrimaryCategory() == '') ? '' : jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
 		$replace_eqLogic = array(
 			'#id#' => $this->getId(),
@@ -136,7 +136,7 @@ class arrosageAuto extends eqLogic {
 				if($nextTime != null){
 					$timestamp=$zone->CheckPompe($nextTime);
 					$cron=$zone->CreateCron(date('i H d m w Y',$timestamp));
-					log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+					//log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
 					cache::set('arrosageAuto::Action::'.$zone->getId(), 'stop', 0);
 				}
 			}
@@ -288,7 +288,7 @@ class arrosageAutoCmd extends cmd {
 					if($nextTime != null){
 						$timestamp=$this->getEqLogic()->CheckPompe($nextTime);
 						$cron=$this->getEqLogic()->CreateCron(date('i H d m w Y',$timestamp));
-						log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+						//log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
 					}
 				break;
 				case 'released':
