@@ -217,19 +217,19 @@ class arrosageAuto extends eqLogic {
 				case 'forecastio':
 					$plugin=array(
 						'windBearing' => array(
-							'id' =>'windBearing'
+							'id' =>'windBearing',
 							'nom' =>'Direction du Vent'),
 						'windSpeed' => array(
-							'id' =>'windSpeed'
+							'id' =>'windSpeed',
 							'nom' =>'Vitesse du Vent'),
 						'humidity' => array(
-							'id' =>'humidity'
+							'id' =>'humidity',
 							'nom' =>'Humidité'),
 						'precipIntensity' => array(
-							'id' =>'precipIntensity'
+							'id' =>'precipIntensity',
 							'nom' =>'Intensité de Précipitation'),
 						'precipProbability' => array(
-							'id' =>'precipProbability'
+							'id' =>'precipProbability',
 							'nom' =>'Probabilité de Précipitation')
 					);
 					return $meteo->getCmd(null,$plugin[$search]['id'])->execCmd();
