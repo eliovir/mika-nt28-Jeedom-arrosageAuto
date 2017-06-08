@@ -8,10 +8,9 @@ class arrosageAuto extends eqLogic {
 		$return['state'] = 'ok';
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
-				$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $zone->getId()));
-				if (!is_object($cron)) 	{	
+				$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $zone->getId()));
+				if (!is_object($cron)) 	
 					$return['state'] = 'nok';
-				}
 			}
 		}
 		return $return;
@@ -134,10 +133,10 @@ class arrosageAuto extends eqLogic {
 					$nextTime=$zone->NextStart();
 					if($nextTime != null){
 						$timestamp=$zone->CheckPompe($nextTime);
-						$cron=$zone->CreateCron(date('i H d m w Y',$timestamp)/*,array('action' => 'start')*/);
-						//log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
-					//}
-				//}
+						$cron=$zone->CreateCron(date('i H d m w Y',$timestamp),array('action' => 'start');
+						log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+					}
+				}*/
 			}
 		}
 	}
