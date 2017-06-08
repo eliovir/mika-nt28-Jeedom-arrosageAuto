@@ -107,7 +107,7 @@ class arrosageAuto extends eqLogic {
 			$cron->remove();
 	}
 	public static function pull($_option){
-		$zone=eqLogic::byId($_option['id']);
+		$zone=eqLogic::byId($_option['Zone_id']);
 		if(is_object($zone)){
 			if(!$zone->getCmd(null,'isArmed')->execCmd()){
 				log::add('arrosageAuto','info','La zone est desactivé');
