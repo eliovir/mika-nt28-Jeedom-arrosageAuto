@@ -122,16 +122,17 @@ class arrosageAuto extends eqLogic {
 				exit;
 			}
 			foreach($zone->getConfiguration('action') as $cmd){
-				$zone->ExecuteAction($cmd,$_option['action']);
 				$Action = cache::byKey('arrosageAuto::Action::'.$zone->getId());
 				if($Action->getValue('') != 'start'){
+					$zone->ExecuteAction($cmd,'start');
 					$PowerTime=$zone->EvaluateTime();
-					log::add('arrosageAuto','info','Estimation du temps d\'activation '.$PowerTime);
+					log::add('arrosageAuto','info','Estimation du temps d\'activation '.$PowerTime.'s');
 					$Schedule= $zone->TimeToShedule($PowerTime);
 					$zone->CreateCron($Schedule);
 			      		cache::set('arrosageAuto::Action::'.$zone->getId(), 'start', 0);
 				}
 				else{
+					$zone->ExecuteAction($cmd,'stop');
 					$nextTime=$zone->NextStart();
 					if($nextTime != null){
 						$timestamp=$zone->CheckPompe($nextTime);
@@ -187,8 +188,8 @@ class arrosageAuto extends eqLogic {
 			$cron->setFunction('pull');
 			$cron->setEnable(1);
 			$cron->setDeamon(0);
+			$cron->setOption($option);
 		}
-		$cron->setOption($option);
 		$cron->setSchedule($Schedule);
 		$cron->save();
 		return $cron;
