@@ -12,7 +12,6 @@
 			<div class="form-group">
 				<label class="col-lg-4 control-label">{{Météo}}</label>
 				<div class="col-lg-4">
-					<input type="text" class="configKey"  data-l1key="meteo" />
 					<div class="input-group">
 						<input class="configKey form-control input-sm" data-l1key="meteo"/>
 						<span class="input-group-btn">
@@ -55,7 +54,7 @@
 <script>
 	$("body").on('click', ".listEqLogicAction", function() {
 		var el = $(this).closest('.input-group').find('input');
-		jeedom.cmd.getSelectModal({eqLogic: {}}, function (result) {
+		jeedom.eqLogic.getSelectModal({}, function (result) {
 			el.value(result.human);
 		});
 	});
