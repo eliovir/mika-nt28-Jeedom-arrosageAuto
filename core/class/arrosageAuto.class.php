@@ -11,7 +11,6 @@ class arrosageAuto extends eqLogic {
 				$cron = cron::byClassAndFunction('arrosageAuto', 'pull'/*,array('id' => $zone->getId())*/);
 				if (!is_object($cron)) 	{	
 					$return['state'] = 'nok';
-					return $return;
 				}
 			}
 		}
@@ -19,19 +18,19 @@ class arrosageAuto extends eqLogic {
 	}
 	public static function deamon_start($_debug = false) {
 		log::remove('arrosageAuto');
-		self::deamon_stop();
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['launchable'] != 'ok') 
 			return;
 		if ($deamon_info['state'] == 'ok') 
 			return;
+		self::deamon_stop();
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
 				$nextTime=$zone->NextStart();
 				if($nextTime != null){
 					$timestamp=$zone->CheckPompe($nextTime);
 					$cron=$zone->CreateCron(date('i H d m w Y',$timestamp),array('action' => 'start'));
-					log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+					log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
 				}
 			}
 		}
