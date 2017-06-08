@@ -145,7 +145,7 @@ class arrosageAuto extends eqLogic {
 	public function TimeToShedule($Time) {
 		$Shedule = new DateTime();
 		$Shedule->add(new DateInterval('PT'.$Time.'S'));
-		return  $Shedule->format("i H d m *");
+		return  $Shedule->format("i H d m w Y");
 	} 
 	public function EvaluateTime() {
 		$DebitGicler=$this->getConfiguration('DebitGicler');
