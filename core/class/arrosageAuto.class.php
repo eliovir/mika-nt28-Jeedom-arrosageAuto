@@ -109,18 +109,24 @@ class arrosageAuto extends eqLogic {
 	public static function pull($_option){
 		$zone=eqLogic::byId($_option['id']);
 		if(is_object($zone)){
-			if(!$zone->getCmd(null,'isArmed')->execCmd())
+			if(!$zone->getCmd(null,'isArmed')->execCmd()){
+				log::add('arrosageAuto','info','La zone est desactivé');
 				exit;
+			}
       			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
-     		 	if (!is_object($cron))
+     		 	if (!is_object($cron)){
+				log::add('arrosageAuto','info','Le cron n\'existe pas');
 				exit;
-			if(!$zone->EvaluateCondition())
+			}
+			if(!$zone->EvaluateCondition()){
+				log::add('arrosageAuto','info','Les conditions ne sont pas evalué');
 				exit;
+			}
 			foreach($zone->getConfiguration('action') as $cmd){
 				$zone->ExecuteAction($cmd,$_option['action']);
 				if($_option['action'] == 'start'){
 					$PowerTime=$zone->EvaluateTime();
-					log::add('ChauffeEau','info','Estimation du temps d\'activation '.$PowerTime);
+					log::add('arrosageAuto','info','Estimation du temps d\'activation '.$PowerTime);
 					$Schedule= $zone->TimeToShedule($PowerTime);
 					$zone->CreateCron($Schedule, array('action' => 'stop'));
 				}
