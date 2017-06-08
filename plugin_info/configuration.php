@@ -10,6 +10,20 @@
 	<form>
 		<fieldset>
 			<div class="form-group">
+				<label class="col-lg-4 control-label">{{Météo}}</label>
+				<div class="col-lg-4">
+					<input type="text" class="configKey"  data-l1key="meteo" />
+					<div class="input-group">
+						<input class="configKey form-control input-sm" data-l1key="meteo"/>
+						<span class="input-group-btn">
+							<a class="btn btn-success btn-sm listEqLogicAction">
+								<i class="fa fa-list-alt"></i>
+							</a>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-lg-4 control-label">{{Debit de l'arriver d'eau}}</label>
 				<div class="col-lg-4">
 					<input type="text" class="configKey"  data-l1key="debit" />
@@ -39,6 +53,12 @@
 	</form>
 </div>
 <script>
+	$("body").on('click', ".listEqLogicAction", function() {
+		var el = $(this).closest('.input-group').find('input');
+		jeedom.cmd.getSelectModal({eqLogic: {}}, function (result) {
+			el.value(result.human);
+		});
+	});
 	$.ajax({
 		type: "POST",
 		timeout:8000, 
