@@ -57,7 +57,7 @@ class arrosageAuto extends eqLogic {
 		$Next='';
 		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getId()));
 		if (is_object($cron)){
-			$Action = cache::byKey('arrosageAuto::Action::'.$zone->getId());
+			$Action = cache::byKey('arrosageAuto::Action::'.$this->getId());
 			if($Action->getValue('') == 'start')
 				$Next='Fin : ';
 			else
