@@ -165,9 +165,9 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label" >
-									{{Debit d'arrosage}}
+									{{Debit d'arrosage (L/h)}}
 									<sup>
-										<i class="fa fa-question-circle tooltips" title="Saisir le debit des gicleurs" style="font-size : 1em;color:grey;"></i>
+										<i class="fa fa-question-circle tooltips" title="Saisir le debit d'arrosage (L/h)" style="font-size : 1em;color:grey;"></i>
 									</sup>
 								</label>
 								<div class="col-sm-5">
