@@ -5,21 +5,21 @@ Ce plugin a pour but de gérer facilement et automatiquement votre arrosage auto
 
 Une fois configuré :
 
-* le plugin gérera automatiquement l'arrosage selon le type de plantation et le debit de vos turbines ou goutte a goutte
+* le plugin gérera automatiquement l'arrosage selon le type de plantation et le débit de vos turbines ou goutte à goutte
 
 == Configuration
 
 image::../images/Configuration.jpg[]
 
-Personaliser votre liste de type de plantation en y saisissant un nom et la quantité (L/m²) d'eau necéssaire a l'arrosage.
-Le debit de la pompe est utilé pour determiner si on peut lancer 2 zone en meme temps, ou reporter l'arrosage.
+Personaliser votre liste de type de plantation en y saisissant un nom et la quantité (L/m²) d'eau necéssaire à l'arrosage.
+Le débit de la pompe est utilisé pour determiner si on peut lancer 2 zones en meme temps, ou reporter l'arrosage.
 
 == Condition météorologique
 
 Le plugin interdit l'arrosage si
-* Le vent est supperieur a 40km/h
-* La probabilité de pluis supperieur a 30%
-* L'humidité supperieur a 60%
+* Le vent est supérieur à 40km/h
+* La probabilité de pluis supérieur à 30%
+* L'humidité supérieur à 60%
 
 == Commandes et widgets
 Pour chaque zone d'arrosage créer, le plugin va créer des commandes.
@@ -38,12 +38,12 @@ Mainenant nous pouvons configurer notre zone d'arrosage
 
 image::../images/General.jpg[]
 
-* Nom : le nom a déjà été paramétré mais vous avez la possibilité de le changer
+* Nom : le nom à déjà été paramétré mais vous avez la possibilité de le changer
 * Objet parent : ce paramètre permet d’ajouter l’équipement dans un objet Jeedom
 * Catégorie : déclare l’équipement dans une catégorie
 * Visible : permet de rendre l’équipement visible dans le Dashboard
 * Activer : permet d’activer l’équipement
-* Type d'arrosage : Sélectioner le type de plantation a arroser
+* Type d'arrosage : Sélectioner le type de plantation à arroser
 * Debit d'arrosage : Saisir le debit des turbines ou goutte à goutte
 
 === Programation
@@ -51,7 +51,7 @@ image::../images/General.jpg[]
 image::../images/Programation.jpg[]
 
 Nous pouvons pour chaque zone determiner plusieur crenaux d'arrosage.
-La quantité total d'arrosage defini sera repartie entre ces zone.
+La quantité total d'arrosage defini sera repartie entre ces zones.
 
 === Conditions
 
@@ -65,4 +65,4 @@ Pour vous aider a la configuration des conditions, un editeur est ajouté.
 
 image::../images/Actions.jpg[]
 
-Choisissez les actions à mener sans oublier de configurer leur valeurs et a l'etape auquel on veut qu'elle s'execute
+Choisissez les actions à mener sans oublier de configurer leur valeurs et l'étape à laquelle on veut qu'elle s'execute
