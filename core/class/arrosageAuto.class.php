@@ -57,8 +57,12 @@ class arrosageAuto extends eqLogic {
 		$Next='';
 		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getId()));
 		if (is_object($cron)){
-			$_option=$cron->getOption();
-			$Next=$_option['action'].' : '.$cron->getNextRunDate();
+			$Action = cache::byKey('arrosageAuto::Action::'.$zone->getId());
+			if($Action->getValue('') == 'start')
+				$Next='Fin : ';
+			else
+				$Next='Début : ';
+			$Next.=$cron->getNextRunDate();
 		}
 		$cmdColor = ($this->getPrimaryCategory() == '') ? '' : jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
 		$replace_eqLogic = array(
