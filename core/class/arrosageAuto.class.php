@@ -206,10 +206,13 @@ class arrosageAuto extends eqLogic {
 		return $cron;
 	}
 	private function CheckMeteo(){
+		log::add('arrosageAuto','debug',$this->getHumanName().' : Probabilité de précipitation '.$this->getMeteoParameter('precipProbability').' > 40 ?');
 		if($this->getMeteoParameter('precipProbability')>40)
 			return false;
+		log::add('arrosageAuto','debug',$this->getHumanName().' : Probabilité de précipitation '.$this->getMeteoParameter('windSpeed').' > 30 ?');
 		if($this->getMeteoParameter('windSpeed')>30)
 			return false;
+		log::add('arrosageAuto','debug',$this->getHumanName().' : Probabilité de précipitation '.$this->getMeteoParameter('humidity').' > 60?');
 		if($this->getMeteoParameter('humidity')>60)
 			return false;
 		return $this->getMeteoParameter('precipIntensity');
