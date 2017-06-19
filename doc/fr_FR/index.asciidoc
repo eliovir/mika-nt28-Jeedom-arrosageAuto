@@ -12,13 +12,13 @@ Une fois configuré :
 image::../images/Configuration.jpg[]
 
 Personaliser votre liste de type de plantation en y saisissant un nom et la quantité (L/m²) d'eau necéssaire à l'arrosage.
-Le débit de la pompe est utilisé pour determiner si on peut lancer 2 zones en meme temps, ou reporter l'arrosage.
+Le débit de la pompe est utilisé pour determiner si on peut lancer 2 zones en même temps, ou reporter l'arrosage.
 
 == Condition météorologique
 
 Le plugin interdit l'arrosage si
 * Le vent est supérieur à 40km/h
-* La probabilité de pluis supérieur à 30%
+* La probabilité de pluie supérieur à 30%
 * L'humidité supérieur à 60%
 
 == Commandes et widgets
@@ -32,7 +32,7 @@ image::../images/arrosageAuto_screenshot_Widget.jpg[]
 image::../images/MesZones.jpg[]
 
 Comme pour tous les plugins, nous allons commencer par créer une zone avec le bouton Ajouter. 
-Mainenant nous pouvons configurer notre zone d'arrosage
+Maintenant nous pouvons configurer notre zone d'arrosage
 
 === Configuration générale Jeedom
 
@@ -63,7 +63,7 @@ image::../images/Conditions.jpg[]
 
 Pour chaque zone, nous pouvons choisir des conditions 
 Toutes les conditions doivent être respectées pour que les actions soient executées
-Pour vous aider a la configuration des conditions, un editeur est ajouté.
+Pour vous aider à la configuration des conditions, un editeur est ajouté.
 
 === Actions
 
