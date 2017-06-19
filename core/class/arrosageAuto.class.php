@@ -220,6 +220,7 @@ class arrosageAuto extends eqLogic {
 	private function getMeteoParameter($search){
 		$meteo=eqLogic::byId(str_replace('#','',config::byKey('meteo','arrosageAuto')));
 		if(is_object($meteo)){
+			log::add('arrosageAuto','debug',$this->getHumanName().'L\'objet meteo a ete trouvé');
 			switch($meteo->getEqType_name()){
 				case 'forecastio':
 					$plugin=array(
@@ -239,7 +240,11 @@ class arrosageAuto extends eqLogic {
 							'id' =>'precipProbability',
 							'nom' =>'Probabilité de Précipitation')
 					);
-					return $meteo->getCmd(null,$plugin[$search]['id'])->execCmd();
+					$logicalId=$plugin[$search]['id'];
+					log::add('arrosageAuto','debug',$this->getHumanName().'L\'objet '.$logicalId.' a ete trouvé');
+					$objet=$meteo->getCmd(null,$logicalId);
+					if(is_object($objet))
+						return $objet->execCmd();
 				default:
 					return false;
 			}
