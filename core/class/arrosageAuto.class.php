@@ -206,14 +206,14 @@ class arrosageAuto extends eqLogic {
 		return $cron;
 	}
 	private function CheckMeteo(){
-		log::add('arrosageAuto','debug',$this->getHumanName().' : Probabilité de précipitation '.$this->getMeteoParameter('precipProbability').' > 40 ?');
-		if($this->getMeteoParameter('precipProbability')>40)
+		log::add('arrosageAuto','debug',$this->getHumanName().' : Probabilité de précipitation '.$this->getMeteoParameter('precipProbability').' >'. config::byKey('precipProbability','arrosageAuto').' ?');
+		if($this->getMeteoParameter('precipProbability')>config::byKey('precipProbability','arrosageAuto'))
 			return false;
-		log::add('arrosageAuto','debug',$this->getHumanName().' : Probabilité de précipitation '.$this->getMeteoParameter('windSpeed').' > 30 ?');
-		if($this->getMeteoParameter('windSpeed')>30)
+		log::add('arrosageAuto','debug',$this->getHumanName().' : Vitesse du vent '.$this->getMeteoParameter('windSpeed').' > '.config::byKey('windSpeed','arrosageAuto').' ?');
+		if($this->getMeteoParameter('windSpeed')>config::byKey('windSpeed','arrosageAuto'))
 			return false;
-		log::add('arrosageAuto','debug',$this->getHumanName().' : Probabilité de précipitation '.$this->getMeteoParameter('humidity').' > 60?');
-		if($this->getMeteoParameter('humidity')>60)
+		log::add('arrosageAuto','debug',$this->getHumanName().' :Humidité '.$this->getMeteoParameter('humidity').' > '.config::byKey('humidity','arrosageAuto').'?');
+		if($this->getMeteoParameter('humidity')>config::byKey('humidity','arrosageAuto'))
 			return false;
 		return $this->getMeteoParameter('precipIntensity');
 	}
