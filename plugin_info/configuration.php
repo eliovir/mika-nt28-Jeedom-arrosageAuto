@@ -6,68 +6,70 @@
 		die();
 	}
 ?>
-<div class="col-sm-6">
-	<form>
-		<fieldset>
-			<div class="form-group">
-				<label class="col-lg-4 control-label">{{Météo}}</label>
-				<div class="col-lg-4">
-					<div class="input-group">
-						<input class="configKey form-control input-sm" data-l1key="meteo"/>
-						<span class="input-group-btn">
-							<a class="btn btn-success btn-sm listEqLogicAction">
-								<i class="fa fa-list-alt"></i>
-							</a>
-						</span>
+<div class="row">
+	<div class="col-sm-6">
+		<form>
+			<fieldset>
+				<div class="form-group">
+					<label class="col-lg-4 control-label">{{Météo}}</label>
+					<div class="col-lg-4">
+						<div class="input-group">
+							<input class="configKey form-control input-sm" data-l1key="meteo"/>
+							<span class="input-group-btn">
+								<a class="btn btn-success btn-sm listEqLogicAction">
+									<i class="fa fa-list-alt"></i>
+								</a>
+							</span>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-lg-4 control-label">{{Maximum de la probabilité de précipitation (%)}}</label>
-				<div class="col-lg-4">
-					<input type="text" class="configKey"  data-l1key="precipProbability" />
+				<div class="form-group">
+					<label class="col-lg-4 control-label">{{Maximum de la probabilité de précipitation (%)}}</label>
+					<div class="col-lg-4">
+						<input type="text" class="configKey"  data-l1key="precipProbability" />
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-lg-4 control-label">{{Vitesse du vent maximum (km/h)}}</label>
-				<div class="col-lg-4">
-					<input type="text" class="configKey"  data-l1key="windSpeed" />
+				<div class="form-group">
+					<label class="col-lg-4 control-label">{{Vitesse du vent maximum (km/h)}}</label>
+					<div class="col-lg-4">
+						<input type="text" class="configKey"  data-l1key="windSpeed" />
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-lg-4 control-label">{{Humidité maximum (%)}}</label>
-				<div class="col-lg-4">
-					<input type="text" class="configKey"  data-l1key="humidity" />
+				<div class="form-group">
+					<label class="col-lg-4 control-label">{{Humidité maximum (%)}}</label>
+					<div class="col-lg-4">
+						<input type="text" class="configKey"  data-l1key="humidity" />
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-lg-4 control-label">{{Debit de l'arriver d'eau}}</label>
-				<div class="col-lg-4">
-					<input type="text" class="configKey"  data-l1key="debit" />
+				<div class="form-group">
+					<label class="col-lg-4 control-label">{{Debit de l'arriver d'eau}}</label>
+					<div class="col-lg-4">
+						<input type="text" class="configKey"  data-l1key="debit" />
+					</div>
 				</div>
-			</div>
-		</fieldset>
-	</form>
-</div>
- <div class="col-sm-6">
-	<legend>Type de plantation
-		<a class="btn btn-success btn-xs pull-right cursor" id="bt_AddTypePlantation"><i class="fa fa-check"></i> {{Ajouter}}</a>
-	</legend>
-	<form>
-		<fieldset>
-			<div class="form-group">
-				<table id="table_type_plantation" class="table table-bordered table-condensed tablesorter">
-					<thead>
-						<tr>
-							<th>{{Type de plantation}}</th>
-							<th>{{Volume / m²}}</th>
-						</tr>
-					</thead>
-					<tbody></tbody>
-				</table>
-			</div> 
-		</fieldset>
-	</form>
+			</fieldset>
+		</form>
+	</div>
+	 <div class="col-sm-6">
+		<legend>Type de plantation
+			<a class="btn btn-success btn-xs pull-right cursor" id="bt_AddTypePlantation"><i class="fa fa-check"></i> {{Ajouter}}</a>
+		</legend>
+		<form>
+			<fieldset>
+				<div class="form-group">
+					<table id="table_type_plantation" class="table table-bordered table-condensed tablesorter">
+						<thead>
+							<tr>
+								<th>{{Type de plantation}}</th>
+								<th>{{Volume / m²}}</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div> 
+			</fieldset>
+		</form>
+	</div>
 </div>
 <script>
 	$("body").on('click', ".listEqLogicAction", function() {
