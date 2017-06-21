@@ -23,6 +23,24 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="col-lg-4 control-label">{{Maximum de la probabilité de précipitation (%)}}</label>
+				<div class="col-lg-4">
+					<input type="text" class="configKey"  data-l1key="precipProbability" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-lg-4 control-label">{{Vitesse du vent maximum (km/h)}}</label>
+				<div class="col-lg-4">
+					<input type="text" class="configKey"  data-l1key="windSpeed" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-lg-4 control-label">{{Humidité maximum (%)}}</label>
+				<div class="col-lg-4">
+					<input type="text" class="configKey"  data-l1key="humidity" />
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-lg-4 control-label">{{Debit de l'arriver d'eau}}</label>
 				<div class="col-lg-4">
 					<input type="text" class="configKey"  data-l1key="debit" />
