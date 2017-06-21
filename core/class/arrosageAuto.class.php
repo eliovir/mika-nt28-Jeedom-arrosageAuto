@@ -218,9 +218,9 @@ class arrosageAuto extends eqLogic {
 		return $this->getMeteoParameter('precipIntensity');
 	}
 	private function getMeteoParameter($search){
-      	$meteo=config::byKey('meteo','arrosageAuto');
-      	$meteo=str_replace('#','',$meteo);
-      	$meteo=str_replace('eqLogic','',$meteo);
+      		$meteo=config::byKey('meteo','arrosageAuto');
+      		$meteo=str_replace('#','',$meteo);
+      		$meteo=str_replace('eqLogic','',$meteo);
 		$meteo=eqLogic::byId($meteo);
 		if(is_object($meteo)){
 			switch($meteo->getEqType_name()){
@@ -247,10 +247,10 @@ class arrosageAuto extends eqLogic {
 					if(is_object($objet))
 						return $objet->execCmd();
 				default:
-					return false;
+					return 0;
 			}
 		}
-		return false;
+		return 0;
 	}
 	private function EvaluateCondition(){
 		foreach($this->getConfiguration('condition') as $condition){	
