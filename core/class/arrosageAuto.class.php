@@ -29,7 +29,7 @@ class arrosageAuto extends eqLogic {
 				if($nextTime != null){
 					$timestamp=$zone->CheckPompe($nextTime);
 					$cron=$zone->CreateCron(date('i H d m w Y',$timestamp));
-					log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+					//log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
 				}
 			}
 		}
@@ -144,7 +144,7 @@ class arrosageAuto extends eqLogic {
 				if($nextTime != null){
 					$timestamp=$zone->CheckPompe($nextTime);
 					$cron=$zone->CreateCron(date('i H d m w Y',$timestamp));
-					log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+					//log::add('arrosageAuto','info',$zone->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
 					cache::set('arrosageAuto::Action::'.$zone->getId(), 'stop', 0);
 				}
 			}
@@ -346,7 +346,7 @@ class arrosageAutoCmd extends cmd {
 					if($nextTime != null){
 						$timestamp=$this->getEqLogic()->CheckPompe($nextTime);
 						$cron=$this->getEqLogic()->CreateCron(date('i H d m w Y',$timestamp));
-						log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
+						//log::add('arrosageAuto','info',$this->getHumanName().' : Création du prochain arrosage '. $cron->getNextRunDate());
 					}
 				break;
 				case 'released':
