@@ -242,13 +242,27 @@ class arrosageAuto extends eqLogic {
 							'id' =>'precipProbability',
 							'nom' =>'Probabilité de Précipitation')
 					);
-					$logicalId=$plugin[$search]['id'];
-					$objet=$meteo->getCmd(null,$logicalId);
-					if(is_object($objet))
-						return $objet->execCmd();
+				break;
+				case 'weather':
+					$plugin=array(
+						'windBearing' => array(
+							'id' =>'wind_direction',
+							'nom' =>'Direction du Vent'),
+						'windSpeed' => array(
+							'id' =>'wind_speed',
+							'nom' =>'Vitesse du Vent'),
+						'humidity' => array(
+							'id' =>'humidity',
+							'nom' =>'Humidité')
+					);
+				break;
 				default:
 					return 0;
 			}
+			$logicalId=$plugin[$search]['id'];
+			$objet=$meteo->getCmd(null,$logicalId);
+			if(is_object($objet))
+				return $objet->execCmd();
 		}
 		return 0;
 	}
