@@ -98,15 +98,24 @@
 			}
 			if (data.result['configuration']!=''){
 				var TypePlantation= new Object(); 
-				$.each(data.result['configuration'], function(param, id ){
-					$.each(id, function(TypePlantationkey,value ){
-						if (typeof(TypePlantation[TypePlantationkey]) === 'undefined')
-							TypePlantation[TypePlantationkey]= new Object();
-						if (typeof(TypePlantation[TypePlantationkey]['configuration']) === 'undefined')
-							TypePlantation[TypePlantationkey]['configuration']= new Object();
-						TypePlantation[TypePlantationkey]['configuration'][param]=value;
-					});
-				});
+				switch(typeof(id)){
+					case 'object':
+						$.each(id, function(TypePlantationkey,value ){
+							if (typeof(TypePlantation[TypePlantationkey]) === 'undefined')
+								TypePlantation[TypePlantationkey]= new Object();
+							if (typeof(TypePlantation[TypePlantationkey]['configuration']) === 'undefined')
+								TypePlantation[TypePlantationkey]['configuration']= new Object();
+							TypePlantation[TypePlantationkey]['configuration'][param]=value;
+						});
+					break;
+					case 'string':
+						if (typeof(TypePlantation[0]) === 'undefined')
+							TypePlantation[0]= new Object();
+						if (typeof(TypePlantation[0]['configuration']) === 'undefined')
+							TypePlantation[0]['configuration']= new Object();
+						TypePlantation[0]['configuration'][param]=id;
+					break;
+				}
 				$.each(TypePlantation, function(id,data){
 					AddTypePlantation($('#table_type_plantation tbody'),data);	
 				});
@@ -116,7 +125,7 @@
 	$('#bt_AddTypePlantation').on('click',function(){
 		AddTypePlantation($('#table_type_plantation tbody'),'');
 	});
-	$('#bt_RemoveTypePlantation').on('click',function(){
+	$('body').on('click','#bt_RemoveTypePlantation',function(){
 		$(this).closest('tr').remove();
 	});
 	function AddTypePlantation(_el,data){
