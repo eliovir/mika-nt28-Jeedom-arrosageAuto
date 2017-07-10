@@ -312,9 +312,11 @@ class arrosageAuto extends eqLogic {
 	private function CalculPluviometrie(){
 		switch($this->getConfiguration('programation')){
 			case'gouteAgoute':
-				$Pluviometrie =  (10 000 * $this->getConfiguration('DebitGoutteur') )/($this->getConfiguration('EspacementLateral')); *$this->getConfiguration('EspacemenGoutteurs'));
+				$Debit = 10000 * $this->getConfiguration('DebitGoutteur');
+            			$Espacement = $this->getConfiguration('EspacementLateral') * $this->getConfiguration('EspacemenGoutteurs');
+           			$Pluviometrie = $Debit / $Espacement;
 				log::add('arrosageAuto','info',$this->getHumanName().' : Pluviometrie: '.$Pluviometrie);
-			return $Pluviometrie
+			return $Pluviometrie;
 			case'turbine':
 			return 15;
 	 }
