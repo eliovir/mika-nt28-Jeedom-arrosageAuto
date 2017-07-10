@@ -200,6 +200,8 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 									</div-->
 								</fieldset>
 							</form>
+						</div>	
+					</div>	
 				</div>		
 				<div role="tabpanel" class="tab-pane" id="programationtab">
 					<form class="form-horizontal">
