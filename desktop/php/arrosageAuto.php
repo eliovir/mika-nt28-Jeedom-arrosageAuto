@@ -82,100 +82,126 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 		</ul>
 			<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
 				<div role="tabpanel" class="tab-pane active" id="eqlogictab">
-					<form class="form-horizontal">
-						<fieldset>
-							<div class="form-group ">
-								<label class="col-sm-2 control-label">{{Nom de la Zone}}
-									<sup>
-										<i class="fa fa-question-circle tooltips" title="Indiquer le nom de votre zone" style="font-size : 1em;color:grey;"></i>
-									</sup>
-								</label>
-								<div class="col-sm-5">
-									<input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
-									<input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom du groupe de zones}}"/>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label" >{{Objet parent}}
-									<sup>
-										<i class="fa fa-question-circle tooltips" title="Indiquer l'objet dans lequel le widget de cette zone apparaîtra sur le Dashboard" style="font-size : 1em;color:grey;"></i>
-									</sup>
-								</label>
-								<div class="col-sm-5">
-									<select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
-										<option value="">{{Aucun}}</option>
-										<?php
-											foreach (object::all() as $object) 
-												echo '<option value="' . $object->getId() . '">' . $object->getName() . '</option>';
-										?>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-md-2 control-label">
-									{{Catégorie}}
-									<sup>
-										<i class="fa fa-question-circle tooltips" title="Choisissez une catégorie
-Cette information n'est pas obigatoire mais peut être utile pour filtrer les widgets" style="font-size : 1em;color:grey;"></i>
-									</sup>
-								</label>
-								<div class="col-md-8">
-									<?php
-									foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
-										echo '<label class="checkbox-inline">';
-										echo '<input type="checkbox" class="eqLogicAttr" data-l1key="category" data-l2key="' . $key . '" />' . $value['name'];
-										echo '</label>';
-									}
-									?>
-
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label" >
-									{{Etat du widget}}
-									<sup>
-										<i class="fa fa-question-circle tooltips" title="Choisissez les options de visibilité et d'activation
-Si l'équipement n'est pas activé, il ne sera pas utilisable dans Jeedom ni visible sur le Dashboard
-Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font-size : 1em;color:grey;"></i>
-									</sup>
-								</label>
-								<div class="col-sm-5">
-									<label>{{Activer}}</label>
-									<input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="isEnable" checked/>
-									<label>{{Visible}}</label>
-									<input type="checkbox" class="eqLogicAttr" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label" >
-									{{Type d'arrosage}}
-									<sup>
-										<i class="fa fa-question-circle tooltips" title="Choisissez les type d'arrosage pour cette zone" style="font-size : 1em;color:grey;"></i>
-									</sup>
-								</label>
-								<div class="col-sm-5">
-									<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TypeArrosage" >
-										<?php
-											foreach(config::byKey('configuration','arrosageAuto')['type'] as $type){
-												echo '<option value="'.$type.'">'.$type.'</option>';
+					<div class="row">
+						<div class="col-sm-6">
+							<form class="form-horizontal">
+								<fieldset>
+									<div class="form-group ">
+										<label class="col-sm-2 control-label">{{Nom de la Zone}}
+											<sup>
+												<i class="fa fa-question-circle tooltips" title="Indiquer le nom de votre zone" style="font-size : 1em;color:grey;"></i>
+											</sup>
+										</label>
+										<div class="col-sm-5">
+											<input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
+											<input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom du groupe de zones}}"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label" >{{Objet parent}}
+											<sup>
+												<i class="fa fa-question-circle tooltips" title="Indiquer l'objet dans lequel le widget de cette zone apparaîtra sur le Dashboard" style="font-size : 1em;color:grey;"></i>
+											</sup>
+										</label>
+										<div class="col-sm-5">
+											<select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
+												<option value="">{{Aucun}}</option>
+												<?php
+													foreach (object::all() as $object) 
+														echo '<option value="' . $object->getId() . '">' . $object->getName() . '</option>';
+												?>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">
+											{{Catégorie}}
+											<sup>
+												<i class="fa fa-question-circle tooltips" title="Choisissez une catégorie
+		Cette information n'est pas obigatoire mais peut être utile pour filtrer les widgets" style="font-size : 1em;color:grey;"></i>
+											</sup>
+										</label>
+										<div class="col-md-8">
+											<?php
+											foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
+												echo '<label class="checkbox-inline">';
+												echo '<input type="checkbox" class="eqLogicAttr" data-l1key="category" data-l2key="' . $key . '" />' . $value['name'];
+												echo '</label>';
 											}
-										?>
-									</select>	
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label" >
-									{{Pluviometrie des arroseur (mm/h)}}
-									<sup>
-										<i class="fa fa-question-circle tooltips" title="Saisir la pluviometrie d'arrosage (mm/h)" style="font-size : 1em;color:grey;"></i>
-									</sup>
-								</label>
-								<div class="col-sm-5">
-									<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DebitGicler" />	
-								</div>
-							</div>
-						</fieldset>
-					</form>
+											?>
+
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label" >
+											{{Etat du widget}}
+											<sup>
+												<i class="fa fa-question-circle tooltips" title="Choisissez les options de visibilité et d'activation
+		Si l'équipement n'est pas activé, il ne sera pas utilisable dans Jeedom ni visible sur le Dashboard
+		Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font-size : 1em;color:grey;"></i>
+											</sup>
+										</label>
+										<div class="col-sm-5">
+											<label>{{Activer}}</label>
+											<input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="isEnable" checked/>
+											<label>{{Visible}}</label>
+											<input type="checkbox" class="eqLogicAttr" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label" >
+											{{Type d'arrosage}}
+											<sup>
+												<i class="fa fa-question-circle tooltips" title="Choisissez les type d'arrosage pour cette zone" style="font-size : 1em;color:grey;"></i>
+											</sup>
+										</label>
+										<div class="col-sm-5">
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TypeArrosage" >
+												<?php
+													foreach(config::byKey('configuration','arrosageAuto')['type'] as $type){
+														echo '<option value="'.$type.'">'.$type.'</option>';
+													}
+												?>
+											</select>	
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>	
+						<div class="col-sm-6">
+							<form class="form-horizontal">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-sm-2 control-label" >
+											{{Type d'arroseur}}
+											<sup>
+												<i class="fa fa-question-circle tooltips" title="Choisir le type d'arroseur" style="font-size : 1em;color:grey;"></i>
+											</sup>
+										</label>
+										<div class="col-sm-5">
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TypeGicler" >	
+												<option value="gouteAgoute">{{Goutes à goutes}}</option>
+												<option value="turbine">{{Turibine / Tuyere}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group TypeCalcul">
+									</div>
+									<!--div class="form-group">
+										<label class="col-sm-2 control-label" >
+											{{Pluviometrie des arroseur (mm/h)}}
+											<sup>
+												<i class="fa fa-question-circle tooltips" title="Saisir la pluviometrie d'arrosage (mm/h)" style="font-size : 1em;color:grey;"></i>
+											</sup>
+										</label>
+										<div class="col-sm-5">
+											<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DebitGicler" />	
+										</div>
+									</div-->
+								</fieldset>
+							</form>
+						</div>	
+					</div>	
 				</div>		
 				<div role="tabpanel" class="tab-pane" id="programationtab">
 					<form class="form-horizontal">
