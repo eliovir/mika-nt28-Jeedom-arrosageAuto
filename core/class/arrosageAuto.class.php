@@ -224,6 +224,7 @@ class arrosageAuto extends eqLogic {
 		$meteo=eqLogic::byId($meteo);
 		if(is_object($meteo)){
 			switch($meteo->getEqType_name()){
+				case 'darksky':
 				case 'forecastio':
 					$plugin=array(
 						'windBearing' => array(
