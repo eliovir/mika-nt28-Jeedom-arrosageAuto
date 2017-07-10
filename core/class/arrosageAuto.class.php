@@ -156,7 +156,6 @@ class arrosageAuto extends eqLogic {
 		return  $Shedule->format("i H d m w Y");
 	} 
 	private function EvaluateTime($plui=0) {
-		$DebitGicler=$this->getConfiguration('DebitGicler');
 		$TypeArrosage=config::byKey('configuration','arrosageAuto');
 		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
 		$QtsEau=$TypeArrosage['volume'][$key]; 
@@ -167,7 +166,7 @@ class arrosageAuto extends eqLogic {
 				$NbProgramation++;
 		}
 		$QtsEau=$QtsEau/$NbProgramation;
-		return round(($QtsEau-$plui)*3600/$DebitGicler);
+		return round(($QtsEau-$plui)*3600/$this->CalculPluviometrie());
 	} 
 	private function ExecuteAction($Type) {	
 		foreach($this->getConfiguration('action') as $cmd){
@@ -294,7 +293,7 @@ class arrosageAuto extends eqLogic {
 		return true;
 	}
 	private function CheckPompe($nextTime){
-		$DebitGiclers=$this->getConfiguration('DebitGicler');		
+		/*$DebitGiclers=$this->getConfiguration('DebitGicler');		
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $zone->getId()));
 			if (is_object($cron)){	
@@ -307,9 +306,19 @@ class arrosageAuto extends eqLogic {
 		}
 		$DebitPmp=config::byKey('debit','arrosageAuto');
 		if($DebitPmp<$DebitGiclers)
-			return false;
+			return false;*/
 		return $nextTime;
 	}
+	private function CalculPluviometrie(){
+		switch($this->getConfiguration('programation')){
+			case'gouteAgoute':
+				$Pluviometrie =  (10 000 * $this->getConfiguration('DebitGoutteur') )/($this->getConfiguration('EspacementLateral')); *$this->getConfiguration('EspacemenGoutteurs'));
+				log::add('arrosageAuto','info',$this->getHumanName().' : Pluviometrie: '.$Pluviometrie);
+			return $Pluviometrie
+			case'turbine':
+			return 15;
+	 }
+}
 	private function NextStart(){
 		$nextTime=null;
 		foreach($this->getConfiguration('programation') as $ConigSchedule){
