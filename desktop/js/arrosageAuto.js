@@ -2,7 +2,35 @@ $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder:
 $("#table_Prorgamationtab").sortable({axis: "y", cursor: "move", items: ".ProgramationGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $("#table_condition").sortable({axis: "y", cursor: "move", items: ".ConditionGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $("#table_action").sortable({axis: "y", cursor: "move", items: ".ActionGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
-
+$('body').on('click','.eqLogicAttr[data-l1key=configuration][data-l2key=TypeGicler]',function(){
+	var div=$(this).closest('fieldset').find('.TypeCalcul');
+	div.html('');
+	switch($(this).val()){
+		case'gouteAgoute':
+			div.append($('<div class="form-group">')
+				.append($('<label class="col-sm-2 control-label" >')
+					.text('{{Débit du goutteur (l/h)}}')
+					.append($('<sup>')
+						.append($('<i class="fa fa-question-circle tooltips" title="Saisir le Débit du goutteur (l/h)" style="font-size : 1em;color:grey;">'))))
+				.append($('<div class="col-sm-5">')
+					.append($('<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DebitGoutteur" >'))));
+			div.append($('<div class="form-group">')
+				.append($('<label class="col-sm-2 control-label" >')
+					.text('{{Espacement latéral (cm)}}')
+					.append($('<sup>')
+						.append($('<i class="fa fa-question-circle tooltips" title="Saisir l\'espacement latéral (cm)" style="font-size : 1em;color:grey;">'))))
+				.append($('<div class="col-sm-5">')
+					.append($('<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EspacementLateral" >')))); 
+			div.append($('<div class="form-group">')
+				.append($('<label class="col-sm-2 control-label" >')
+					.text('{{Espacement des goutteurs (cm)}}')
+					.append($('<sup>')
+						.append($('<i class="fa fa-question-circle tooltips" title="Saisir l\'espacement des goutteurs (cm)" style="font-size : 1em;color:grey;">'))))
+				.append($('<div class="col-sm-5">')
+					.append($('<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EspacemenGoutteurs" >'))));
+		break;
+	 }
+});
 function saveEqLogic(_eqLogic) {
 	_eqLogic.configuration.condition=new Object();
 	_eqLogic.configuration.action=new Object();
