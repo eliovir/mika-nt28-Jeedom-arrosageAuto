@@ -161,7 +161,7 @@ class arrosageAuto extends eqLogic {
 		$QtsEau=$TypeArrosage['volume'][$key];
 		//Ajouter la verification du nombre de start dans la journée pour repartir la quantité
 		$NbProgramation=0;
-		foreach($this->getConfiguration('programmation') as $programmation){
+		foreach($this->getConfiguration('programation') as $programmation){
 			if($programmation[date('w')])
 				$NbProgramation++;
 		}
@@ -310,7 +310,7 @@ class arrosageAuto extends eqLogic {
 		return $nextTime;
 	}
 	private function CalculPluviometrie(){
-		switch($this->getConfiguration('programmation')){
+		switch($this->getConfiguration('programation')){
 			case'gouteAgoute':
 				$Debit = 10000 * $this->getConfiguration('DebitGoutteur');
             			$Espacement = $this->getConfiguration('EspacementLateral') * $this->getConfiguration('EspacemenGoutteurs');
@@ -323,7 +323,7 @@ class arrosageAuto extends eqLogic {
 }
 	private function NextStart(){
 		$nextTime=null;
-		foreach($this->getConfiguration('programmation') as $ConigSchedule){
+		foreach($this->getConfiguration('programation') as $ConigSchedule){
 			$offset=0;
 			for($day=0;$day<7;$day++){
 				if($ConigSchedule[date('w')+$day]){
