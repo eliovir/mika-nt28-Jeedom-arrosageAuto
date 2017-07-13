@@ -203,7 +203,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 						</div>
 					</div>
 				</div>
-				<div role="tabpanel" class="tab-pane" id="programmationtab">
+				<div role="tabpanel" class="tab-pane" id="programationtab">
 					<form class="form-horizontal">
 						<fieldset>
 							<legend>{{Les programmations de la zone :}}
