@@ -9,7 +9,7 @@ class arrosageAuto extends eqLogic {
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
 				$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $zone->getId()));
-				if (!is_object($cron)) 	
+				if (!is_object($cron))
 					$return['state'] = 'nok';
 			}
 		}
@@ -18,9 +18,9 @@ class arrosageAuto extends eqLogic {
 	public static function deamon_start($_debug = false) {
 		log::remove('arrosageAuto');
 		$deamon_info = self::deamon_info();
-		if ($deamon_info['launchable'] != 'ok') 
+		if ($deamon_info['launchable'] != 'ok')
 			return;
-		if ($deamon_info['state'] == 'ok') 
+		if ($deamon_info['state'] == 'ok')
 			return;
 		self::deamon_stop();
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
@@ -34,10 +34,10 @@ class arrosageAuto extends eqLogic {
 			}
 		}
 	}
-	public static function deamon_stop() {	
+	public static function deamon_stop() {
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $zone->getId()));
-			if (is_object($cron)) 	
+			if (is_object($cron))
 				$cron->remove();
 		}
 	}
@@ -76,7 +76,7 @@ class arrosageAuto extends eqLogic {
 			'#Next#' => $Next
 		);
 		foreach ($this->getCmd() as $cmd) {
-			if ($cmd->getDisplay('hideOn' . $version) == 1) 
+			if ($cmd->getDisplay('hideOn' . $version) == 1)
 				continue;
 			$replace_eqLogic['#'.$cmd->getLogicalId().'#']= $cmd->toHtml($_version, $cmdColor);
 		}
@@ -88,7 +88,7 @@ class arrosageAuto extends eqLogic {
 	        'optionalParameters' => true,
 	));
 	public function postSave() {
-		$isArmed=self::AddCommande($this,"Etat activation","isArmed","info","binary",false,'lock');
+		$isArmed=self::AddCommande($this,"État activation","isArmed","info","binary",false,'lock');
 		$isArmed->event(true);
 		$isArmed->setCollectDate(date('Y-m-d H:i:s'));
 		$isArmed->save();
@@ -103,10 +103,10 @@ class arrosageAuto extends eqLogic {
 		$Released->setConfiguration('state', '0');
 		$Released->setConfiguration('armed', '1');
 		self::deamon_stop();
-	}	
+	}
 	public function postRemove() {
 		$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $this->getId()));
-		if (is_object($cron)) 	
+		if (is_object($cron))
 			$cron->remove();
 	}
 	public static function pull($_option){
@@ -120,15 +120,15 @@ class arrosageAuto extends eqLogic {
 			$Action = cache::byKey('arrosageAuto::Action::'.$zone->getId());
 			if($Action->getValue('') != 'start'){
 				if(!$zone->getCmd(null,'isArmed')->execCmd()){
-					log::add('arrosageAuto','info','La zone est desactivé');
+					log::add('arrosageAuto','info','La zone est desactivée');
 					exit;
 				}
 				if(!$zone->EvaluateCondition()){
-					log::add('arrosageAuto','info','Les conditions ne sont pas evalué');
+					log::add('arrosageAuto','info','Les conditions ne sont pas evaluées');
 					exit;
 				}
 				if($plui=$zone->CheckMeteo() === false){
-					log::add('arrosageAuto','info','La météo n\'est pas idéal pour l\'arrosage');
+					log::add('arrosageAuto','info','La météo n\'est pas idéale pour l\'arrosage');
 					exit;
 				}
 				$zone->ExecuteAction('start');
@@ -154,21 +154,21 @@ class arrosageAuto extends eqLogic {
 		$Shedule = new DateTime();
 		$Shedule->add(new DateInterval('PT'.$Time.'S'));
 		return  $Shedule->format("i H d m w Y");
-	} 
+	}
 	private function EvaluateTime($plui=0) {
 		$TypeArrosage=config::byKey('configuration','arrosageAuto');
 		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
-		$QtsEau=$TypeArrosage['volume'][$key]; 
-		//Ajouter la verification du nombre de start dans la journée pour repartir la quantité 
+		$QtsEau=$TypeArrosage['volume'][$key];
+		//Ajouter la verification du nombre de start dans la journée pour repartir la quantité
 		$NbProgramation=0;
-		foreach($this->getConfiguration('programation') as $programation){
-			if($programation[date('w')])
+		foreach($this->getConfiguration('programation') as $programmation){
+			if($programmation[date('w')])
 				$NbProgramation++;
 		}
 		$QtsEau=$QtsEau/$NbProgramation;
 		return round(($QtsEau-$plui)*3600/$this->CalculPluviometrie());
-	} 
-	private function ExecuteAction($Type) {	
+	}
+	private function ExecuteAction($Type) {
 		foreach($this->getConfiguration('action') as $cmd){
 			if (isset($cmd['enable']) && $cmd['enable'] == 0)
 				continue;
@@ -176,7 +176,7 @@ class arrosageAuto extends eqLogic {
 				continue;
 			try {
 				$options = array();
-				if (isset($cmd['options'])) 
+				if (isset($cmd['options']))
 					$options = $cmd['options'];
 				scenarioExpression::createAndExec('action', $cmd['cmd'], $options);
 			} catch (Exception $e) {
@@ -211,7 +211,7 @@ class arrosageAuto extends eqLogic {
 		log::add('arrosageAuto','debug',$this->getHumanName().' : Vitesse du vent '.$this->getMeteoParameter('windSpeed').' > '.config::byKey('windSpeed','arrosageAuto').' ?');
 		if($this->getMeteoParameter('windSpeed')>config::byKey('windSpeed','arrosageAuto'))
 			return false;
-		log::add('arrosageAuto','debug',$this->getHumanName().' :Humidité '.$this->getMeteoParameter('humidity').' > '.config::byKey('humidity','arrosageAuto').'?');
+		log::add('arrosageAuto','debug',$this->getHumanName().' : Humidité '.$this->getMeteoParameter('humidity').' > '.config::byKey('humidity','arrosageAuto').'?');
 		if($this->getMeteoParameter('humidity')>config::byKey('humidity','arrosageAuto'))
 			return false;
 		return $this->getMeteoParameter('precipIntensity');
@@ -228,16 +228,16 @@ class arrosageAuto extends eqLogic {
 					$plugin=array(
 						'windBearing' => array(
 							'id' =>'windBearing',
-							'nom' =>'Direction du Vent'),
+							'nom' =>'Direction du vent'),
 						'windSpeed' => array(
 							'id' =>'windSpeed',
-							'nom' =>'Vitesse du Vent'),
+							'nom' =>'Vitesse du vent'),
 						'humidity' => array(
 							'id' =>'humidity',
 							'nom' =>'Humidité'),
 						'precipIntensity' => array(
 							'id' =>'precipIntensity',
-							'nom' =>'Intensité de Précipitation'),
+							'nom' =>'Intensité de précipitation'),
 						'precipProbability' => array(
 							'id' =>'precipProbability',
 							'nom' =>'Probabilité de Précipitation')
@@ -247,10 +247,10 @@ class arrosageAuto extends eqLogic {
 					$plugin=array(
 						'windBearing' => array(
 							'id' =>'wind_direction',
-							'nom' =>'Direction du Vent'),
+							'nom' =>'Direction du vent'),
 						'windSpeed' => array(
 							'id' =>'wind_speed',
-							'nom' =>'Vitesse du Vent'),
+							'nom' =>'Vitesse du vent'),
 						'humidity' => array(
 							'id' =>'humidity',
 							'nom' =>'Humidité')
@@ -267,12 +267,12 @@ class arrosageAuto extends eqLogic {
 		return 0;
 	}
 	private function EvaluateCondition(){
-		foreach($this->getConfiguration('condition') as $condition){	
+		foreach($this->getConfiguration('condition') as $condition){
 			if (isset($condition['enable']) && $condition['enable'] == 0)
 				continue;
 			$_scenario = null;
 			$expression = scenarioExpression::setTags($condition['expression'], $_scenario, true);
-			$message = __('Evaluation de la condition : [', __FILE__) . trim($expression) . '] = ';
+			$message = __('Évaluation de la condition : [', __FILE__) . trim($expression) . '] = ';
 			$result = evaluate($expression);
 			if (is_bool($result)) {
 				if ($result) {
@@ -293,10 +293,10 @@ class arrosageAuto extends eqLogic {
 		return true;
 	}
 	private function CheckPompe($nextTime){
-		/*$DebitGiclers=$this->getConfiguration('DebitGicler');		
+		/*$DebitGiclers=$this->getConfiguration('DebitGicler');
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $zone->getId()));
-			if (is_object($cron)){	
+			if (is_object($cron)){
 				$Time=$zone->EvaluateTime();
 				$nextStart=$zone->NextStart();
 				$nextStop=$nextStart+$Time;
@@ -315,7 +315,7 @@ class arrosageAuto extends eqLogic {
 				$Debit = 10000 * $this->getConfiguration('DebitGoutteur');
             			$Espacement = $this->getConfiguration('EspacementLateral') * $this->getConfiguration('EspacemenGoutteurs');
            			$Pluviometrie = $Debit / $Espacement;
-				log::add('arrosageAuto','info',$this->getHumanName().' : Pluviometrie: '.$Pluviometrie);
+				log::add('arrosageAuto','info',$this->getHumanName().' : Pluviométrie : '.$Pluviometrie);
 			return $Pluviometrie;
 			case'turbine':
 			return 15;
@@ -364,7 +364,7 @@ class arrosageAuto extends eqLogic {
 class arrosageAutoCmd extends cmd {
 		public function execute($_options = null) {
 		$Listener=cmd::byId(str_replace('#','',$this->getValue()));
-		if (is_object($Listener)) {	
+		if (is_object($Listener)) {
 			switch($this->getLogicalId()){
 				case 'armed':
 					$Listener->event(true);
@@ -378,7 +378,7 @@ class arrosageAutoCmd extends cmd {
 				case 'released':
 					$Listener->event(false);
 					$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getEqLogic()->getId()));
-					if (is_object($cron)) 
+					if (is_object($cron))
 						$cron->remove();
 				break;
 			}

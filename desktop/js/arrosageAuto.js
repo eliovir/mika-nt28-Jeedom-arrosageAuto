@@ -20,7 +20,7 @@ $('body').on('click','.eqLogicAttr[data-l1key=configuration][data-l2key=TypeGicl
 					.append($('<sup>')
 						.append($('<i class="fa fa-question-circle tooltips" title="Saisir l\'espacement latéral (cm)" style="font-size : 1em;color:grey;">'))))
 				.append($('<div class="col-sm-5">')
-					.append($('<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EspacementLateral" >')))); 
+					.append($('<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EspacementLateral" >'))));
 			div.append($('<div class="form-group">')
 				.append($('<label class="col-sm-2 control-label" >')
 					.text('{{Espacement des goutteurs (cm)}}')
@@ -43,7 +43,7 @@ function saveEqLogic(_eqLogic) {
 	$('#programationtab .ProgramationGroup').each(function( index ) {
 		ProgramationArray.push($(this).getValues('.expressionAttr')[0])
 	});
-	
+
 	$('#actiontab .ActionGroup').each(function( index ) {
 		OpenArray.push($(this).getValues('.expressionAttr')[0])
 	});
@@ -57,23 +57,23 @@ function printEqLogic(_eqLogic) {
 	$('.ProgramationGroup').remove();
 	$('.ActionGroup').remove();
 	if (typeof(_eqLogic.configuration.condition) !== 'undefined') {
-		for(var index in _eqLogic.configuration.condition) { 
+		for(var index in _eqLogic.configuration.condition) {
 			if( (typeof _eqLogic.configuration.condition[index] === "object") && (_eqLogic.configuration.condition[index] !== null) )
 				addCondition(_eqLogic.configuration.condition[index],$('#conditiontab').find('table tbody'));
 		}
 	}
 	if (typeof(_eqLogic.configuration.programation) !== 'undefined') {
-		for(var index in _eqLogic.configuration.programation) { 
+		for(var index in _eqLogic.configuration.programation) {
 			if( (typeof _eqLogic.configuration.programation[index] === "object") && (_eqLogic.configuration.programation[index] !== null) )
 				addProgramation(_eqLogic.configuration.programation[index],$('#programationtab').find('table tbody'));
 		}
 	}
 	if (typeof(_eqLogic.configuration.action) !== 'undefined') {
-		for(var index in _eqLogic.configuration.action) { 
+		for(var index in _eqLogic.configuration.action) {
 			if( (typeof _eqLogic.configuration.action[index] === "object") && (_eqLogic.configuration.action[index] !== null) )
 				addAction(_eqLogic.configuration.action[index],$('#actiontab').find('table tbody'));
 		}
-	}	
+	}
 }
 function addCondition(_condition,_el) {
 	var tr = $('<tr class="ConditionGroup">')
@@ -88,17 +88,17 @@ function addCondition(_condition,_el) {
 				.append($('<span class="input-group-btn">')
 					.append($('<a class="btn btn-warning btn-sm listCmdCondition">')
 						.append($('<i class="fa fa-list-alt">'))))))
-		.append($('<td>'))	
+		.append($('<td>'))
 		.append($('<td>'));
 
         _el.append(tr);
         _el.find('tr:last').setValues(_condition, '.expressionAttr');
-  
+
 }
 function addAction(_action,  _el) {
 	var tr = $('<tr class="ActionGroup">')
 		.append($('<td>')
-			.append($('<input type="checkbox" class="expressionAttr" data-l1key="enable"/>')))		
+			.append($('<input type="checkbox" class="expressionAttr" data-l1key="enable"/>')))
 		.append($('<td>')
 			.append($('<div class="input-group">')
 				.append($('<span class="input-group-btn">')
@@ -170,7 +170,7 @@ function addProgramation(_programation,  _el) {
 			.append(Minute));
         _el.append(tr);
         _el.find('tr:last').setValues(_programation, '.expressionAttr');
-				
+
 }
 $('body').on('focusout','.expressionAttr[data-l1key=cmd]', function (event) {
     var expression = $(this).closest('.ActionGroup').getValues('.expressionAttr');
@@ -192,7 +192,7 @@ $('body').on('click','.conditionAttr[data-action=remove]',function(){
 	$(this).closest('tr').remove();
 });
 $('body').on('click','.listCmdCondition',function(){
-	var el = $(this).closest('tr').find('.expressionAttr[data-l1key=expression]');	
+	var el = $(this).closest('tr').find('.expressionAttr[data-l1key=expression]');
 	jeedom.cmd.getSelectModal({cmd: {type: 'info'}}, function (result) {
 		var message = 'Aucun choix possible';
 		if(result.cmd.subType == 'numeric'){
@@ -335,7 +335,7 @@ $("body").on('click', ".listAction", function() {
 			el.closest('.form-group').find('.actionOptions').html(html);
 		});
 	});
-}); 
+});
 $("body").on('click', ".listCmdAction", function() {
 	var el = $(this).closest('td').find('.expressionAttr[data-l1key=cmd]');
 	jeedom.cmd.getSelectModal({cmd: {type: 'action'}}, function (result) {
@@ -350,7 +350,7 @@ function addCmdToTable(_cmd) {
 	tr.append($('<td>')
 		.append($('<input type="hidden" class="cmdAttr form-control input-sm" data-l1key="id">'))
 		.append($('<input class="cmdAttr form-control input-sm" data-l1key="name" value="' + init(_cmd.name) + '" placeholder="{{Name}}" title="Name">')));
-	var parmetre=$('<td>');	
+	var parmetre=$('<td>');
 	parmetre.append($('<span class="type" type="' + init(_cmd.type) + '">')
 			.append(jeedom.cmd.availableType()));
 	parmetre.append($('<span class="subType" subType="'+init(_cmd.subType)+'">'));
@@ -368,7 +368,7 @@ function addCmdToTable(_cmd) {
 				.append('{{Historiser}}')
 				.append($('<sup>')
 					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-					.attr('title','Souhaitez vous Historiser les changements de valeur'))))));
+					.attr('title','Souhaitez-vous historiser les changements de valeur ?'))))));
 	parmetre.append($('<div>')
 		.append($('<span>')
 			.append($('<label class="checkbox-inline">')
@@ -376,7 +376,7 @@ function addCmdToTable(_cmd) {
 				.append('{{Afficher}}')
 				.append($('<sup>')
 					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
-					.attr('title','Souhaitez vous afficher cette commande sur le dashboard'))))));
+					.attr('title','Souhaitez-vous afficher cette commande sur le dashboard ?'))))));
 	tr.append(parmetre);
 	$('#table_cmd tbody').append(tr);
 	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');

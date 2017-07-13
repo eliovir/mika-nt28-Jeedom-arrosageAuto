@@ -12,7 +12,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 				<a class="btn btn-default eqLogicAction" style="width : 50%;margin-top : 5px;margin-bottom: 5px;" data-action="add"><i class="fa fa-plus-circle"></i> {{Ajouter}}</a>
 				<li class="filter" style="margin-bottom: 5px;"><input class="filter form-control input-sm" placeholder="{{Rechercher}}" style="width: 100%"/></li>
 				<?php
-					foreach ($eqLogics as $eqLogic) 
+					foreach ($eqLogics as $eqLogic)
 						echo '<li class="cursor li_eqLogic" data-eqLogic_id="' . $eqLogic->getId() . '"><a>' . $eqLogic->getHumanName(true) . '</a></li>';
 				?>
 			</ul>
@@ -47,7 +47,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 				}
 			?>
 		</div>
-	</div>  
+	</div>
 	<div class="col-lg-10 col-md-9 col-sm-8 eqLogic" style="border-left: solid 1px #EEE; padding-left: 25px;display: none;">
 		<a class="btn btn-success btn-sm eqLogicAction pull-right" data-action="save"><i class="fa fa-check-circle"></i> Sauvegarder</a>
 		<a class="btn btn-danger btn-sm eqLogicAction pull-right" data-action="remove"><i class="fa fa-minus-circle"></i> Supprimer</a>
@@ -107,7 +107,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 											<select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
 												<option value="">{{Aucun}}</option>
 												<?php
-													foreach (object::all() as $object) 
+													foreach (object::all() as $object)
 														echo '<option value="' . $object->getId() . '">' . $object->getName() . '</option>';
 												?>
 											</select>
@@ -118,7 +118,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 											{{Catégorie}}
 											<sup>
 												<i class="fa fa-question-circle tooltips" title="Choisissez une catégorie
-		Cette information n'est pas obigatoire mais peut être utile pour filtrer les widgets" style="font-size : 1em;color:grey;"></i>
+		Cette information n'est pas obligatoire mais peut être utile pour filtrer les widgets" style="font-size : 1em;color:grey;"></i>
 											</sup>
 										</label>
 										<div class="col-md-8">
@@ -152,7 +152,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 										<label class="col-sm-2 control-label" >
 											{{Type d'arrosage}}
 											<sup>
-												<i class="fa fa-question-circle tooltips" title="Choisissez les type d'arrosage pour cette zone" style="font-size : 1em;color:grey;"></i>
+												<i class="fa fa-question-circle tooltips" title="Choisissez les types d'arrosage pour cette zone" style="font-size : 1em;color:grey;"></i>
 											</sup>
 										</label>
 										<div class="col-sm-5">
@@ -162,12 +162,12 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 														echo '<option value="'.$type.'">'.$type.'</option>';
 													}
 												?>
-											</select>	
+											</select>
 										</div>
 									</div>
 								</fieldset>
 							</form>
-						</div>	
+						</div>
 						<div class="col-sm-6">
 							<form class="form-horizontal">
 								<fieldset>
@@ -179,9 +179,9 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 											</sup>
 										</label>
 										<div class="col-sm-5">
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TypeGicler" >	
-												<option value="gouteAgoute">{{Goutes à goutes}}</option>
-												<option value="turbine">{{Turibine / Tuyere}}</option>
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TypeGicler" >
+												<option value="gouteAgoute">{{Goutte à goutte}}</option>
+												<option value="turbine">{{Turbine / Tuyère}}</option>
 											</select>
 										</div>
 									</div>
@@ -195,28 +195,28 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 											</sup>
 										</label>
 										<div class="col-sm-5">
-											<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DebitGicler" />	
+											<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DebitGicler" />
 										</div>
 									</div-->
 								</fieldset>
 							</form>
-						</div>	
-					</div>	
-				</div>		
+						</div>
+					</div>
+				</div>
 				<div role="tabpanel" class="tab-pane" id="programationtab">
 					<form class="form-horizontal">
 						<fieldset>
-							<legend>{{Les programations de la zone :}}
+							<legend>{{Les programmations de la zone :}}
 								<sup>
-									<i class="fa fa-question-circle tooltips" title="Saisir toutes les programations pour la zone"></i>
+									<i class="fa fa-question-circle tooltips" title="Saisir toutes les programmations pour la zone"></i>
 								</sup>
 								<a class="btn btn-success btn-xs ProgramationAttr" data-action="add" style="margin-left: 5px;">
 									<i class="fa fa-plus-circle"></i>
-									{{Ajouter une programation}}
+									{{Ajouter une programmation}}
 								</a>
 							</legend>
 						</fieldset>
-					</form>			
+					</form>
 					<table id="table_programation" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
@@ -227,7 +227,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 						</thead>
 						<tbody></tbody>
 					</table>
-				</div>						
+				</div>
 				<div role="tabpanel" class="tab-pane" id="conditiontab">
 					<form class="form-horizontal">
 						<fieldset>
@@ -237,11 +237,11 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 								</sup>
 								<a class="btn btn-success btn-xs conditionAttr" data-action="add" style="margin-left: 5px;">
 									<i class="fa fa-plus-circle"></i>
-									{{Ajouter une Condition}}
+									{{Ajouter une condition}}
 								</a>
 							</legend>
 						</fieldset>
-					</form>			
+					</form>
 					<table id="table_condition" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
@@ -253,7 +253,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 						</thead>
 						<tbody></tbody>
 					</table>
-				</div>				
+				</div>
 				<div role="tabpanel" class="tab-pane" id="actiontab">
 					<form class="form-horizontal">
 						<fieldset>
@@ -263,24 +263,24 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 								</sup>
 								<a class="btn btn-success btn-xs ActionAttr" data-action="add" style="margin-left: 5px;">
 									<i class="fa fa-plus-circle"></i>
-									{{Ajouter une Action}}
+									{{Ajouter une action}}
 								</a>
 							</legend>
 						</fieldset>
-					</form>					
+					</form>
 					<table id="table_action" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
 								<th></th>
 								<th>Action</th>
 								<th>Valeur</th>
-								<th>Execution</th>
+								<th>Exécution</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
 					</table>
-				</div>		
-				<div role="tabpanel" class="tab-pane" id="commandtab">	
+				</div>
+				<div role="tabpanel" class="tab-pane" id="commandtab">
 					<table id="table_cmd" class="table table-bordered table-condensed">
 					    <thead>
 						<tr>
@@ -290,7 +290,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 					    </thead>
 					    <tbody></tbody>
 					</table>
-				</div>	
+				</div>
 			</div>
 		</div>
 </div>
