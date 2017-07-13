@@ -217,7 +217,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 							</legend>
 						</fieldset>
 					</form>
-					<table id="table_programmation" class="table table-bordered table-condensed">
+					<table id="table_programation" class="table table-bordered table-condensed">
 						<thead>
 							<tr>
 								<th></th>
