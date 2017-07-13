@@ -68,7 +68,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 					<i class="fa fa-list-alt"></i> Commandes</a>
 			</li>
 			<li role="presentation" class="">
-				<a href="#programmationtab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
+				<a href="#programationtab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
 					<i class="fa fa-map"></i> {{Programation}}</a>
 			</li>
 			<li role="presentation" class="">
