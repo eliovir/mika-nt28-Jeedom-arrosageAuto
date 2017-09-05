@@ -321,7 +321,7 @@ class arrosageAuto extends eqLogic {
 			return 15;
 	 }
 }
-	private function NextStart(){
+	public function NextStart(){
 		$nextTime=null;
 		foreach($this->getConfiguration('programation') as $ConigSchedule){
 			$offset=0;
