@@ -8,11 +8,11 @@
 ?>
 <div class="row">
 	<div class="col-sm-6">
-		<form>
+		<form class="form-horizontal">
 			<fieldset>
 				<div class="form-group">
-					<label class="col-lg-4 control-label">{{Météo}}</label>
-					<div class="col-lg-4">
+					<label class="col-lg-5 control-label">{{Météo}}</label>
+					<div class="col-lg-6">
 						<div class="input-group">
 							<input class="configKey form-control input-sm" data-l1key="meteo"/>
 							<span class="input-group-btn">
@@ -24,26 +24,26 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-4 control-label">{{Maximum de la probabilité de précipitation (%)}}</label>
-					<div class="col-lg-4">
+					<label class="col-lg-5 control-label">{{Maximum de la probabilité de précipitation (%)}}</label>
+					<div class="col-lg-6">
 						<input type="text" class="configKey"  data-l1key="precipProbability" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-4 control-label">{{Vitesse du vent maximum (km/h)}}</label>
-					<div class="col-lg-4">
+					<label class="col-lg-5 control-label">{{Vitesse du vent maximum (km/h)}}</label>
+					<div class="col-lg-6">
 						<input type="text" class="configKey"  data-l1key="windSpeed" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-4 control-label">{{Humidité maximum (%)}}</label>
-					<div class="col-lg-4">
+					<label class="col-lg-5 control-label">{{Humidité maximum (%)}}</label>
+					<div class="col-lg-6">
 						<input type="text" class="configKey"  data-l1key="humidity" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-4 control-label">{{Debit de l'arriver d'eau}}</label>
-					<div class="col-lg-4">
+					<label class="col-lg-5 control-label">{{Débit de l'arrivée d'eau}}</label>
+					<div class="col-lg-6">
 						<input type="text" class="configKey"  data-l1key="debit" />
 					</div>
 				</div>
@@ -54,7 +54,7 @@
 		<legend>Type de plantation
 			<a class="btn btn-success btn-xs pull-right cursor" id="bt_AddTypePlantation"><i class="fa fa-check"></i> {{Ajouter}}</a>
 		</legend>
-		<form>
+		<form class="form-horizontal">
 			<fieldset>
 				<div class="form-group">
 					<table id="table_type_plantation" class="table table-bordered table-condensed tablesorter">
@@ -66,7 +66,7 @@
 						</thead>
 						<tbody></tbody>
 					</table>
-				</div> 
+				</div>
 			</fieldset>
 		</form>
 	</div>
@@ -80,7 +80,7 @@
 	});
 	$.ajax({
 		type: "POST",
-		timeout:8000, 
+		timeout:8000,
 		url: "core/ajax/config.ajax.php",
 		data: {
 			action:'getKey',
@@ -91,13 +91,13 @@
 		error: function(request, status, error) {
 			handleAjaxError(request, status, error);
 		},
-		success: function(data) { 
+		success: function(data) {
 			if (data.state != 'ok') {
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
 			}
 			if (data.result['configuration']!=''){
-				var TypePlantation= new Object(); 
+				var TypePlantation= new Object();
 				$.each(data.result['configuration'], function(param,valeur){
 					switch(typeof(valeur)){
 						case 'object':
@@ -119,11 +119,11 @@
 					}
 				});
 				$.each(TypePlantation, function(id,data){
-					AddTypePlantation($('#table_type_plantation tbody'),data);	
+					AddTypePlantation($('#table_type_plantation tbody'),data);
 				});
 			}
 		}
-	});	
+	});
 	$('#bt_AddTypePlantation').on('click',function(){
 		AddTypePlantation($('#table_type_plantation tbody'),'');
 	});
@@ -140,7 +140,7 @@
 					.append($('<input class="configKey form-control input-sm "data-l1key="configuration" data-l2key="type">'))))
 			.append($('<td>')
 				.append($('<input class="configKey form-control input-sm" data-l1key="configuration" data-l2key="volume">')));
-	
+
 		_el.append(tr);
 		_el.find('tr:last').setValues(data, '.configKey');
 	}
