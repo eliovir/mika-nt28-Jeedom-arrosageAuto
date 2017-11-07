@@ -158,8 +158,14 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 										<div class="col-sm-5">
 											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TypeArrosage" >
 												<?php
-													foreach(config::byKey('configuration','arrosageAuto')['type'] as $type){
-														echo '<option value="'.$type.'">'.$type.'</option>';
+													foreach(config::byKey('configuration','arrosageAuto') as $type => $value){
+														if($type=='type'){
+															if(is_array($value)){
+																foreach($value as $valeur)
+																	echo '<option value="'.$valeur.'">'.$valeur.'</option>';
+															}else
+																echo '<option value="'.$value.'">'.$value.'</option>';
+														}
 													}
 												?>
 											</select>

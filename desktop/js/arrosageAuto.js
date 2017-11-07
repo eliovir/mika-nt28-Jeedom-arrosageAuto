@@ -323,7 +323,7 @@ $('body').on('click','.listCmdCondition',function(){
 });
 $('.ActionAttr[data-action=add]').off().on('click',function(){
 	addAction({},$(this).closest('.tab-pane').find('table'));
-	$('.ActionAttr[data-action=remove]').off().on('click'function () {
+	$('.ActionAttr[data-action=remove]').off().on('click',function () {
 		$(this).closest('.ActionGroup').remove();
 	});
 });
