@@ -162,9 +162,9 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 														if($type=='type'){
 															if(is_array($value)){
 																foreach($value as $valeur)
-																	echo '<option value="'.$valeur.'">1'.$valeur.'</option>';
+																	echo '<option value="'.$valeur.'">'.$valeur.'</option>';
 															}else
-																echo '<option value="'.$value.'">2'.$value.'</option>';
+																echo '<option value="'.$value.'">'.$value.'</option>';
 														}
 													}
 												?>
