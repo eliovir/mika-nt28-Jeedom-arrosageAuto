@@ -76,10 +76,61 @@ function printEqLogic(_eqLogic) {
 		}
 	}
 }
+function addProgramation(_programation,  _el) {
+	var Heure=$('<select class="expressionAttr form-control" data-l1key="Heure" >');
+    var Minute=$('<select class="expressionAttr form-control" data-l1key="Minute" >');
+	var number = 0;
+    while (number < 24) {
+		Heure.append($('<option value="'+number+'">')
+			.text(number));
+    	number++;
+	}
+  	number = 0;
+    while (number < 60) {
+		Minute.append($('<option value="'+number+'">')
+			.text(number));
+    	number++;
+	}
+	var tr = $('<tr class="ProgramationGroup">')
+		.append($('<td>')
+			.append($('<span class="input-group-btn">')
+				.append($('<a class="btn btn-default ProgramationAttr btn-sm" data-action="remove">')
+					.append($('<i class="fa fa-minus-circle">')))))
+		.append($('<td>')
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="expressionAttr" data-l1key="1">'))
+				.append('{{Lundi}}'))
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="expressionAttr" data-l1key="2">'))
+				.append('{{Mardi}}'))
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="expressionAttr" data-l1key="3">'))
+				.append('{{Mercredi}}'))
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="expressionAttr" data-l1key="4">'))
+				.append('{{Jeudi}}'))
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="expressionAttr" data-l1key="5">'))
+				.append('{{Vendredi}}'))
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="expressionAttr" data-l1key="6">'))
+				.append('{{Samedi}}'))
+			.append($('<label class="checkbox-inline">')
+				.append($('<input type="checkbox" class="expressionAttr" data-l1key="0" />'))
+				.append('{{Dimanche}}')))
+		.append($('<td>')
+			.append(Heure)
+			.append(Minute));
+        _el.append(tr);
+        _el.find('tr:last').setValues(_programation, '.expressionAttr');
+	$('.ProgramationAttr[data-action=remove]').off().on('click',function(){
+		$(this).closest('tr').remove();
+	});
+}
 function addCondition(_condition,_el) {
 	var tr = $('<tr class="ConditionGroup">')
 		.append($('<td>')
-			.append($('<input type="checkbox" class="expressionAttr" data-l1key="enable"/>')))
+			.append($('<input type="checkbox" class="expressionAttr" data-l1key="enable" checked/>')))
 		.append($('<td>')
 			.append($('<div class="input-group">')
 				.append($('<span class="input-group-btn">')
@@ -88,13 +139,13 @@ function addCondition(_condition,_el) {
 				.append($('<input class="expressionAttr form-control input-sm cmdCondition" data-l1key="expression"/>'))
 				.append($('<span class="input-group-btn">')
 					.append($('<a class="btn btn-warning btn-sm listCmdCondition">')
-						.append($('<i class="fa fa-list-alt">'))))))
-		.append($('<td>'))
-		.append($('<td>'));
+						.append($('<i class="fa fa-list-alt">'))))));
 
         _el.append(tr);
         _el.find('tr:last').setValues(_condition, '.expressionAttr');
-
+	$('.conditionAttr[data-action=remove]').off().on('click',function(){
+		$(this).closest('tr').remove();
+	});  
 }
 function addAction(_action,  _el) {
 	var tr = $('<tr class="ActionGroup">')
@@ -123,69 +174,10 @@ function addAction(_action,  _el) {
 					.text('{{Stop}}'))));
         _el.append(tr);
         _el.find('tr:last').setValues(_action, '.expressionAttr');
-	$('.conditionAttr[data-action=remove]').off().on('click',function(){
+	$('.ActionAttr[data-action=remove]').off().on('click',function(){
 		$(this).closest('tr').remove();
 	});
-  }
-function addProgramation(_programation,  _el) {
-	var Heure=$('<select class="expressionAttr form-control" data-l1key="Heure" >');
-    var Minute=$('<select class="expressionAttr form-control" data-l1key="Minute" >');
-	var number = 0;
-    while (number < 24) {
-		Heure.append($('<option value="'+number+'">')
-			.text(number));
-    	number++;
-	}
-  	number = 0;
-    while (number < 60) {
-		Minute.append($('<option value="'+number+'">')
-			.text(number));
-    	number++;
-	}
-	var tr = $('<tr class="ProgramationGroup">')
-		.append($('<td>')
-			.append($('<span class="input-group-btn">')
-				.append($('<a class="btn btn-default ProgramationAttr btn-sm" data-action="remove">')
-					.append($('<i class="fa fa-minus-circle">')))))
-		.append($('<td>')
-			.append($('<input type="checkbox" class="expressionAttr" data-l1key="1" />'))
-			.append($('<label class="checkbox-inline">')
-				.text('{{Lundi}}'))
-			.append($('<input type="checkbox" class="expressionAttr" data-l1key="2" />'))
-			.append($('<label class="checkbox-inline">')
-				.text('{{Mardi}}'))
-			.append($('<input type="checkbox" class="expressionAttr" data-l1key="3" />'))
-			.append($('<label class="checkbox-inline">')
-				.text('{{Mercredi}}'))
-			.append($('<input type="checkbox" class="expressionAttr" data-l1key="4" />'))
-			.append($('<label class="checkbox-inline">')
-				.text('{{Jeudi}}'))
-			.append($('<input type="checkbox" class="expressionAttr" data-l1key="5" />'))
-			.append($('<label class="checkbox-inline">')
-				.text('{{Vendredi}}'))
-			.append($('<input type="checkbox" class="expressionAttr" data-l1key="6" />'))
-			.append($('<label class="checkbox-inline">')
-				.text('{{Samedi}}'))
-			.append($('<input type="checkbox" class="expressionAttr" data-l1key="0" />'))
-			.append($('<label class="checkbox-inline">')
-				.text('{{Dimanche}}')))
-		.append($('<td>')
-			.append(Heure)
-			.append(Minute));
-        _el.append(tr);
-        _el.find('tr:last').setValues(_programation, '.expressionAttr');
-	$('.ProgramationAttr[data-action=remove]').off().on('click',function(){
-		$(this).closest('tr').remove();
-	});
-	$('.expressionAttr[data-l1key=cmd]').on('focusout',function (event) {
-    		var expression = $(this).closest('.ActionGroup').getValues('.expressionAttr');
-    		var el = $(this);
-    		jeedom.cmd.displayActionOption($(this).value(), init(expression[0].options), function (html) {
-        		el.closest('.ActionGroup').find('.actionOptions').html(html);
-    		})
-	});
-
-}
+ }
 $('.ProgramationAttr[data-action=add]').off().on('click',function(){
 	addProgramation({},$(this).closest('.tab-pane').find('table'));
 });
@@ -324,9 +316,6 @@ $('body').on('click','.listCmdCondition',function(){
 });
 $('.ActionAttr[data-action=add]').off().on('click',function(){
 	addAction({},$(this).closest('.tab-pane').find('table'));
-	$('.ActionAttr[data-action=remove]').off().on('click',function () {
-		$(this).closest('.ActionGroup').remove();
-	});
 });
 $("body").on('click', ".listAction", function() {
 	var el = $(this).closest('.form-group').find('.expressionAttr[data-l1key=cmd]');
