@@ -32,10 +32,11 @@ $('body').on('click','.eqLogicAttr[data-l1key=configuration][data-l2key=TypeGicl
 	 }
 });
 function saveEqLogic(_eqLogic) {
+	_eqLogic.configuration.programation=new Object();
 	_eqLogic.configuration.condition=new Object();
 	_eqLogic.configuration.action=new Object();
 	var ConditionArray= new Array();
-	var OpenArray= new Array();
+	var ActionArray= new Array();
 	var ProgramationArray= new Array();
 	$('#conditiontab .ConditionGroup').each(function( index ) {
 		ConditionArray.push($(this).getValues('.expressionAttr')[0])
@@ -45,11 +46,11 @@ function saveEqLogic(_eqLogic) {
 	});
 
 	$('#actiontab .ActionGroup').each(function( index ) {
-		OpenArray.push($(this).getValues('.expressionAttr')[0])
+		ActionArray.push($(this).getValues('.expressionAttr')[0])
 	});
 	_eqLogic.configuration.condition=ConditionArray;
 	_eqLogic.configuration.programation=ProgramationArray;
-	_eqLogic.configuration.action=OpenArray;
+	_eqLogic.configuration.action=ActionArray;
    	return _eqLogic;
 }
 function printEqLogic(_eqLogic) {
