@@ -122,6 +122,9 @@ function addAction(_action,  _el) {
 					.text('{{Stop}}'))));
         _el.append(tr);
         _el.find('tr:last').setValues(_action, '.expressionAttr');
+	$('.conditionAttr[data-action=remove]').off().on('click',function(){
+		$(this).closest('tr').remove();
+	});
   }
 function addProgramation(_programation,  _el) {
 	var Heure=$('<select class="expressionAttr form-control" data-l1key="Heure" >');
@@ -170,26 +173,23 @@ function addProgramation(_programation,  _el) {
 			.append(Minute));
         _el.append(tr);
         _el.find('tr:last').setValues(_programation, '.expressionAttr');
-
-}
-$('body').on('focusout','.expressionAttr[data-l1key=cmd]', function (event) {
-    var expression = $(this).closest('.ActionGroup').getValues('.expressionAttr');
-    var el = $(this);
-    jeedom.cmd.displayActionOption($(this).value(), init(expression[0].options), function (html) {
-        el.closest('.ActionGroup').find('.actionOptions').html(html);
-    })
-});
-$('.ProgramationAttr[data-action=add]').off().on('click',function(){
-	addProgramation({},$(this).closest('.tab-pane').find('table'));
 	$('.ProgramationAttr[data-action=remove]').off().on('click',function(){
 		$(this).closest('tr').remove();
 	});
+	$('.expressionAttr[data-l1key=cmd]').on('focusout',function (event) {
+    		var expression = $(this).closest('.ActionGroup').getValues('.expressionAttr');
+    		var el = $(this);
+    		jeedom.cmd.displayActionOption($(this).value(), init(expression[0].options), function (html) {
+        		el.closest('.ActionGroup').find('.actionOptions').html(html);
+    		})
+	});
+
+}
+$('.ProgramationAttr[data-action=add]').off().on('click',function(){
+	addProgramation({},$(this).closest('.tab-pane').find('table'));
 });
 $('.conditionAttr[data-action=add]').off().on('click',function(){
 	addCondition({},$(this).closest('.tab-pane').find('table'));
-	$('.conditionAttr[data-action=remove]').off().on('click',function(){
-		$(this).closest('tr').remove();
-	});
 });
 $('body').on('click','.listCmdCondition',function(){
 	var el = $(this).closest('tr').find('.expressionAttr[data-l1key=expression]');
