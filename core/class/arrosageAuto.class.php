@@ -319,26 +319,25 @@ class arrosageAuto extends eqLogic {
 			return $Pluviometrie;
 			case'turbine':
 			return 15;
-	 }
-}
+		 }
+	}
 	public function NextStart(){
 		$nextTime=null;
 		foreach($this->getConfiguration('programation') as $ConigSchedule){
 			$offset=0;
+			if(date('H') > $ConigSchedule["Heure"])
+				$offset++;
+			if(date('H') == $ConigSchedule["Heure"] && date('i') >= $ConigSchedule["Minute"])	
+				$offset++;
 			for($day=0;$day<7;$day++){
-				if($ConigSchedule[date('w')+$day]){
-					$offset=$day;
+				if($ConigSchedule[date('w')+$day+$offset]){
+					$offset+=$day;
+					$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j") , date("Y"))+ (3600 * 24) * $offset;
 					break;
 				}
 			}
-			do{
-				$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j")+$offset , date("Y"));
-				$offset++;
-			}while(mktime()>$timestamp);
-			if($nextTime == null)
-				$nextTime=$timestamp;
-			if($nextTime>$timestamp)
-				$nextTime=$timestamp;
+			if($nextTime == null || $nextTime > $timestamp)
+				$nextTime = $timestamp;
 		}
 		return $nextTime;
 	}
