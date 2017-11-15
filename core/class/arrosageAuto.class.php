@@ -150,12 +150,12 @@ class arrosageAuto extends eqLogic {
 			}
 		}
 	}
-	private function TimeToShedule($Time) {
+	public function TimeToShedule($Time) {
 		$Shedule = new DateTime();
 		$Shedule->add(new DateInterval('PT'.$Time.'S'));
 		return  $Shedule->format("i H d m w Y");
 	}
-	private function EvaluateTime($plui=0) {
+	public function EvaluateTime($plui=0) {
 		$TypeArrosage=config::byKey('configuration','arrosageAuto');
 		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
 		$QtsEau=$TypeArrosage['volume'][$key];
@@ -168,7 +168,7 @@ class arrosageAuto extends eqLogic {
 		$QtsEau=$QtsEau/$NbProgramation;
 		return round(($QtsEau-$plui)*3600/$this->CalculPluviometrie());
 	}
-	private function ExecuteAction($Type) {
+	public function ExecuteAction($Type) {
 		foreach($this->getConfiguration('action') as $cmd){
 			if (isset($cmd['enable']) && $cmd['enable'] == 0)
 				continue;
@@ -189,7 +189,7 @@ class arrosageAuto extends eqLogic {
 			}
 		}
 	}
-	private function CreateCron($Schedule) {
+	public function CreateCron($Schedule) {
 		$option['Zone_id']= $this->getId();
 		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', $option);
 		if (!is_object($cron)) {
@@ -204,7 +204,7 @@ class arrosageAuto extends eqLogic {
 		$cron->save();
 		return $cron;
 	}
-	private function CheckMeteo(){
+	public function CheckMeteo(){
 		log::add('arrosageAuto','debug',$this->getHumanName().' : Probabilité de précipitation '.$this->getMeteoParameter('precipProbability').' >'. config::byKey('precipProbability','arrosageAuto').' ?');
 		if($this->getMeteoParameter('precipProbability')>config::byKey('precipProbability','arrosageAuto'))
 			return false;
@@ -216,7 +216,7 @@ class arrosageAuto extends eqLogic {
 			return false;
 		return $this->getMeteoParameter('precipIntensity');
 	}
-	private function getMeteoParameter($search){
+	public function getMeteoParameter($search){
       		$meteo=config::byKey('meteo','arrosageAuto');
       		$meteo=str_replace('#','',$meteo);
       		$meteo=str_replace('eqLogic','',$meteo);
@@ -266,7 +266,7 @@ class arrosageAuto extends eqLogic {
 		}
 		return 0;
 	}
-	private function EvaluateCondition(){
+	public function EvaluateCondition(){
 		foreach($this->getConfiguration('condition') as $condition){
 			if (isset($condition['enable']) && $condition['enable'] == 0)
 				continue;
@@ -292,7 +292,7 @@ class arrosageAuto extends eqLogic {
 		log::add('arrosageAuto','info',$this->getHumanName().' : Les conditions sont remplies');
 		return true;
 	}
-	private function CheckPompe($nextTime){
+	public function CheckPompe($nextTime){
 		/*$DebitGiclers=$this->getConfiguration('DebitGicler');
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $zone->getId()));
