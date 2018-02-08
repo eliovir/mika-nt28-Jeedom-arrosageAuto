@@ -42,19 +42,19 @@ class arrosageAuto extends eqLogic {
 		}
 	}
 	public function toHtml($_version = 'dashboard') {
-		if ($this->getIsEnable() != 1) {
-			return '';
-		}
+		$replace = $this->preToHtml($_version);
+		if (!is_array($replace)) 
+			return $replace;
 		$version = jeedom::versionAlias($_version);
-		if ($this->getDisplay('hideOn' . $version) == 1) {
+		if ($this->getDisplay('hideOn' . $version) == 1)
 			return '';
-		}
-		$vcolor = 'cmdColor';
-		if ($version == 'mobile') {
-			$vcolor = 'mcmdColor';
-		}
-		$cmdColor='';
 		$Next='';
+		foreach ($this->getCmd() as $cmd) {
+			if ($cmd->getDisplay('hideOn' . $version) == 1)
+				continue;
+			$replace['#'.$cmd->getLogicalId().'#']= $cmd->toHtml($_version, $cmdColor);
+		}
+		$replace['#cmdColor#'] = ($this->getPrimaryCategory() == '') ? '' : jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
 		$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getId()));
 		if (is_object($cron)){
 			$Action = cache::byKey('arrosageAuto::Action::'.$this->getId());
@@ -64,28 +64,22 @@ class arrosageAuto extends eqLogic {
 				$Next='Début : ';
 			$Next.=$cron->getNextRunDate();
 		}
-		$cmdColor = ($this->getPrimaryCategory() == '') ? '' : jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
-		$replace_eqLogic = array(
-			'#id#' => $this->getId(),
-			'#background_color#' => $this->getBackgroundColor(jeedom::versionAlias($_version)),
-			'#humanname#' => $this->getHumanName(),
-			'#name#' => $this->getName(),
-			'#height#' => $this->getDisplay('height', 'auto'),
-			'#width#' => $this->getDisplay('width', 'auto'),
-			'#cmdColor#' => $cmdColor,
-			'#Next#' => $Next
-		);
-		foreach ($this->getCmd() as $cmd) {
-			if ($cmd->getDisplay('hideOn' . $version) == 1)
-				continue;
-			$replace_eqLogic['#'.$cmd->getLogicalId().'#']= $cmd->toHtml($_version, $cmdColor);
+		$replace['#Next#'] = $Next;
+		if ($_version == 'dview' || $_version == 'mview') {
+			$object = $this->getObject();
+			$replace['#name#'] = (is_object($object)) ? $object->getName() . ' - ' . $replace['#name#'] : $replace['#name#'];
 		}
-		return $this->postToHtml($_version, template_replace($replace_eqLogic, getTemplate('core', jeedom::versionAlias($version), 'eqLogic', 'arrosageAuto')));
-	}
+      		return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'eqLogic', 'arrosageAuto')));
+  	}
 	public static $_widgetPossibility = array('custom' => array(
 	        'visibility' => true,
 	        'displayName' => true,
+	        'displayObjectName' => true,
 	        'optionalParameters' => true,
+	        'background-color' => true,
+	        'text-color' => true,
+	        'border' => true,
+	        'border-radius' => true
 	));
 	public function postSave() {
 		$isArmed=self::AddCommande($this,"État activation","isArmed","info","binary",false,'lock');
