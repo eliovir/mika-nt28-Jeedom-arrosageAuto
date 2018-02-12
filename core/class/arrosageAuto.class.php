@@ -160,7 +160,10 @@ class arrosageAuto extends eqLogic {
 				$NbProgramation++;
 		}
 		$QtsEau=$QtsEau/$NbProgramation;
-		return round(($QtsEau-$plui)*3600/$this->CalculPluviometrie());
+		$Pluviometrie=$this->CalculPluviometrie();
+		if($Pluviometrie == 0)
+			retrun 0;
+		return round(($QtsEau-$plui)*3600/$Pluviometrie);
 	}
 	public function ExecuteAction($Type) {
 		foreach($this->getConfiguration('action') as $cmd){
