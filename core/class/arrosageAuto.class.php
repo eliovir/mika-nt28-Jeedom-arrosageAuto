@@ -160,7 +160,10 @@ class arrosageAuto extends eqLogic {
 				$NbProgramation++;
 		}
 		$QtsEau=$QtsEau/$NbProgramation;
-		return round(($QtsEau-$plui)*3600/$this->CalculPluviometrie());
+		$Pluviometrie=$this->CalculPluviometrie();
+		if($Pluviometrie == 0)
+			return $Pluviometrie;
+		return round(($QtsEau-$plui)*3600/$Pluviometrie);
 	}
 	public function ExecuteAction($Type) {
 		foreach($this->getConfiguration('action') as $cmd){
@@ -303,7 +306,7 @@ class arrosageAuto extends eqLogic {
 			return false;*/
 		return $nextTime;
 	}
-	private function CalculPluviometrie(){
+	public function CalculPluviometrie(){
 		switch($this->getConfiguration('programation')){
 			case'gouteAgoute':
 				$Debit = 10000 * $this->getConfiguration('DebitGoutteur');
