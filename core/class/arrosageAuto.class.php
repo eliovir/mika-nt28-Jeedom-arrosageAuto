@@ -306,7 +306,7 @@ class arrosageAuto extends eqLogic {
 			return false;*/
 		return $nextTime;
 	}
-	private function CalculPluviometrie(){
+	public function CalculPluviometrie(){
 		switch($this->getConfiguration('programation')){
 			case'gouteAgoute':
 				$Debit = 10000 * $this->getConfiguration('DebitGoutteur');
