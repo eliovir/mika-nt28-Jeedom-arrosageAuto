@@ -162,7 +162,7 @@ class arrosageAuto extends eqLogic {
 		$QtsEau=$QtsEau/$NbProgramation;
 		$Pluviometrie=$this->CalculPluviometrie();
 		if($Pluviometrie == 0)
-			retrun 0;
+			retrun $Pluviometrie;
 		return round(($QtsEau-$plui)*3600/$Pluviometrie);
 	}
 	public function ExecuteAction($Type) {
