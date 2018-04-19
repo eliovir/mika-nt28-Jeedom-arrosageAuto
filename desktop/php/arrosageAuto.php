@@ -41,23 +41,16 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 			</div>
 		</div>
 		<legend>{{Mes Zones}}</legend>
+		<input class="form-control" placeholder="{{Rechercher}}" style="margin-bottom:4px;" id="in_searchEqlogic" />
 		<div class="eqLogicThumbnailContainer">
 			<?php
 				foreach ($eqLogics as $eqLogic) {
-					$opacity = '';
-					if ($eqLogic->getIsEnable() != 1) {
-						$opacity = '
-						-webkit-filter: grayscale(100%);
-						-moz-filter: grayscale(100);
-						-o-filter: grayscale(100%);
-						-ms-filter: grayscale(100%);
-						filter: grayscale(100%); opacity: 0.35;';
-					}
+					$opacity = ($eqLogic->getIsEnable()) ? '' : jeedom::getConfiguration('eqLogic:style:noactive');
 					echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" style="background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;' . $opacity . '" >';
 					echo "<center>";
 					echo '<img src="plugins/arrosageAuto/plugin_info/arrosageAuto_icon.png" height="105" width="95" />';
 					echo "</center>";
-					echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>' . $eqLogic->getHumanName(true, true) . '</center></span>';
+					echo '<span class="name" style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>' . $eqLogic->getHumanName(true, true) . '</center></span>';
 					echo '</div>';
 				}
 			?>
@@ -84,15 +77,15 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 			</li>
 			<li role="presentation" class="">
 				<a href="#programationtab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-					<i class="fa fa-map"></i> {{Programation}}</a>
+					<i class="fa fa-calendar"></i> {{Programation}}</a>
 			</li>
 			<li role="presentation" class="">
 				<a href="#conditiontab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-					<i class="fa fa-map"></i> {{Conditions}}</a>
+					<i class="fa fa-asterisk"></i> {{Conditions}}</a>
 			</li>
 			<li role="presentation" class="">
 				<a href="#actiontab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-					<i class="fa fa-map"></i> {{Actions}}</a>
+					<i class="fa fa-list-alt"></i> {{Actions}}</a>
 			</li>
 		</ul>
 			<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
