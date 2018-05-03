@@ -82,20 +82,24 @@ class arrosageAuto extends eqLogic {
 	        'border-radius' => true
 	));
 	public function postSave() {
-		$isArmed=self::AddCommande($this,"État activation","isArmed","info","binary",false,'lock');
+		$isArmed=$this->AddCommande("État activation","isArmed","info","binary",false,'lock');
 		$isArmed->event(true);
 		$isArmed->setCollectDate(date('Y-m-d H:i:s'));
 		$isArmed->save();
-		$Armed=self::AddCommande($this,"Activer","armed","action","other",true,'lock');
+		$Armed=$this->AddCommande("Activer","armed","action","other",true,'lock');
 		$Armed->setValue($isArmed->getId());
 		$Armed->setConfiguration('state', '1');
 		$Armed->setConfiguration('armed', '1');
 		$Armed->save();
-		$Released=self::AddCommande($this,"Désactiver","released","action","other",true,'lock');
+		$Released=$this->AddCommande(,"Désactiver","released","action","other",true,'lock');
 		$Released->setValue($isArmed->getId());
-		$Released->save();
 		$Released->setConfiguration('state', '0');
 		$Released->setConfiguration('armed', '1');
+		$Released->save();
+		$Coef=$this->AddCommande("Coefficient","coefficient","info","numeric",false);
+		$regCoefficient=$this->AddCommande("Réglage coefficient","regCoefficient","action","slider",true);
+		$regCoefficient->setValue($Coef->getId());
+		$regCoefficient->save();
 		self::deamon_stop();
 	}
 	public function postRemove() {
@@ -163,7 +167,22 @@ class arrosageAuto extends eqLogic {
 		$Pluviometrie=$this->CalculPluviometrie();
 		if($Pluviometrie == 0)
 			return $Pluviometrie;
-		return round(($QtsEau-$plui)*3600/$Pluviometrie);
+		return $this->Ratio(($QtsEau-$plui)*3600/$Pluviometrie);
+	}
+	public function Ratio($Value){
+		$cmd=$this->getCmd(null, 'coefficient');
+		if(!is_object($cmd))
+			return $Value;
+		$min=$cmd->getConfiguration('minValue');
+		$max=$cmd->getConfiguration('maxValue');
+		if($min == '' && $max == '')
+			return $Value;
+		if($min == '')
+			$min=0;
+		if($max == '')
+			$max=300;
+		return round(($Value/100)*($max-$min)+$min);
+		
 	}
 	public function ExecuteAction($Type) {
 		foreach($this->getConfiguration('action') as $cmd){
@@ -338,7 +357,7 @@ class arrosageAuto extends eqLogic {
 		}
 		return $nextTime;
 	}
-	public static function AddCommande($eqLogic,$Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Template='') {
+	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Template='') {
 		$Commande = $eqLogic->getCmd(null,$_logicalId);
 		if (!is_object($Commande))
 		{
@@ -347,7 +366,7 @@ class arrosageAuto extends eqLogic {
 			$Commande->setName($Name);
 			$Commande->setIsVisible($visible);
 			$Commande->setLogicalId($_logicalId);
-			$Commande->setEqLogic_id($eqLogic->getId());
+			$Commande->setEqLogic_id($this->getId());
 			$Commande->setType($Type);
 			$Commande->setSubType($SubType);
 		}
