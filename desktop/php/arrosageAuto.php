@@ -235,8 +235,8 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 						<thead>
 							<tr>
 								<th></th>
-								<th>Jour actif</th>
-								<th>Heure</th>
+								<th>{{Jour actif}}</th>
+								<th>{{Heure}}</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -260,8 +260,8 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 						<thead>
 							<tr>
 								<th></th>
-								<th>Condition</th>
-								<th>Paramètre d'évaluation</th>
+								<th>{{Condition}}</th>
+								<th>{{Paramètre d'évaluation}}</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -286,9 +286,9 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 						<thead>
 							<tr>
 								<th></th>
-								<th>Action</th>
-								<th>Valeur</th>
-								<th>Exécution</th>
+								<th>{{Action}}</th>
+								<th>{{Valeur}}</th>
+								<th>{{Exécution}}</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -298,8 +298,9 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 					<table id="table_cmd" class="table table-bordered table-condensed">
 					    <thead>
 						<tr>
-						    <th>Nom</th>
-						    <th>Paramètre</th>
+						    <th>{{Nom}}</th>
+						    <th>{{Paramètre}}</th>
+						    <th></th>
 						</tr>
 					    </thead>
 					    <tbody></tbody>
