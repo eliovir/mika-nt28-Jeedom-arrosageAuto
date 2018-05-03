@@ -371,6 +371,9 @@ function addCmdToTable(_cmd) {
 				.append($('<sup>')
 					.append($('<i class="fa fa-question-circle tooltips" style="font-size : 1em;color:grey;">')
 					.attr('title','Souhaitez-vous afficher cette commande sur le dashboard ?'))))));
+	parmetre.append($('<div>')
+		.append($('<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="minValue" placeholder="{{Min}}" title="{{Min}}" >'))
+		.append($('<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="maxValue" placeholder="{{Max}}" title="{{Max}}" >')));
 	tr.append(parmetre);
 	$('#table_cmd tbody').append(tr);
 	$('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');
