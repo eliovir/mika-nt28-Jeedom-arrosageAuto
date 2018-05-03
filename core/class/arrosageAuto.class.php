@@ -91,7 +91,7 @@ class arrosageAuto extends eqLogic {
 		$Armed->setConfiguration('state', '1');
 		$Armed->setConfiguration('armed', '1');
 		$Armed->save();
-		$Released=$this->AddCommande(,"Désactiver","released","action","other",true,'lock');
+		$Released=$this->AddCommande("Désactiver","released","action","other",true,'lock');
 		$Released->setValue($isArmed->getId());
 		$Released->setConfiguration('state', '0');
 		$Released->setConfiguration('armed', '1');
