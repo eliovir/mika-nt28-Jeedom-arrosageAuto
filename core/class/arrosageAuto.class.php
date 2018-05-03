@@ -358,7 +358,7 @@ class arrosageAuto extends eqLogic {
 		return $nextTime;
 	}
 	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Template='') {
-		$Commande = $eqLogic->getCmd(null,$_logicalId);
+		$Commande = $this->getCmd(null,$_logicalId);
 		if (!is_object($Commande))
 		{
 			$Commande = new arrosageAutoCmd();
