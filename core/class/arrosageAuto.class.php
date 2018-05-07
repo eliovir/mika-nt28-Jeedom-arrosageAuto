@@ -1,6 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-class arrosageAuto extends eqLogic {
+class arrosageAuto extends eqLogic {	
 	public function toHtml($_version = 'dashboard') {
 		$replace = $this->preToHtml($_version);
 		if (!is_array($replace)) 
@@ -8,13 +8,13 @@ class arrosageAuto extends eqLogic {
 		$version = jeedom::versionAlias($_version);
 		if ($this->getDisplay('hideOn' . $version) == 1)
 			return '';
-		$Next='';
 		foreach ($this->getCmd() as $cmd) {
 			if ($cmd->getDisplay('hideOn' . $version) == 1)
 				continue;
 			$replace['#'.$cmd->getLogicalId().'#']= $cmd->toHtml($_version, $cmdColor);
 		}
-		$replace['#cmdColor#']($this->getPrimaryCategory() == '') ? '' : jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
+		$replace['#cmdColor#'] = ($this->getPrimaryCategory() == '') ? '' : jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
+		$PowerTime=$this->EvaluatePowerTime();		
 		$NextProg=$this->NextProg();
 		$replace['#NextStart#'] = date('d/m/Y H:i',$NextProg-$PowerTime);
 		$replace['#NextStop#'] = date('d/m/Y H:i',$NextProg);
