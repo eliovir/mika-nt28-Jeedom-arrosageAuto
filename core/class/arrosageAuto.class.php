@@ -55,10 +55,10 @@ class arrosageAuto extends eqLogic {
 		$replace['#cmdColor#'] = ($this->getPrimaryCategory() == '') ? '' : jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
 		$NextProg=$this->NextProg();
 		$replace['#NextStart#'] = date('d/m/Y H:i',$NextProg);
-		if($plui=$zone->CheckMeteo() === false)		
+		if($plui=$this->CheckMeteo() === false)		
 			$replace['#NextStop#'] = 'Météo incompatible';
 		else{
-			$PowerTime=$zone->EvaluateTime($plui);	
+			$PowerTime=$this->EvaluateTime($plui);	
 			$replace['#NextStop#'] = date('d/m/Y H:i',$NextProg+$PowerTime);
 		}
 		if ($_version == 'dview' || $_version == 'mview') {
