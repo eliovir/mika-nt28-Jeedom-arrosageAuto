@@ -27,7 +27,7 @@ class arrosageAuto extends eqLogic {
 			return;
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
-				$Time=$zone->NextStart();
+				$Time=$zone->NextProg();
 				$Schedule=$zone->TimeToShedule($Time);
 				$zone->CreateCron($Schedule);
 			}
@@ -96,7 +96,7 @@ class arrosageAuto extends eqLogic {
 		$regCoefficient=$this->AddCommande("Réglage coefficient","regCoefficient","action","slider",true);
 		$regCoefficient->setValue($Coef->getId());
 		$regCoefficient->save();
-		$Time=$this->NextStart();
+		$Time=$this->NextProg();
 		$Schedule=$this->TimeToShedule($Time);
 		$this->CreateCron($Schedule);
 	}
@@ -292,7 +292,7 @@ class arrosageAuto extends eqLogic {
 			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $zone->getId()));
 			if (is_object($cron)){
 				$Time=$zone->EvaluateTime();
-				$nextStart=$zone->NextStart();
+				$nextStart=$zone->NextProg();
 				$nextStop=$nextStart+$Time;
 				if($nextStart>$nextTime && $nextStop<$nextTime)
 					$DebitGiclers+=$zone->getConfiguration('DebitGicler');
@@ -315,7 +315,7 @@ class arrosageAuto extends eqLogic {
 			return 15;
 		 }
 	}
-	public function NextStart(){
+	public function NextProg(){
 		$nextTime=null;
 		foreach($this->getConfiguration('programation') as $ConigSchedule){
 			$offset=0;
