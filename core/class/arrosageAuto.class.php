@@ -1,6 +1,45 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class arrosageAuto extends eqLogic {	
+	public static function deamon_info() {
+		$return = array();
+		$return['log'] = 'arrosageAuto';
+		$return['launchable'] = 'ok';
+		$return['state'] = 'ok';
+		foreach(eqLogic::byType('arrosageAuto') as $zone){
+			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
+				$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
+				if (!is_object($cron)) 	{	
+					$return['state'] = 'nok';
+					return $return;
+				}
+			}
+		}
+		return $return;
+	}
+	public static function deamon_start($_debug = false) {
+		log::remove('arrosageAuto');
+		self::deamon_stop();
+		$deamon_info = self::deamon_info();
+		if ($deamon_info['launchable'] != 'ok') 
+			return;
+		if ($deamon_info['state'] == 'ok') 
+			return;
+		foreach(eqLogic::byType('arrosageAuto') as $zone){
+			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
+				$Time=$zone->NextStart();
+				$Schedule=$zone->TimeToShedule($Time);
+				$zone->CreateCron($Schedule);
+			}
+		}
+	}
+	public static function deamon_stop() {	
+		foreach(eqLogic::byType('arrosageAuto') as $zone){
+			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
+			if (is_object($cron)) 	
+				$cron->remove();
+		}
+	}
 	public function toHtml($_version = 'dashboard') {
 		$replace = $this->preToHtml($_version);
 		if (!is_array($replace)) 
@@ -14,10 +53,14 @@ class arrosageAuto extends eqLogic {
 			$replace['#'.$cmd->getLogicalId().'#']= $cmd->toHtml($_version, $cmdColor);
 		}
 		$replace['#cmdColor#'] = ($this->getPrimaryCategory() == '') ? '' : jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
-		$PowerTime=$this->EvaluatePowerTime();		
 		$NextProg=$this->NextProg();
-		$replace['#NextStart#'] = date('d/m/Y H:i',$NextProg-$PowerTime);
-		$replace['#NextStop#'] = date('d/m/Y H:i',$NextProg);
+		$replace['#NextStart#'] = date('d/m/Y H:i',$NextProg);
+		if($plui=$zone->CheckMeteo() === false)		
+			$replace['#NextStop#'] = 'Météo incompatible';
+		else{
+			$PowerTime=$zone->EvaluateTime($plui);	
+			$replace['#NextStop#'] = date('d/m/Y H:i',$NextProg+$PowerTime);
+		}
 		if ($_version == 'dview' || $_version == 'mview') {
 			$object = $this->getObject();
 			$replace['#name#'] = (is_object($object)) ? $object->getName() . ' - ' . $replace['#name#'] : $replace['#name#'];
@@ -53,41 +96,49 @@ class arrosageAuto extends eqLogic {
 		$regCoefficient=$this->AddCommande("Réglage coefficient","regCoefficient","action","slider",true);
 		$regCoefficient->setValue($Coef->getId());
 		$regCoefficient->save();
+		$Time=$this->NextStart();
+		$Schedule=$this->TimeToShedule($Time);
+		$this->CreateCron($Schedule);
 	}
-	public static function cron() {	
-		foreach(eqLogic::byType('arrosageAuto') as $zone){
-			if (!$ChauffeEau->getIsEnable()) 
-				return
-			$NextProg=$zone->NextProg();
-			if($NextProg != null){
-				$PowerTime=$zone->EvaluatePowerTime();
-				if(mktime() > $NextProg-$PowerTime+60){	//Heure actuel > Heure de dispo - Temps de chauffe + Pas d'integration
-					if(mktime() > $NextProg){
-						log::add('arrosageAuto','debug',$zone->getHumanName().' : Temps supperieur a l\'heure programmée');
-						$zone->ExecuteAction('stop');
-						break;
-					}
-					if(!$zone->getCmd(null,'isArmed')->execCmd()){
-						log::add('arrosageAuto','info','La zone est desactivée');
-						exit;
-					}
-					if(!$zone->EvaluateCondition()){
-						log::add('arrosageAuto','info','Les conditions ne sont pas evaluées');
-						exit;
-					}
-					if($plui=$zone->CheckMeteo() === false){
-						log::add('arrosageAuto','info','La météo n\'est pas idéale pour l\'arrosage');
-						exit;
-					}
-					$zone->ExecuteAction('start');
-					$PowerTime=$zone->EvaluateTime($plui);
-					log::add('arrosageAuto','info','Estimation du temps d\'activation '.$PowerTime.'s');
-					sleep($PowerTime);
-					$zone->ExecuteAction('stop');
-							
-				}else
-					$zone->ExecuteAction('stop');
-			}		   
+	public function preRemove() {
+		$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $this->getId()));
+		if (is_object($cron)) 	
+			$cron->remove();
+	}
+	public function CreateCron($Schedule) {
+		log::add('arrosageAuto','debug','Création du cron  ID = '.$this->getId().' --> '.$Schedule);
+		$cron = cron::byClassAndFunction('arrosageAuto', "pull" ,array('id' => $this->getId()));
+		if (!is_object($cron)) 
+			$cron = new cron();
+		$cron->setClass('arrosageAuto');
+		$cron->setFunction("pull");
+		$options['id']= $this->getId();
+		$cron->setOption($options);
+		$cron->setEnable(1);
+		$cron->setSchedule($Schedule);
+		$cron->save();
+		return $cron;
+	}
+	public static function pull($_option){
+		$zone=eqLogic::byId($_option['id']);
+		if(is_object($zone)){			
+			if(!$zone->getCmd(null,'isArmed')->execCmd()){
+				log::add('arrosageAuto','info','La zone est desactivée');
+				exit;
+			}
+			if(!$zone->EvaluateCondition()){
+				log::add('arrosageAuto','info','Les conditions ne sont pas evaluées');
+				exit;
+			}
+			if($plui=$zone->CheckMeteo() === false){
+				log::add('arrosageAuto','info','La météo n\'est pas idéale pour l\'arrosage');
+				exit;
+			}
+			$zone->ExecuteAction('start');
+			$PowerTime=$zone->EvaluateTime($plui);
+			log::add('arrosageAuto','info','Estimation du temps d\'activation '.$PowerTime.'s');
+			sleep($PowerTime);
+			$zone->ExecuteAction('stop');
 		}
 	}
 	public function TimeToShedule($Time) {
