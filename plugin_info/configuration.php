@@ -64,6 +64,12 @@
 						</div>
 						<input type="text" class="configKey"  data-l1key="humidity" />
 					</div>
+				</div>				
+				<div class="form-group">
+					<label class="col-lg-5 control-label">{{Précipitation de la veille}}</label>
+					<div class="col-lg-6">
+						<input type="text" class="configKey"  data-l1key="cmdPrecipitation" />
+					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-lg-5 control-label">{{Débit de l'arrivée d'eau}}</label>
