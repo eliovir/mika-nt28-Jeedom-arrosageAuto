@@ -11,7 +11,7 @@
 		<form class="form-horizontal">
 			<fieldset>
 				<div class="form-group">
-					<label class="col-lg-5 control-label">{{Météo}}</label>
+					<label class="col-lg-5 control-label">{{Météo - Déprecier}}</label>
 					<div class="col-lg-6">
 						<div class="input-group">
 							<input class="configKey form-control input-sm" data-l1key="meteo"/>
@@ -26,18 +26,42 @@
 				<div class="form-group">
 					<label class="col-lg-5 control-label">{{Maximum de la probabilité de précipitation (%)}}</label>
 					<div class="col-lg-6">
+						<div class="input-group">
+							<input class="configKey form-control input-sm" data-l1key="cmdPrecipProbability"/>
+							<span class="input-group-btn">
+								<a class="btn btn-success btn-sm listEqLogicAction">
+									<i class="fa fa-list-alt"></i>
+								</a>
+							</span>
+						</div>
 						<input type="text" class="configKey"  data-l1key="precipProbability" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-lg-5 control-label">{{Vitesse du vent maximum (km/h)}}</label>
 					<div class="col-lg-6">
+						<div class="input-group">
+							<input class="configKey form-control input-sm" data-l1key="cmdWindSpeed"/>
+							<span class="input-group-btn">
+								<a class="btn btn-success btn-sm listEqLogicAction">
+									<i class="fa fa-list-alt"></i>
+								</a>
+							</span>
+						</div>
 						<input type="text" class="configKey"  data-l1key="windSpeed" />
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-lg-5 control-label">{{Humidité maximum (%)}}</label>
 					<div class="col-lg-6">
+						<div class="input-group">
+							<input class="configKey form-control input-sm" data-l1key="cmdHumidity"/>
+							<span class="input-group-btn">
+								<a class="btn btn-success btn-sm listEqLogicAction">
+									<i class="fa fa-list-alt"></i>
+								</a>
+							</span>
+						</div>
 						<input type="text" class="configKey"  data-l1key="humidity" />
 					</div>
 				</div>
