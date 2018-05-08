@@ -199,16 +199,29 @@ class arrosageAuto extends eqLogic {
 		}
 	}
 	public function CheckMeteo(){
-		log::add('arrosageAuto','debug',$this->getHumanName().' : Probabilité de précipitation '.$this->getMeteoParameter('precipProbability').' >'. config::byKey('precipProbability','arrosageAuto').' ?');
-		if($this->getMeteoParameter('precipProbability')>config::byKey('precipProbability','arrosageAuto'))
+		$precipProbability= jeedom::evaluateExpression(config::byKey('cmdPrecipProbability','arrosageAuto'));
+		if($precipProbability == '')
+			$precipProbability=$this->getMeteoParameter('precipProbability');
+		log::add('arrosageAuto','debug',$this->getHumanName().' : Probabilité de précipitation '.$precipProbability.' >'. config::byKey('precipProbability','arrosageAuto').' ?');
+		if($precipProbability > config::byKey('precipProbability','arrosageAuto'))
 			return false;
-		log::add('arrosageAuto','debug',$this->getHumanName().' : Vitesse du vent '.$this->getMeteoParameter('windSpeed').' > '.config::byKey('windSpeed','arrosageAuto').' ?');
-		if($this->getMeteoParameter('windSpeed')>config::byKey('windSpeed','arrosageAuto'))
+		$windSpeed= jeedom::evaluateExpression(config::byKey('cmdWindSpeed','arrosageAuto'));
+		if($windSpeed == '')
+			$windSpeed=$this->getMeteoParameter('windSpeed');
+		log::add('arrosageAuto','debug',$this->getHumanName().' : Vitesse du vent '.$windSpeed.' > '.config::byKey('windSpeed','arrosageAuto').' ?');
+		if($windSpeed > config::byKey('windSpeed','arrosageAuto'))
 			return false;
-		log::add('arrosageAuto','debug',$this->getHumanName().' : Humidité '.$this->getMeteoParameter('humidity').' > '.config::byKey('humidity','arrosageAuto').'?');
-		if($this->getMeteoParameter('humidity')>config::byKey('humidity','arrosageAuto'))
+		$humidity= jeedom::evaluateExpression(config::byKey('cmdHumidity','arrosageAuto'));
+		if($humidity == '')
+			$humidity=$this->getMeteoParameter('humidity');
+		log::add('arrosageAuto','debug',$this->getHumanName().' : Humidité '.$humidity.' > '.config::byKey('humidity','arrosageAuto').'?');
+		if( $humidity >config::byKey('humidity','arrosageAuto'))
 			return false;
-		return $this->getMeteoParameter('precipIntensity');
+		$Precipitation= jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto'));
+		if($Precipitation == '')
+			$Precipitation=$this->getMeteoParameter('precipIntensity');
+		log::add('arrosageAuto','debug',$this->getHumanName().' : Precipitation a retirer de l\'arrosage '.$Precipitation);
+		return $Precipitation;
 	}
 	public function getMeteoParameter($search){
       		$meteo=config::byKey('meteo','arrosageAuto');
