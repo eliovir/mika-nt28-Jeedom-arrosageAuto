@@ -6,7 +6,7 @@ $('.bt_showExpressionTest').off('click').on('click', function () {
   $('#md_modal').dialog({title: "{{Testeur d'expression}}"});
   $("#md_modal").load('index.php?v=d&modal=expression.test').dialog('open');
 });
-$('#bt_healthArrosageAuto').on('click', function () {
+$('#bt_healthArrosageAuto').off('click').on('click', function () {
 	$('#md_modal').dialog({title: "{{Santé des zones d'arrosage}}"});
 	$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=health').dialog('open');
 });
