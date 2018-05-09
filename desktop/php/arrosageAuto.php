@@ -206,6 +206,16 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 											</select>
 										</div>
 									</div>
+									<div class="form-group ">
+										<label class="col-sm-2 control-label">{{Sup}}
+											<sup>
+												<i class="fa fa-question-circle tooltips" title="Indiquer la supericiel de la zone" style="font-size : 1em;color:grey;"></i>
+											</sup>
+										</label>
+										<div class="col-sm-5">
+											<input type="text" class="eqLogicAttr form-control" data-l1key="superficie" placeholder="{{Superficie de la zone}}"/>
+										</div>
+									</div>
 									<div class="form-group TypeCalcul">
 									</div>
 									<!--div class="form-group">
