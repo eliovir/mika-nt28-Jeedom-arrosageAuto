@@ -6,6 +6,10 @@ $('.bt_showExpressionTest').off('click').on('click', function () {
   $('#md_modal').dialog({title: "{{Testeur d'expression}}"});
   $("#md_modal").load('index.php?v=d&modal=expression.test').dialog('open');
 });
+$('#bt_healthArrosageAuto').off('click').on('click', function () {
+	$('#md_modal').dialog({title: "{{Santé des zones d'arrosage}}"});
+	$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=health').dialog('open');
+});
 $('body').on('click','.eqLogicAttr[data-l1key=configuration][data-l2key=TypeGicler]',function(){
 	var div=$(this).closest('fieldset').find('.TypeCalcul');
 	div.html('');

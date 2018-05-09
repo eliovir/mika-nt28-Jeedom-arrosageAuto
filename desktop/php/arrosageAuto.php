@@ -32,12 +32,19 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 			      		<i class="fa fa-wrench" style="font-size : 5em;color:#767676;"></i>
 			    	</center>
 			    	<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>Configuration</center></span>
+
 			</div>
 			<div class="cursor bt_showExpressionTest" style="height: 120px; margin-bottom: 10px; padding: 5px; border-radius: 2px; width: 160px; margin-left: 10px; position: absolute; left: 170px; top: 0px; background-color: rgb(255, 255, 255);">
 				<center>
 			      		<i class="fa fa-check" style="font-size : 5em;color:#767676;"></i>
 			    	</center>
 			    	<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>Configuration</center></span>
+			</div>
+			<div class="cursor" id="bt_healthArrosageAuto" style="background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
+				<center>
+					<i class="fa fa-medkit" style="font-size : 6em;color:#767676;"></i>
+				</center>
+				<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Santé}}</center></span>
 			</div>
 		</div>
 		<legend>{{Mes Zones}}</legend>
@@ -197,6 +204,16 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 												<option value="gouteAgoute">{{Goutte à goutte}}</option>
 												<option value="turbine">{{Turbine / Tuyère}}</option>
 											</select>
+										</div>
+									</div>
+									<div class="form-group ">
+										<label class="col-sm-2 control-label">{{Superficie}}
+											<sup>
+												<i class="fa fa-question-circle tooltips" title="Indiquer la supericiel de la zone" style="font-size : 1em;color:grey;"></i>
+											</sup>
+										</label>
+										<div class="col-sm-5">
+											<input type="text" class="eqLogicAttr form-control" data-l1key="superficie" placeholder="{{Superficie de la zone}}"/>
 										</div>
 									</div>
 									<div class="form-group TypeCalcul">
