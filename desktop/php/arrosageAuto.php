@@ -207,7 +207,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 										</div>
 									</div>
 									<div class="form-group ">
-										<label class="col-sm-2 control-label">{{Sup}}
+										<label class="col-sm-2 control-label">{{Superficie}}
 											<sup>
 												<i class="fa fa-question-circle tooltips" title="Indiquer la supericiel de la zone" style="font-size : 1em;color:grey;"></i>
 											</sup>
