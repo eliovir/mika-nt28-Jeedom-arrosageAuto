@@ -93,7 +93,7 @@ class arrosageAuto extends eqLogic {
 		$Released->setConfiguration('armed', '1');
 		$Released->save();
 		$Coef=$this->AddCommande("Coefficient","coefficient","info","numeric",false);
-		$regCoefficient=$this->AddCommande("Réglage coefficient","regCoefficient","action","slider",true);
+		$regCoefficient=$this->AddCommande("Réglage coefficient","regCoefficient","action","slider",true,'coefArros');
 		$regCoefficient->setValue($Coef->getId());
 		$regCoefficient->save();
 		$Time=$this->NextProg();
