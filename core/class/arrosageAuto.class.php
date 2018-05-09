@@ -160,7 +160,7 @@ class arrosageAuto extends eqLogic {
 		$Pluviometrie=$this->CalculPluviometrie();
 		if($Pluviometrie == 0)
 			return $Pluviometrie;
-		return $this->Ratio(($QtsEau-$plui)*3600/$Pluviometrie);
+		return $this->Ratio((($QtsEau-$plui)*3600/$Pluviometrie)*$this->getConfiguration('superficie');
 	}
 	public function Ratio($Value){
 		$cmd=$this->getCmd(null, 'coefficient');
