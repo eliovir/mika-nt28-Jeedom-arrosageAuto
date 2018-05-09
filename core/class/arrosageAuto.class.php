@@ -200,78 +200,20 @@ class arrosageAuto extends eqLogic {
 	}
 	public function CheckMeteo(){
 		$precipProbability= jeedom::evaluateExpression(config::byKey('cmdPrecipProbability','arrosageAuto'));
-		if($precipProbability == '')
-			$precipProbability=$this->getMeteoParameter('precipProbability');
 		log::add('arrosageAuto','debug',$this->getHumanName().' : Probabilité de précipitation '.$precipProbability.' >'. config::byKey('precipProbability','arrosageAuto').' ?');
 		if($precipProbability > config::byKey('precipProbability','arrosageAuto'))
 			return false;
 		$windSpeed= jeedom::evaluateExpression(config::byKey('cmdWindSpeed','arrosageAuto'));
-		if($windSpeed == '')
-			$windSpeed=$this->getMeteoParameter('windSpeed');
 		log::add('arrosageAuto','debug',$this->getHumanName().' : Vitesse du vent '.$windSpeed.' > '.config::byKey('windSpeed','arrosageAuto').' ?');
 		if($windSpeed > config::byKey('windSpeed','arrosageAuto'))
 			return false;
-		$humidity= jeedom::evaluateExpression(config::byKey('cmdHumidity','arrosageAuto'));
-		if($humidity == '')
-			$humidity=$this->getMeteoParameter('humidity');
+		$humidity= jeedom::evaluateExpression(config::byKey('cmdHumidity','arrosageAuto')
 		log::add('arrosageAuto','debug',$this->getHumanName().' : Humidité '.$humidity.' > '.config::byKey('humidity','arrosageAuto').'?');
 		if( $humidity >config::byKey('humidity','arrosageAuto'))
 			return false;
 		$Precipitation= jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto'));
-		if($Precipitation == '')
-			$Precipitation=$this->getMeteoParameter('precipIntensity');
 		log::add('arrosageAuto','debug',$this->getHumanName().' : Precipitation a retirer de l\'arrosage '.$Precipitation);
 		return $Precipitation;
-	}
-	public function getMeteoParameter($search){
-      		$meteo=config::byKey('meteo','arrosageAuto');
-      		$meteo=str_replace('#','',$meteo);
-      		$meteo=str_replace('eqLogic','',$meteo);
-		$meteo=eqLogic::byId($meteo);
-		if(is_object($meteo)){
-			switch($meteo->getEqType_name()){
-				case 'darksky':
-				case 'forecastio':
-					$plugin=array(
-						'windBearing' => array(
-							'id' =>'windBearing',
-							'nom' =>'Direction du vent'),
-						'windSpeed' => array(
-							'id' =>'windSpeed',
-							'nom' =>'Vitesse du vent'),
-						'humidity' => array(
-							'id' =>'humidity',
-							'nom' =>'Humidité'),
-						'precipIntensity' => array(
-							'id' =>'precipIntensity',
-							'nom' =>'Intensité de précipitation'),
-						'precipProbability' => array(
-							'id' =>'precipProbability',
-							'nom' =>'Probabilité de Précipitation')
-					);
-				break;
-				case 'weather':
-					$plugin=array(
-						'windBearing' => array(
-							'id' =>'wind_direction',
-							'nom' =>'Direction du vent'),
-						'windSpeed' => array(
-							'id' =>'wind_speed',
-							'nom' =>'Vitesse du vent'),
-						'humidity' => array(
-							'id' =>'humidity',
-							'nom' =>'Humidité')
-					);
-				break;
-				default:
-					return 0;
-			}
-			$logicalId=$plugin[$search]['id'];
-			$objet=$meteo->getCmd(null,$logicalId);
-			if(is_object($objet))
-				return $objet->execCmd();
-		}
-		return 0;
 	}
 	public function EvaluateCondition(){
 		foreach($this->getConfiguration('condition') as $condition){
