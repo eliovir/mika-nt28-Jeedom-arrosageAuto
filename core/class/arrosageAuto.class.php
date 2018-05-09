@@ -27,9 +27,7 @@ class arrosageAuto extends eqLogic {
 			return;
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
-				$Time=$zone->NextProg();
-				$Schedule=$zone->TimeToShedule($Time);
-				$zone->CreateCron($Schedule);
+				$zone->NextProg();
 			}
 		}
 	}
@@ -96,9 +94,7 @@ class arrosageAuto extends eqLogic {
 		$regCoefficient=$this->AddCommande("Réglage coefficient","regCoefficient","action","slider",true,'coefArros');
 		$regCoefficient->setValue($Coef->getId());
 		$regCoefficient->save();
-		$Time=$this->NextProg();
-		$Schedule=$this->TimeToShedule($Time);
-		$this->CreateCron($Schedule);
+		$this->NextProg();
 	}
 	public function preRemove() {
 		$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $this->getId()));
@@ -140,11 +136,6 @@ class arrosageAuto extends eqLogic {
 			sleep($PowerTime);
 			$zone->ExecuteAction('stop');
 		}
-	}
-	public function TimeToShedule($Time) {
-		$Shedule = new DateTime();
-		$Shedule->add(new DateInterval('PT'.$Time.'S'));
-		return  $Shedule->format("i H d m w Y");
 	}
 	public function EvaluateTime($plui=0) {
 		$TypeArrosage=config::byKey('configuration','arrosageAuto');
@@ -288,7 +279,7 @@ class arrosageAuto extends eqLogic {
 			if($nextTime == null || $nextTime > $timestamp)
 				$nextTime = $timestamp;
 		}
-		return $nextTime;
+		$this->CreateCron(date('i H d m w Y',$nextTime));
 	}
 	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Template='') {
 		$Commande = $this->getCmd(null,$_logicalId);
@@ -316,12 +307,16 @@ class arrosageAutoCmd extends cmd {
 			switch($this->getLogicalId()){
 				case 'armed':
 					$Listener->event(true);
+					$this->getEqLogic()->NextProg();
 				break;
 				case 'released':
 					$Listener->event(false);
 					$cron = cron::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getEqLogic()->getId()));
 					if (is_object($cron))
 						$cron->remove();
+				break;
+				case 'regCoefficient':
+					$Listener->event($_options['slider']);
 				break;
 			}
 			$Listener->setCollectDate(date('Y-m-d H:i:s'));
