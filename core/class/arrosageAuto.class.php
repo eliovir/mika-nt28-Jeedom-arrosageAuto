@@ -207,12 +207,12 @@ class arrosageAuto extends eqLogic {
 		log::add('arrosageAuto','debug',$this->getHumanName().' : Vitesse du vent '.$windSpeed.' > '.config::byKey('windSpeed','arrosageAuto').' ?');
 		if($windSpeed > config::byKey('windSpeed','arrosageAuto'))
 			return false;
-		$humidity= jeedom::evaluateExpression(config::byKey('cmdHumidity','arrosageAuto')
-		log::add('arrosageAuto','debug',$this->getHumanName().' : Humidité '.$humidity.' > '.config::byKey('humidity','arrosageAuto').'?');
-		if( $humidity >config::byKey('humidity','arrosageAuto'))
+		$humidity= jeedom::evaluateExpression(config::byKey('cmdHumidity','arrosageAuto'));
+		log::add('arrosageAuto','debug',$this->getHumanName().' : Humidité '.$humidity.' > '.config::byKey('humidity','arrosageAuto').' ?');
+		if($humidity > config::byKey('humidity','arrosageAuto'))
 			return false;
 		$Precipitation= jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto'));
-		log::add('arrosageAuto','debug',$this->getHumanName().' : Precipitation a retirer de l\'arrosage '.$Precipitation);
+		log::add('arrosageAuto','debug',$this->getHumanName().' : Precipitation '.$Precipitation);
 		return $Precipitation;
 	}
 	public function EvaluateCondition(){
