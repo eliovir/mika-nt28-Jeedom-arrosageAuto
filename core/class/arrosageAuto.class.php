@@ -27,7 +27,8 @@ class arrosageAuto extends eqLogic {
 			return;
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
-				$zone->NextProg();
+				$nextTime=$zone->NextProg();
+				$zone->CreateCron(date('i H d m w Y',$nextTime));
 			}
 		}
 	}
@@ -94,7 +95,8 @@ class arrosageAuto extends eqLogic {
 		$regCoefficient=$this->AddCommande("Réglage coefficient","regCoefficient","action","slider",true,'coefArros');
 		$regCoefficient->setValue($Coef->getId());
 		$regCoefficient->save();
-		$this->NextProg();
+		$nextTime=$this->NextProg();
+		$this->CreateCron(date('i H d m w Y',$nextTime));
 	}
 	public function preRemove() {
 		$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $this->getId()));
@@ -122,7 +124,7 @@ class arrosageAuto extends eqLogic {
 				log::add('arrosageAuto','info','La zone est desactivée');
 				exit;
 			}
-			if(!$zone->EvaluateCondition()){
+			if(!$zone->CheckCondition()){
 				log::add('arrosageAuto','info','Les conditions ne sont pas evaluées');
 				exit;
 			}
@@ -135,6 +137,8 @@ class arrosageAuto extends eqLogic {
 			log::add('arrosageAuto','info','Estimation du temps d\'activation '.$PowerTime.'s');
 			sleep($PowerTime);
 			$zone->ExecuteAction('stop');
+			$nextTime=$zone->NextProg();
+			$zone->CreateCron(date('i H d m w Y',$nextTime));
 		}
 	}
 	public function EvaluateTime($plui=0) {
@@ -191,45 +195,58 @@ class arrosageAuto extends eqLogic {
 	}
 	public function CheckMeteo(){
 		$precipProbability= jeedom::evaluateExpression(config::byKey('cmdPrecipProbability','arrosageAuto'));
-		log::add('arrosageAuto','debug',$this->getHumanName().' : Probabilité de précipitation '.$precipProbability.' >'. config::byKey('precipProbability','arrosageAuto').' ?');
-		if($precipProbability > config::byKey('precipProbability','arrosageAuto'))
+		$result=$this->EvaluateCondition($precipProbability.' >'. config::byKey('precipProbability','arrosageAuto'));
+		if(!$result){
+			log::add('arrosageAuto','info',$this->getHumanName().' : La probalité de précipitation est trop important');
 			return false;
+		}
 		$windSpeed= jeedom::evaluateExpression(config::byKey('cmdWindSpeed','arrosageAuto'));
-		log::add('arrosageAuto','debug',$this->getHumanName().' : Vitesse du vent '.$windSpeed.' > '.config::byKey('windSpeed','arrosageAuto').' ?');
-		if($windSpeed > config::byKey('windSpeed','arrosageAuto'))
+		$result=$this->EvaluateCondition($windSpeed.' >'. config::byKey('windSpeed','arrosageAuto'));
+		if(!$result){
+			log::add('arrosageAuto','info',$this->getHumanName().' : Il y a trop de vent pour arroser');
 			return false;
+		}
 		$humidity= jeedom::evaluateExpression(config::byKey('cmdHumidity','arrosageAuto'));
-		log::add('arrosageAuto','debug',$this->getHumanName().' : Humidité '.$humidity.' > '.config::byKey('humidity','arrosageAuto').' ?');
-		if($humidity > config::byKey('humidity','arrosageAuto'))
+		$result=$this->EvaluateCondition($humidity.' >'. config::byKey('humidity','arrosageAuto'));
+		if(!$result){
+			log::add('arrosageAuto','info',$this->getHumanName().' : Il y a suffisament d\'humidié, pas besoin d\'arroser');
 			return false;
+		}
 		$Precipitation= jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto'));
 		log::add('arrosageAuto','debug',$this->getHumanName().' : Precipitation '.$Precipitation);
 		return $Precipitation;
 	}
-	public function EvaluateCondition(){
-		foreach($this->getConfiguration('condition') as $condition){
-			if (isset($condition['enable']) && $condition['enable'] == 0)
+	public function CheckCondition(){
+		foreach($this->getConfiguration('condition') as $Condition){
+			if (isset($Condition['enable']) && $Condition['enable'] == 0)
 				continue;
-			$_scenario = null;
-			$expression = scenarioExpression::setTags($condition['expression'], $_scenario, true);
-			$message = __('Évaluation de la condition : [', __FILE__) . trim($expression) . '] = ';
-			$result = evaluate($expression);
-			if (is_bool($result)) {
-				if ($result) {
-					$message .= __('Vrai', __FILE__);
-				} else {
-					$message .= __('Faux', __FILE__);
-				}
-			} else {
-				$message .= $result;
-			}
-			log::add('arrosageAuto','info',$this->getHumanName().' : '.$message);
+			$result=$this->EvaluateCondition($Condition['expression']);
 			if(!$result){
 				log::add('arrosageAuto','info',$this->getHumanName().' : Les conditions ne sont pas remplies');
 				return false;
 			}
 		}
 		log::add('arrosageAuto','info',$this->getHumanName().' : Les conditions sont remplies');
+		return true;
+	}
+	public function boolToText($value){
+		if (is_bool($value)) {
+			if ($value) 
+				return __('Vrai', __FILE__);
+			else 
+				return __('Faux', __FILE__);
+		} else 
+			return $value;
+	}
+	public function EvaluateCondition($Condition){
+		$_scenario = null;
+		$expression = scenarioExpression::setTags($Condition, $_scenario, true);
+		$message = __('Evaluation de la condition : ['.$Condition.'][', __FILE__) . trim($expression) . '] = ';
+		$result = evaluate($expression);
+		$message .=$this->boolToText($result);
+		log::add('arrosageAuto','info',$this->getHumanName().' : '.$message);
+		if(!$result)
+			return false;		
 		return true;
 	}
 	public function CheckPompe($nextTime){
@@ -279,7 +296,7 @@ class arrosageAuto extends eqLogic {
 			if($nextTime == null || $nextTime > $timestamp)
 				$nextTime = $timestamp;
 		}
-		$this->CreateCron(date('i H d m w Y',$nextTime));
+		return $nextTime;
 	}
 	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Template='') {
 		$Commande = $this->getCmd(null,$_logicalId);
@@ -307,7 +324,8 @@ class arrosageAutoCmd extends cmd {
 			switch($this->getLogicalId()){
 				case 'armed':
 					$Listener->event(true);
-					$this->getEqLogic()->NextProg();
+					$nextTime=$this->getEqLogic()->NextProg();
+					$this->getEqLogic()->CreateCron(date('i H d m w Y',$nextTime));
 				break;
 				case 'released':
 					$Listener->event(false);
