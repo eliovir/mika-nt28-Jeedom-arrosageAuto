@@ -11,24 +11,34 @@ Configuration
 
 ![introduction01](../images/Configuration.jpg)
 
-Personnaliser votre liste de type de plantation en y saisissant un nom et la quantité (L/m²) d'eau necéssaire à l'arrosage.
-Le débit de la pompe est utilisé pour déterminer si on peut lancer 2 zones en même temps ou reporter l'arrosage.
-
 Conditions météorologiques
 ---
+Le plugin est capable de prendre en compte la météo.
+Pour chaque parametre il faut selectionné une commande et saisir son seuil
 
-Le plugin interdit l'arrosage si
-* le vent est supérieur à 40km/h,
-* la probabilité de pluie est supérieure à 30%,
-* l'humidité est supérieure à 60%.
+* Maximum de la probabilité de précipitation (%) : interdie l'arrosage si la probablité de précipitation est trop elevé par rapport au seuil
+* Vitesse du vent maximum (km/h): interdie l'arrosage si le vent est trop elevé par rapport au seuil
+* Humidité maximum (%): interdie l'arrosage si l'humidité est trop elevé par rapport au seuil
+* Précipitation de la veille : Le plugin prend en compte les précipitation de la veille
+
+Pluviometerie par type de plantation
+---
+
+Le plugin vas distingué le type de plantation, car le besoin en eau n'est pas la meme pour chaque plante
+Personnaliser votre liste de type de plantation en y saisissant un nom et la quantité (L/m²) d'eau necéssaire à l'arrosage.
+
+Le débit de la pompe n'est pas encore utilisé, il permettera de déterminer le nombre de zone possible a l'arrosage.
 
 Commandes et widgets
----
+===
 
 Pour chaque zone d'arrosage créée, le plugin va créer les commandes suivantes :
 
-* activation de la gestion et
-* désactivation de la gestion.
+* Activer : Commande pour armer l'arrosage dynamiquement
+* Désactiver : Commande pour desarmer l'arrosage dynamiquement
+* État activation : Commande pour connaitre l'etat d'armement du plugin
+* Réglage coefficient : Commande permetant d'intervenir manuelement sur le temps d'arrosage (de 0% à 100% on reduit le temps au dela on l'augmente)
+* Coefficient : Commande pour connaitre la valeur du coéficient
 
 ![introduction01](../images/arrosageAuto_screenshot_Widget.jpg)
 
@@ -52,6 +62,7 @@ Configuration générale Jeedom
 * Activer : permet d'activer l'équipement,
 * Type d'arrosage : sélectionner le type de plantation à arroser,
 * Pluviométrie d'arrosage : saisir la pluviométrie des turbines ou goutte à goutte.
+* Superficie : Saisir la superficie de la zone
 
 Calcul pluviométrie pour un goutte à goutte :
 
@@ -63,7 +74,7 @@ Programation
 ![introduction01](../images/Programation.jpg)
 
 Nous pouvons pour chaque zone déterminer plusieurs crénaux d'arrosage.
-La quantité totale d'arrosage definie sera répartie entre ces zones.
+La quantité totale d'arrosage definie sera répartie entre ces programmation.
 
 Conditions
 ---
