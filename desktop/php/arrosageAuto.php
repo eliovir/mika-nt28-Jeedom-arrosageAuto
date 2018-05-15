@@ -78,6 +78,10 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 				<a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">
 					<i class="fa fa-tachometer"></i> Equipement</a>
 			</li>
+			<li role="presentation" class="active">
+				<a href="#arroseurtab" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">
+					<i class="fa fa-tachometer"></i> Arroseur</a>
+			</li>
 			<li role="presentation" class="">
 				<a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
 					<i class="fa fa-list-alt"></i> Commandes</a>
@@ -223,6 +227,31 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 							</form>
 						</div>
 					</div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="arroseurtab">
+					<form class="form-horizontal">
+						<fieldset>
+							<legend>{{Les arroseurs de la zones :}}
+								<sup>
+									<i class="fa fa-question-circle tooltips" title="Saisir toutes les arroseurs connecter a la branche"></i>
+								</sup>
+								<a class="btn btn-success btn-xs ArroseurAttr" data-action="add" style="margin-left: 5px;">
+									<i class="fa fa-plus-circle"></i>
+									{{Ajouter un arroseur}}
+								</a>
+							</legend>
+						</fieldset>
+					</form>
+					<table id="table_arroseur" class="table table-bordered table-condensed">
+						<thead>
+							<tr>
+								<th></th>
+								<th>{{Debit}}</th>
+								<th>{{Parametre}}</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
 				</div>
 				<div role="tabpanel" class="tab-pane" id="programationtab">
 					<form class="form-horizontal">
