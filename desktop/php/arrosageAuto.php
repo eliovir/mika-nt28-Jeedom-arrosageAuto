@@ -78,122 +78,118 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 				<a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">
 					<i class="fa fa-tachometer"></i> Equipement</a>
 			</li>
-			<li role="presentation" class="active">
+			<li role="presentation">
 				<a href="#arroseurtab" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">
 					<i class="fa fa-tachometer"></i> Arroseur</a>
 			</li>
-			<li role="presentation" class="">
+			<li role="presentation">
 				<a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
 					<i class="fa fa-list-alt"></i> Commandes</a>
 			</li>
-			<li role="presentation" class="">
+			<li role="presentation">
 				<a href="#programationtab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
 					<i class="fa fa-calendar"></i> {{Programation}}</a>
 			</li>
-			<li role="presentation" class="">
+			<li role="presentation">
 				<a href="#conditiontab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
 					<i class="fa fa-asterisk"></i> {{Conditions}}</a>
 			</li>
-			<li role="presentation" class="">
+			<li role="presentation">
 				<a href="#actiontab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
 					<i class="fa fa-list-alt"></i> {{Actions}}</a>
 			</li>
 		</ul>
 			<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
 				<div role="tabpanel" class="tab-pane active" id="eqlogictab">
-					<div class="row">
-						<div class="col-sm-6">
-							<form class="form-horizontal">
-								<fieldset>
-									<div class="form-group ">
-										<label class="col-sm-2 control-label">{{Nom de la Zone}}
-											<sup>
-												<i class="fa fa-question-circle tooltips" title="Indiquer le nom de votre zone" style="font-size : 1em;color:grey;"></i>
-											</sup>
-										</label>
-										<div class="col-sm-5">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
-											<input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom du groupe de zones}}"/>
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-2 control-label" >{{Objet parent}}
-											<sup>
-												<i class="fa fa-question-circle tooltips" title="Indiquer l'objet dans lequel le widget de cette zone apparaîtra sur le Dashboard" style="font-size : 1em;color:grey;"></i>
-											</sup>
-										</label>
-										<div class="col-sm-5">
-											<select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
-												<option value="">{{Aucun}}</option>
-												<?php
-													foreach (object::all() as $object)
-														echo '<option value="' . $object->getId() . '">' . $object->getName() . '</option>';
-												?>
-											</select>
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-md-2 control-label">
-											{{Catégorie}}
-											<sup>
-												<i class="fa fa-question-circle tooltips" title="Choisissez une catégorie
-		Cette information n'est pas obligatoire mais peut être utile pour filtrer les widgets" style="font-size : 1em;color:grey;"></i>
-											</sup>
-										</label>
-										<div class="col-md-8">
-											<?php
-											foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
-												echo '<label class="checkbox-inline">';
-												echo '<input type="checkbox" class="eqLogicAttr" data-l1key="category" data-l2key="' . $key . '" />' . $value['name'];
-												echo '</label>';
-											}
-											?>
+					<form class="form-horizontal">
+						<fieldset>
+							<div class="form-group ">
+								<label class="col-sm-2 control-label">{{Nom de la Zone}}
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Indiquer le nom de votre zone" style="font-size : 1em;color:grey;"></i>
+									</sup>
+								</label>
+								<div class="col-sm-5">
+									<input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
+									<input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom du groupe de zones}}"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" >{{Objet parent}}
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Indiquer l'objet dans lequel le widget de cette zone apparaîtra sur le Dashboard" style="font-size : 1em;color:grey;"></i>
+									</sup>
+								</label>
+								<div class="col-sm-5">
+									<select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
+										<option value="">{{Aucun}}</option>
+										<?php
+											foreach (object::all() as $object)
+												echo '<option value="' . $object->getId() . '">' . $object->getName() . '</option>';
+										?>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label">
+									{{Catégorie}}
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Choisissez une catégorie
+Cette information n'est pas obligatoire mais peut être utile pour filtrer les widgets" style="font-size : 1em;color:grey;"></i>
+									</sup>
+								</label>
+								<div class="col-md-8">
+									<?php
+									foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
+										echo '<label class="checkbox-inline">';
+										echo '<input type="checkbox" class="eqLogicAttr" data-l1key="category" data-l2key="' . $key . '" />' . $value['name'];
+										echo '</label>';
+									}
+									?>
 
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-2 control-label" >
-											{{Etat du widget}}
-											<sup>
-												<i class="fa fa-question-circle tooltips" title="Choisissez les options de visibilité et d'activation
-		Si l'équipement n'est pas activé, il ne sera pas utilisable dans Jeedom ni visible sur le Dashboard
-		Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font-size : 1em;color:grey;"></i>
-											</sup>
-										</label>
-										<div class="col-sm-5">
-											<label>{{Activer}}</label>
-											<input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="isEnable" checked/>
-											<label>{{Visible}}</label>
-											<input type="checkbox" class="eqLogicAttr" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-2 control-label" >
-											{{Type d'arrosage}}
-											<sup>
-												<i class="fa fa-question-circle tooltips" title="Choisissez les types d'arrosage pour cette zone" style="font-size : 1em;color:grey;"></i>
-											</sup>
-										</label>
-										<div class="col-sm-5">
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TypeArrosage" >
-												<?php
-													foreach(config::byKey('configuration','arrosageAuto') as $type => $value){
-														if($type=='type'){
-															if(is_array($value)){
-																foreach($value as $valeur)
-																	echo '<option value="'.$valeur.'">'.$valeur.'</option>';
-															}else
-																echo '<option value="'.$value.'">'.$value.'</option>';
-														}
-													}
-												?>
-											</select>
-										</div>
-									</div>
-								</fieldset>
-							</form>
-						</div>
-					</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" >
+									{{Etat du widget}}
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Choisissez les options de visibilité et d'activation
+Si l'équipement n'est pas activé, il ne sera pas utilisable dans Jeedom ni visible sur le Dashboard
+Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font-size : 1em;color:grey;"></i>
+									</sup>
+								</label>
+								<div class="col-sm-5">
+									<label>{{Activer}}</label>
+									<input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="isEnable" checked/>
+									<label>{{Visible}}</label>
+									<input type="checkbox" class="eqLogicAttr" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" >
+									{{Type d'arrosage}}
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Choisissez les types d'arrosage pour cette zone" style="font-size : 1em;color:grey;"></i>
+									</sup>
+								</label>
+								<div class="col-sm-5">
+									<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TypeArrosage" >
+										<?php
+											foreach(config::byKey('configuration','arrosageAuto') as $type => $value){
+												if($type=='type'){
+													if(is_array($value)){
+														foreach($value as $valeur)
+															echo '<option value="'.$valeur.'">'.$valeur.'</option>';
+													}else
+														echo '<option value="'.$value.'">'.$value.'</option>';
+												}
+											}
+										?>
+									</select>
+								</div>
+							</div>
+						</fieldset>
+					</form>
 				</div>
 				<div role="tabpanel" class="tab-pane" id="arroseurtab">
 					<form class="form-horizontal">
