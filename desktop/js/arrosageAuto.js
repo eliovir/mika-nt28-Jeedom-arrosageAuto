@@ -89,7 +89,7 @@ function addArroseur(_arroseur,  _el) {
 		case 'gouteAgoute':
 			tr.append($('<td>')
 				.append($('<input class="expressionAttr form-control" data-l1key="EspacementLateral" placeholder="Saisir l\'espacement latéral (cm)"/>'))
-				.append($('<input class="expressionAttr form-control" data-l1key=="EspacemenGoutteurs" placeholder="Saisir l\'espacement des goutteurs (cm)"/>')));
+				.append($('<input class="expressionAttr form-control" data-l1key="EspacemenGoutteurs" placeholder="Saisir l\'espacement des goutteurs (cm)"/>')));
 		break;
 		case 'tuyere':
 			tr.append($('<td>')
