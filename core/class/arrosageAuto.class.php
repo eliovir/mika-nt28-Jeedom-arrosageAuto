@@ -276,6 +276,9 @@ class arrosageAuto extends eqLogic {
             			$Espacement = $this->getConfiguration('EspacementLateral') * $this->getConfiguration('EspacemenGoutteurs');
            			$Pluviometrie = $Debit / $Espacement;
 			break;
+			case'tuyere':
+				$Pluviometrie=$Debit * $Angle;
+			break;
 			case'turbine':
 				$Pluviometrie = 15;
 			break;
