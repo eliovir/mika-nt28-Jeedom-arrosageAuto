@@ -202,7 +202,8 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 										<div class="col-sm-5">
 											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TypeGicler" >
 												<option value="gouteAgoute">{{Goutte à goutte}}</option>
-												<option value="turbine">{{Turbine / Tuyère}}</option>
+												<option value="tuyere">{{Tuyère}}</option>
+												<option value="turbine">{{Turbine}}</option>
 											</select>
 										</div>
 									</div>
@@ -218,17 +219,6 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 									</div>
 									<div class="form-group TypeCalcul">
 									</div>
-									<!--div class="form-group">
-										<label class="col-sm-2 control-label" >
-											{{Pluviometrie des arroseur (mm/h)}}
-											<sup>
-												<i class="fa fa-question-circle tooltips" title="Saisir la pluviometrie d'arrosage (mm/h)" style="font-size : 1em;color:grey;"></i>
-											</sup>
-										</label>
-										<div class="col-sm-5">
-											<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DebitGicler" />
-										</div>
-									</div-->
 								</fieldset>
 							</form>
 						</div>
