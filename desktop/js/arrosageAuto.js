@@ -109,7 +109,7 @@ function addArroseur(_arroseur,  _el) {
 	$('.ArroseurAttr[data-action=remove]').off().on('click',function(){
 		$(this).closest('tr').remove();
 	});
-	$('.ArroseurGroup[data-l1key=TypeGicler]').off().on('change',function(){
+	$('.ArroseurGroup .expressionAttr[data-l1key=TypeGicler]').off().on('change',function(){
 		switch($(this).val()){
 			case 'gouteAgoute':
 				alert('gouteAgoute');
