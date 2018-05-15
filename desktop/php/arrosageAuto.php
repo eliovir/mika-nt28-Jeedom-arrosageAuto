@@ -80,7 +80,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 			</li>
 			<li role="presentation">
 				<a href="#arroseurtab" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true">
-					<i class="fa fa-tachometer"></i> Arroseur</a>
+					<i class="jeedom2-plante_eau2"></i> Arroseur</a>
 			</li>
 			<li role="presentation">
 				<a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
