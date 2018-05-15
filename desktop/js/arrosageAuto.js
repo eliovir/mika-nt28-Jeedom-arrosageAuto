@@ -78,11 +78,11 @@ function addArroseur(_arroseur,  _el) {
 	tr.append($('<td>')
 		.append($('<select class="expressionAttr form-control" data-l1key="TypeGicler" >')
 			.append($('<option value="gouteAgoute">')
-				.append($('{{Goutte à goutte}}')))
+				.text('{{Goutte à goutte}}'))
 			.append($('<option value="tuyere">')
-				.append($('{{Tuyère}}')))
+				.text('{{Tuyère}}'))
 			.append($('<option value="turbine">')
-				.append($('{{Turbine}}')))));
+				.text('{{Turbine}}'))));
 	tr.append($('<td>')
 		  .append($('<input class="expressionAttr form-control" data-l1key="Debit" placeholder="Saisir le débit de votre arroseur (mm/H ou L/H)"/>')));
 	tr.append($('<td>')
