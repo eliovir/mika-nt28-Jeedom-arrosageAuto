@@ -1,5 +1,6 @@
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
-$("#table_Prorgamationtab").sortable({axis: "y", cursor: "move", items: ".ProgramationGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+$("#table_arroseur").sortable({axis: "y", cursor: "move", items: ".ArroseurGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+$("#table_programation").sortable({axis: "y", cursor: "move", items: ".ProgramationGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $("#table_condition").sortable({axis: "y", cursor: "move", items: ".ConditionGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $("#table_action").sortable({axis: "y", cursor: "move", items: ".ActionGroup", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 $('.bt_showExpressionTest').off('click').on('click', function () {
@@ -37,15 +38,39 @@ $('body').on('click','.eqLogicAttr[data-l1key=configuration][data-l2key=TypeGicl
 				.append($('<div class="col-sm-5">')
 					.append($('<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EspacemenGoutteurs" />'))));
 		break;
+		case 'tuyere':
+			div.append($('<div class="form-group">')
+				.append($('<label class="col-sm-2 control-label" >')
+					.text('{{Débit de la Tuyère (l/h)}}')
+					.append($('<sup>')
+						.append($('<i class="fa fa-question-circle tooltips" title="Saisir le Débit de la Tuyère (l/h)" style="font-size : 1em;color:grey;">'))))
+				.append($('<div class="col-sm-5">')
+					.append($('<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DebitTuyere" />'))));
+		break;
+		case 'turbine':
+			div.append($('<div class="form-group">')
+				.append($('<label class="col-sm-2 control-label" >')
+					.text('{{Débit du goutteur (l/h)}}')
+					.append($('<sup>')
+						.append($('<i class="fa fa-question-circle tooltips" title="Saisir le Débit du goutteur (l/h)" style="font-size : 1em;color:grey;">'))))
+				.append($('<div class="col-sm-5">')
+					.append($('<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DebitGoutteur" />'))));
+		break;
+			
 	 }
 });
 function saveEqLogic(_eqLogic) {
+	_eqLogic.configuration.arroseur=new Object();
 	_eqLogic.configuration.programation=new Object();
 	_eqLogic.configuration.condition=new Object();
 	_eqLogic.configuration.action=new Object();
 	var ConditionArray= new Array();
 	var ActionArray= new Array();
 	var ProgramationArray= new Array();
+	var ArroseurArray= new Array();
+	$('#arroseurtab .ArroseurGroup').each(function( index ) {
+		ArroseurArray.push($(this).getValues('.expressionAttr')[0])
+	});
 	$('#conditiontab .ConditionGroup').each(function( index ) {
 		ConditionArray.push($(this).getValues('.expressionAttr')[0])
 	});
@@ -56,15 +81,23 @@ function saveEqLogic(_eqLogic) {
 	$('#actiontab .ActionGroup').each(function( index ) {
 		ActionArray.push($(this).getValues('.expressionAttr')[0])
 	});
+	_eqLogic.configuration.arroseur=ArroseurArray;
 	_eqLogic.configuration.condition=ConditionArray;
 	_eqLogic.configuration.programation=ProgramationArray;
 	_eqLogic.configuration.action=ActionArray;
    	return _eqLogic;
 }
 function printEqLogic(_eqLogic) {
+	$('.ArroseurGroup').remove();
 	$('.ConditionGroup').remove();
 	$('.ProgramationGroup').remove();
 	$('.ActionGroup').remove();
+	if (typeof(_eqLogic.configuration.arroseur) !== 'undefined') {
+		for(var index in _eqLogic.configuration.arroseur) {
+			if( (typeof _eqLogic.configuration.arroseur[index] === "object") && (_eqLogic.configuration.arroseur[index] !== null) )
+				addArroseur(_eqLogic.configuration.arroseur[index],$('#arroseurtab').find('table tbody'));
+		}
+	}
 	if (typeof(_eqLogic.configuration.condition) !== 'undefined') {
 		for(var index in _eqLogic.configuration.condition) {
 			if( (typeof _eqLogic.configuration.condition[index] === "object") && (_eqLogic.configuration.condition[index] !== null) )
@@ -83,6 +116,52 @@ function printEqLogic(_eqLogic) {
 				addAction(_eqLogic.configuration.action[index],$('#actiontab').find('table tbody'));
 		}
 	}
+}
+function addArroseur(_arroseur,  _el) {
+	var tr = $('<tr class="ArroseurGroup">')
+	tr.append($('<td>')
+		.append($('<span class="input-group-btn">')
+			.append($('<a class="btn btn-default ArroseurAttr btn-sm" data-action="remove">')
+				.append($('<i class="fa fa-minus-circle">')))));	
+	tr.append($('<td>')
+		.append($('<select class="expressionAttr form-control" data-l1key="TypeGicler" >')
+			.append($('<option value="gouteAgoute">')
+				.append($('{{Goutte à goutte}}')))
+			.append($('<option value="tuyere">')
+				.append($('{{Tuyère}}')))
+			.append($('<option value="turbine">')
+				.append($('{{Turbine}}')))));
+	tr.append($('<td>')
+		  .append($('<input class="expressionAttr form-control" data-l1key="Debit" placeholder="Saisir le débit de votre arroseur (mm/H ou L/H)"/>')));
+	switch($(this).val()){
+		case 'gouteAgoute':
+			tr.append($('<td>')
+				.append($('<input class="expressionAttr form-control" data-l1key="EspacementLateral" placeholder="Saisir l\'espacement latéral (cm)"/>'))
+				.append($('<input class="expressionAttr form-control" data-l1key=="EspacemenGoutteurs" placeholder="Saisir l\'espacement des goutteurs (cm)"/>')));
+		break;
+		case 'tuyere':
+			tr.append($('<td>')
+				.append($('<select class="expressionAttr form-control" data-l1key="quart" >')
+					.append($('<option value="0,25">')
+						.append($('{{1/4}}')))
+					.append($('<option value="0,5">')
+						.append($('{{2/4}}')))
+					.append($('<option value="0,75">')
+						.append($('{{3/4}}')))
+					.append($('<option value="1">')
+						.append($('{{4/4}}')))));
+		break;
+		case 'turbine':
+			tr.append($('<td>')
+				.append($('<input class="expressionAttr form-control" data-l1key="angle" placeholder="{{Saisir l\'angle d\'arrosage de votre turbine}} />')));
+		break;
+			
+	 }
+        _el.append(tr);
+        _el.find('tr:last').setValues(_arroseur, '.expressionAttr');
+	$('.ArroseurAttr[data-action=remove]').off().on('click',function(){
+		$(this).closest('tr').remove();
+	});
 }
 function addProgramation(_programation,  _el) {
 	var Heure=$('<select class="expressionAttr form-control" data-l1key="Heure" >');
@@ -186,6 +265,9 @@ function addAction(_action,  _el) {
 		$(this).closest('tr').remove();
 	});
  }
+$('.ArroseurAttr[data-action=add]').off().on('click',function(){
+	addArroseur({},$(this).closest('.tab-pane').find('table'));
+});
 $('.ProgramationAttr[data-action=add]').off().on('click',function(){
 	addProgramation({},$(this).closest('.tab-pane').find('table'));
 });
