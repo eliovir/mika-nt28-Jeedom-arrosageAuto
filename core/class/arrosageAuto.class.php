@@ -279,7 +279,7 @@ class arrosageAuto extends eqLogic {
 				$Pluviometrie = 15;
 			break;
 		 }
-		return $Pluviometrie*3600;
+		return $Pluviometrie/3600;
 	}
 	public function NextProg(){
 		$nextTime=null;
