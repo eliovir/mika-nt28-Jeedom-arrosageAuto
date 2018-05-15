@@ -11,54 +11,6 @@ $('#bt_healthArrosageAuto').off('click').on('click', function () {
 	$('#md_modal').dialog({title: "{{Santé des zones d'arrosage}}"});
 	$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=health').dialog('open');
 });
-$('body').on('click','.eqLogicAttr[data-l1key=configuration][data-l2key=TypeGicler]',function(){
-	var div=$(this).closest('fieldset').find('.TypeCalcul');
-	div.html('');
-	switch($(this).val()){
-		case 'gouteAgoute':
-			div.append($('<div class="form-group">')
-				.append($('<label class="col-sm-2 control-label" >')
-					.text('{{Débit du goutteur (l/h)}}')
-					.append($('<sup>')
-						.append($('<i class="fa fa-question-circle tooltips" title="Saisir le Débit du goutteur (l/h)" style="font-size : 1em;color:grey;">'))))
-				.append($('<div class="col-sm-5">')
-					.append($('<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DebitGoutteur" />'))));
-			div.append($('<div class="form-group">')
-				.append($('<label class="col-sm-2 control-label" >')
-					.text('{{Espacement latéral (cm)}}')
-					.append($('<sup>')
-						.append($('<i class="fa fa-question-circle tooltips" title="Saisir l\'espacement latéral (cm)" style="font-size : 1em;color:grey;">'))))
-				.append($('<div class="col-sm-5">')
-					.append($('<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EspacementLateral" />'))));
-			div.append($('<div class="form-group">')
-				.append($('<label class="col-sm-2 control-label" >')
-					.text('{{Espacement des goutteurs (cm)}}')
-					.append($('<sup>')
-						.append($('<i class="fa fa-question-circle tooltips" title="Saisir l\'espacement des goutteurs (cm)" style="font-size : 1em;color:grey;">'))))
-				.append($('<div class="col-sm-5">')
-					.append($('<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EspacemenGoutteurs" />'))));
-		break;
-		case 'tuyere':
-			div.append($('<div class="form-group">')
-				.append($('<label class="col-sm-2 control-label" >')
-					.text('{{Débit de la Tuyère (l/h)}}')
-					.append($('<sup>')
-						.append($('<i class="fa fa-question-circle tooltips" title="Saisir le Débit de la Tuyère (l/h)" style="font-size : 1em;color:grey;">'))))
-				.append($('<div class="col-sm-5">')
-					.append($('<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DebitTuyere" />'))));
-		break;
-		case 'turbine':
-			div.append($('<div class="form-group">')
-				.append($('<label class="col-sm-2 control-label" >')
-					.text('{{Débit du goutteur (l/h)}}')
-					.append($('<sup>')
-						.append($('<i class="fa fa-question-circle tooltips" title="Saisir le Débit du goutteur (l/h)" style="font-size : 1em;color:grey;">'))))
-				.append($('<div class="col-sm-5">')
-					.append($('<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DebitGoutteur" />'))));
-		break;
-			
-	 }
-});
 function saveEqLogic(_eqLogic) {
 	_eqLogic.configuration.arroseur=new Object();
 	_eqLogic.configuration.programation=new Object();
