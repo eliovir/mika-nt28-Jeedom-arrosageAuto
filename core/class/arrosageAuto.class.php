@@ -104,7 +104,7 @@ class arrosageAuto extends eqLogic {
 			$cron->remove();
 	}
 	public function CreateCron($Schedule) {
-		log::add('arrosageAuto','debug','Création du cron  ID = '.$this->getId().' --> '.$Schedule);
+		log::add('arrosageAuto','debug',$this->getHumanName().' : Création du cron  ID --> '.$Schedule);
 		$cron = cron::byClassAndFunction('arrosageAuto', "pull" ,array('id' => $this->getId()));
 		if (!is_object($cron)) 
 			$cron = new cron();
@@ -121,20 +121,20 @@ class arrosageAuto extends eqLogic {
 		$zone=eqLogic::byId($_option['id']);
 		if(is_object($zone)){			
 			if(!$zone->getCmd(null,'isArmed')->execCmd()){
-				log::add('arrosageAuto','info','La zone est desactivée');
+				log::add('arrosageAuto','info',$zone->getHumanName().' : La zone est desactivée');
 				exit;
 			}
 			if(!$zone->CheckCondition()){
-				log::add('arrosageAuto','info','Les conditions ne sont pas evaluées');
+				log::add('arrosageAuto','info',$zone->getHumanName().' : Les conditions ne sont pas evaluées');
 				exit;
 			}
 			if($plui=$zone->CheckMeteo() === false){
-				log::add('arrosageAuto','info','La météo n\'est pas idéale pour l\'arrosage');
+				log::add('arrosageAuto','info',$zone->getHumanName().' : La météo n\'est pas idéale pour l\'arrosage');
 				exit;
 			}
 			$zone->ExecuteAction('start');
 			$PowerTime=$zone->EvaluateTime($plui);
-			log::add('arrosageAuto','info','Estimation du temps d\'activation '.$PowerTime.'s');
+			log::add('arrosageAuto','info',$zone->getHumanName().' : Estimation du temps d\'activation '.$PowerTime.'s');
 			sleep($PowerTime);
 			$zone->ExecuteAction('stop');
 			$nextTime=$zone->NextProg();
@@ -157,7 +157,7 @@ class arrosageAuto extends eqLogic {
 		if($Pluviometrie == 0)
 			return $Pluviometrie;
 		log::add('arrosageAuto','info',$this->getHumanName().' : Nous devons arroser '.$QtsEau.' mm/m² avec un pluviometrie de '.$Pluviometrie.'mm/s');
-		return $Temps=($QtsEau/$Pluviometrie)*$this->getConfiguration('superficie');
+		$Temps=($QtsEau/$Pluviometrie)*$this->getConfiguration('superficie');
 		return $this->Ratio($Temps);
 	}
 	public function Ratio($Value){
