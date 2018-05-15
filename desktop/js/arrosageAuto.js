@@ -112,15 +112,18 @@ function addArroseur(_arroseur,  _el) {
 	$('.ArroseurGroup .expressionAttr[data-l1key=TypeGicler]').off().on('change',function(){
 		switch($(this).val()){
 			case 'gouteAgoute':
-				alert('gouteAgoute');
 				$(this).closest('tr').find('.gouteAgoute').show();
+				$(this).closest('tr').find('.tuyere').hide();
+				$(this).closest('tr').find('.turbine').hide();
 			break;
 			case 'tuyere':
-				alert('tuyere');
+				$(this).closest('tr').find('.gouteAgoute').hide();
 				$(this).closest('tr').find('.tuyere').show();
+				$(this).closest('tr').find('.turbine').hide();
 			break;
 			case 'turbine':
-				alert('turbine');
+				$(this).closest('tr').find('.gouteAgoute').hide();
+				$(this).closest('tr').find('.tuyere').hide();
 				$(this).closest('tr').find('.turbine').show();
 			break;
 		 }
