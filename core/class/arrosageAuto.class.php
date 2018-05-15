@@ -154,10 +154,10 @@ class arrosageAuto extends eqLogic {
 		$QtsEau-=$plui;
 		$QtsEau=$QtsEau/$NbProgramation;
 		$Pluviometrie=$this->CalculPluviometrie();
-		/*if($Pluviometrie == 0)
-			return $Pluviometrie;*/
+		if($Pluviometrie == 0)
+			return $Pluviometrie;
 		log::add('arrosageAuto','info',$this->getHumanName().' : Nous devons arroser '.$QtsEau.' mm/m² avec un pluviometrie de '.$Pluviometrie.'mm/s');
-		return $this->Ratio((($QtsEau-$plui)*3600/$Pluviometrie)*$this->getConfiguration('superficie'));
+		return $this->Ratio((($QtsEau-$plui)/$Pluviometrie)*$this->getConfiguration('superficie'));
 	}
 	public function Ratio($Value){
 		$cmd=$this->getCmd(null, 'coefficient');
@@ -274,11 +274,12 @@ class arrosageAuto extends eqLogic {
 				$Debit = 10000 * $this->getConfiguration('DebitGoutteur');
             			$Espacement = $this->getConfiguration('EspacementLateral') * $this->getConfiguration('EspacemenGoutteurs');
            			$Pluviometrie = $Debit / $Espacement;
-				log::add('arrosageAuto','info',$this->getHumanName().' : Pluviométrie : '.$Pluviometrie);
-			return $Pluviometrie;
+			break;
 			case'turbine':
-			return 15;
+				$Pluviometrie = 15;
+			break;
 		 }
+		return $Pluviometrie*3600;
 	}
 	public function NextProg(){
 		$nextTime=null;
