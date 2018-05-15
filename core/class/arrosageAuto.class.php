@@ -194,20 +194,20 @@ class arrosageAuto extends eqLogic {
 		}
 	}
 	public function CheckMeteo(){
-		$precipProbability= jeedom::evaluateExpression(config::byKey('cmdPrecipProbability','arrosageAuto'));
-		$result=$this->EvaluateCondition($precipProbability.' >'. config::byKey('precipProbability','arrosageAuto'));
+		//$precipProbability= jeedom::evaluateExpression(config::byKey('cmdPrecipProbability','arrosageAuto'));
+		$result=$this->EvaluateCondition(config::byKey('cmdPrecipProbability','arrosageAuto').' < '. config::byKey('precipProbability','arrosageAuto'));
 		if(!$result){
 			log::add('arrosageAuto','info',$this->getHumanName().' : La probalité de précipitation est trop important');
 			return false;
 		}
-		$windSpeed= jeedom::evaluateExpression(config::byKey('cmdWindSpeed','arrosageAuto'));
-		$result=$this->EvaluateCondition($windSpeed.' >'. config::byKey('windSpeed','arrosageAuto'));
+		//$windSpeed= jeedom::evaluateExpression(config::byKey('cmdWindSpeed','arrosageAuto'));
+		$result=$this->EvaluateCondition(config::byKey('cmdWindSpeed','arrosageAuto').' < '. config::byKey('windSpeed','arrosageAuto'));
 		if(!$result){
 			log::add('arrosageAuto','info',$this->getHumanName().' : Il y a trop de vent pour arroser');
 			return false;
 		}
-		$humidity= jeedom::evaluateExpression(config::byKey('cmdHumidity','arrosageAuto'));
-		$result=$this->EvaluateCondition($humidity.' >'. config::byKey('humidity','arrosageAuto'));
+		//$humidity= jeedom::evaluateExpression(config::byKey('cmdHumidity','arrosageAuto'));
+		$result=$this->EvaluateCondition(config::byKey('cmdHumidity','arrosageAuto').' < '. config::byKey('humidity','arrosageAuto'));
 		if(!$result){
 			log::add('arrosageAuto','info',$this->getHumanName().' : Il y a suffisament d\'humidié, pas besoin d\'arroser');
 			return false;
