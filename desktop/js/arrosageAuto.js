@@ -85,34 +85,43 @@ function addArroseur(_arroseur,  _el) {
 				.append($('{{Turbine}}')))));
 	tr.append($('<td>')
 		  .append($('<input class="expressionAttr form-control" data-l1key="Debit" placeholder="Saisir le débit de votre arroseur (mm/H ou L/H)"/>')));
-        _el.append(tr);
+	tr.append($('<td>')
+		  .append($('<div class="gouteAgoute">')
+			.append($('<input class="expressionAttr form-control" data-l1key="EspacementLateral" placeholder="Saisir l\'espacement latéral (cm)"/>'))
+			.append($('<input class="expressionAttr form-control" data-l1key="EspacemenGoutteurs" placeholder="Saisir l\'espacement des goutteurs (cm)"/>')))
+		  .append($('<div class="tuyere">')
+			  .append($('<select class="expressionAttr form-control" data-l1key="quart" >')
+				.append($('<option value="0,25">')
+					.text('{{1/4}}'))
+				.append($('<option value="0,5">')
+					.text('{{2/4}}'))
+				.append($('<option value="0,75">')
+					.text('{{3/4}}'))
+				.append($('<option value="1">')
+					.text('{{4/4}}'))))		
+		  .append($('<div class="turbine">')
+			.append($('<input class="expressionAttr form-control" data-l1key="angle" placeholder="{{Saisir l\'angle d\'arrosage de votre turbine}} />'))));
+	_el.append(tr);
+	_el.find('.gouteAgoute').hide();
+	_el.find('.tuyere').hide();
+	_el.find('.turbine').hide();
         _el.find('tr:last').setValues(_arroseur, '.expressionAttr');
 	$('.ArroseurAttr[data-action=remove]').off().on('click',function(){
 		$(this).closest('tr').remove();
 	});
 	$('.ArroseurGroup[data-l1key=TypeGicler]').off().on('change',function(){
-		var tr=$(this).closest('tr');
 		switch($(this).val()){
 			case 'gouteAgoute':
-				tr.append($('<td>')
-					.append($('<input class="expressionAttr form-control" data-l1key="EspacementLateral" placeholder="Saisir l\'espacement latéral (cm)"/>'))
-					.append($('<input class="expressionAttr form-control" data-l1key="EspacemenGoutteurs" placeholder="Saisir l\'espacement des goutteurs (cm)"/>')));
+				alert('gouteAgoute');
+				$(this).closest('tr').find('.gouteAgoute').show();
 			break;
 			case 'tuyere':
-				tr.append($('<td>')
-					.append($('<select class="expressionAttr form-control" data-l1key="quart" >')
-						.append($('<option value="0,25">')
-							.append($('{{1/4}}')))
-						.append($('<option value="0,5">')
-							.append($('{{2/4}}')))
-						.append($('<option value="0,75">')
-							.append($('{{3/4}}')))
-						.append($('<option value="1">')
-							.append($('{{4/4}}')))));
+				alert('tuyere');
+				$(this).closest('tr').find('.tuyere').show();
 			break;
 			case 'turbine':
-				tr.append($('<td>')
-					.append($('<input class="expressionAttr form-control" data-l1key="angle" placeholder="{{Saisir l\'angle d\'arrosage de votre turbine}} />')));
+				alert('turbine');
+				$(this).closest('tr').find('.turbine').show();
 			break;
 		 }
 	});
