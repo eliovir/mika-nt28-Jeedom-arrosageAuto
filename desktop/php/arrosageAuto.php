@@ -193,39 +193,6 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 								</fieldset>
 							</form>
 						</div>
-						<div class="col-sm-6">
-							<form class="form-horizontal">
-								<fieldset>
-									<div class="form-group">
-										<label class="col-sm-2 control-label" >
-											{{Type d'arroseur}}
-											<sup>
-												<i class="fa fa-question-circle tooltips" title="Choisir le type d'arroseur" style="font-size : 1em;color:grey;"></i>
-											</sup>
-										</label>
-										<div class="col-sm-5">
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TypeGicler" >
-												<option value="gouteAgoute">{{Goutte à goutte}}</option>
-												<option value="tuyere">{{Tuyère}}</option>
-												<option value="turbine">{{Turbine}}</option>
-											</select>
-										</div>
-									</div>
-									<div class="form-group ">
-										<label class="col-sm-2 control-label">{{Superficie}}
-											<sup>
-												<i class="fa fa-question-circle tooltips" title="Indiquer la supericiel de la zone" style="font-size : 1em;color:grey;"></i>
-											</sup>
-										</label>
-										<div class="col-sm-5">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="superficie" placeholder="{{Superficie de la zone}}"/>
-										</div>
-									</div>
-									<div class="form-group TypeCalcul">
-									</div>
-								</fieldset>
-							</form>
-						</div>
 					</div>
 				</div>
 				<div role="tabpanel" class="tab-pane" id="arroseurtab">
