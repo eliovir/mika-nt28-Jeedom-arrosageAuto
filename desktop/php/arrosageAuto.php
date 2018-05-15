@@ -213,7 +213,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 											</sup>
 										</label>
 										<div class="col-sm-5">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="superficie" placeholder="{{Superficie de la zone}}"/>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="superficie" placeholder="{{Superficie de la zone}}"/>
 										</div>
 									</div>
 									<div class="form-group TypeCalcul">
