@@ -38,7 +38,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 				<center>
 			      		<i class="fa fa-check" style="font-size : 5em;color:#767676;"></i>
 			    	</center>
-			    	<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>Configuration</center></span>
+			    	<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>Testeur d'expression</center></span>
 			</div>
 			<div class="cursor" id="bt_healthArrosageAuto" style="background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
 				<center>
@@ -213,7 +213,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 											</sup>
 										</label>
 										<div class="col-sm-5">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="superficie" placeholder="{{Superficie de la zone}}"/>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="superficie" placeholder="{{Superficie de la zone}}"/>
 										</div>
 									</div>
 									<div class="form-group TypeCalcul">
