@@ -246,7 +246,18 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 						<thead>
 							<tr>
 								<th></th>
-								<th>{{Debit}}</th>
+								<th>
+									{{Type d'arroseur}}
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Choisir le type d'arroseur" style="font-size : 1em;color:grey;"></i>
+									</sup>
+								</th>
+								<th>
+									{{Debit (mm/H ou L/H)}}
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Saisir le debit de l'arroseur  (mm/H ou L/H)" style="font-size : 1em;color:grey;"></i>
+									</sup>
+								</th>
 								<th>{{Parametre}}</th>
 							</tr>
 						</thead>
