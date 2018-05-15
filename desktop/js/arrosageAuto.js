@@ -100,7 +100,7 @@ function addArroseur(_arroseur,  _el) {
 				.append($('<option value="1">')
 					.text('{{4/4}}'))))		
 		  .append($('<div class="turbine">')
-			.append($('input class="expressionAttr form-control" data-l1key="angle" placeholder="{{Saisir l\'angle d\'arrosage de votre turbine}} />'))));
+			.append($('<input class="expressionAttr form-control" data-l1key="angle" placeholder="{{Saisir l\'angle d\'arrosage de votre turbine}} />'))));
 	_el.append(tr);
 	_el.find('.gouteAgoute').hide();
 	_el.find('.tuyere').hide();
