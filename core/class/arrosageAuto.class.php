@@ -157,7 +157,8 @@ class arrosageAuto extends eqLogic {
 		if($Pluviometrie == 0)
 			return $Pluviometrie;
 		log::add('arrosageAuto','info',$this->getHumanName().' : Nous devons arroser '.$QtsEau.' mm/m² avec un pluviometrie de '.$Pluviometrie.'mm/s');
-		return $this->Ratio((($QtsEau-$plui)/$Pluviometrie)*$this->getConfiguration('superficie'));
+		return $Temps=($QtsEau/$Pluviometrie)*$this->getConfiguration('superficie');
+		return $this->Ratio($Temps);
 	}
 	public function Ratio($Value){
 		$cmd=$this->getCmd(null, 'coefficient');
@@ -279,7 +280,7 @@ class arrosageAuto extends eqLogic {
 				$Pluviometrie = 15;
 			break;
 		 }
-		return $Pluviometrie/3600;
+		return $Pluviometrie/3600; //Conversion de mm/H en mm/s
 	}
 	public function NextProg(){
 		$nextTime=null;
