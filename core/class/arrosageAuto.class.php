@@ -157,7 +157,7 @@ class arrosageAuto extends eqLogic {
 		if($Pluviometrie == 0)
 			return $Pluviometrie;
 		log::add('arrosageAuto','info',$this->getHumanName().' : Nous devons arroser '.$QtsEau.' mm/m² avec un pluviometrie de '.$Pluviometrie.'mm/s');
-		$Temps=($QtsEau/$Pluviometrie)*$this->getConfiguration('superficie');
+		$Temps=$QtsEau/$Pluviometrie;
 		return $this->Ratio($Temps);
 	}
 	public function Ratio($Value){
@@ -270,19 +270,24 @@ class arrosageAuto extends eqLogic {
 		return $nextTime;
 	}
 	public function CalculPluviometrie(){
-		switch($this->getConfiguration('TypeGicler')){
-			case'gouteAgoute':
-				$Debit = 10000 * $this->getConfiguration('DebitGoutteur');
-            			$Espacement = $this->getConfiguration('EspacementLateral') * $this->getConfiguration('EspacemenGoutteurs');
-           			$Pluviometrie = $Debit / $Espacement;
-			break;
-			case'tuyere':
-				$Pluviometrie=$Debit * $Angle;
-			break;
-			case'turbine':
-				$Pluviometrie = 15;
-			break;
-		 }
+		$Pluviometrie=array();
+		foreach($this->getConfiguration('arroseur') as $Arroseur){
+			switch($Arroseur['Type']){
+				case'gouteAgoute':
+					$Debit = 10000 * $Arroseur['Debit'];
+					$Espacement = $Arroseur['EspacementLateral'] * $Arroseur['EspacemenGoutteurs'];
+					$Pluviometrie[] = $Debit / $Espacement;
+				break;
+				case'tuyere':
+					$Pluviometrie[] = $Arroseur['Debit'] * $Arroseur['Quart'];
+				break;
+				case'turbine':
+					//$Pluviometrie[] = $Arroseur['Debit'] /($Arroseur['Distance'] * $Arroseur['Angle']);
+					$Pluviometrie[] = 15;
+				break;
+			 }
+		}
+		$Pluviometrie = array_sum($Pluviometrie)/count($Pluviometrie);
 		return $Pluviometrie/3600; //Conversion de mm/H en mm/s
 	}
 	public function NextProg(){
