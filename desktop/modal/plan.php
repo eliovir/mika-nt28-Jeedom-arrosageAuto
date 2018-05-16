@@ -3,10 +3,6 @@ if (!isConnect('admin')) {
 	throw new Exception('{{401 - Accès non autorisé}}');
 }
 $eqLogics = array();
-$infolocal=array();
-$infolocal['x'] = config::byKey('positionx', 'arrosageAuto', 999);
-$infolocal['y'] = config::byKey('positiony', 'arrosageAuto', 999);
-$antennas['local']=$infolocal;
 foreach (eqLogic::byType('arrosageAuto') as $eqLogic){
 	$info =array();
 	$object = $eqLogic->getObject();
@@ -16,16 +12,7 @@ foreach (eqLogic::byType('arrosageAuto') as $eqLogic){
 		$object = $object->getName();
 	}
 	$info['name'] = $eqLogic->getName().' [' . $object . ']';
-	$info['icon'] = $eqLogic->getConfiguration('iconModel');
-	$info['rssi'] = array();
-	foreach ($eqLogic->getCmd('info') as $cmd) {
-		$logicalId = $cmd->getLogicalId();
-		if (substr($logicalId,0,4) == 'rssi'){
-			$remotename= substr($logicalId,4);
-			$remoterssi = $cmd->execCmd();
-			$info['rssi'][$remotename] = $remoterssi;
-		}
-	}
+	$info['arroseur'] = $eqLogic->getConfiguration('arroseur');
 	$eqLogics[$eqLogic->getName().' [' . $object . ']']=$info;
 }
 sendVarToJS('eqLogics', $eqLogics);
@@ -52,55 +39,12 @@ load_graph();
 function load_graph(){
     $('#graph_network svg').remove();
 	var graph = Viva.Graph.graph();
-	/*for (antenna in antennas) {
-		if (antenna == 'local'){
-			graph.addNode(antenna,{url : 'plugins/arrosageAuto/3rdparty/jeeblue.png',antenna :1,x:antennas[antenna]['x'],y:antennas[antenna]['y']});
-		} else {
-			graph.addNode(antenna,{url : 'plugins/arrosageAuto/3rdparty/antenna.png',antenna :1,x:antennas[antenna]['x'],y:antennas[antenna]['y']});
-		}
-		topin = graph.getNode(antenna);
-		topin.isPinned = true;
-	}*/
 	for (eqlogic in eqLogics) {
-		graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/jeeblue.png',antenna :1,x:0,y:0});
+		graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/jeeblue.png',eqlogic :1,x:0,y:0});
 		topin = graph.getNode(eqlogic);
 		topin.isPinned = true;
-		/*haslink = 0;
-		graph.addNode(eqLogics[eqlogic]['name'],{url : 'plugins/arrosageAuto/core/config/devices/'+eqLogics[eqlogic]['icon']+'.jpg',antenna :0});
-		for (linkedantenna in eqLogics[eqlogic]['rssi']){
-			signal = eqLogics[eqlogic]['rssi'][linkedantenna];
-			orisignal = signal;
-			if (signal == -200 || signal == ''){
-				quality = 200;
-			} else if(signal <= -100){
-				quality = 0;
-			} else if(signal >= -50){
-				quality = 100;
-			}else{
-				quality = 2 * (signal + 100);
-			}
-			lenghtfactor = quality/100;
-			if (lenghtfactor != 2){
-				haslink=1;
-				graph.addLink(linkedantenna,eqLogics[eqlogic]['name'],{isdash: 0,lengthfactor: lenghtfactor,signal : orisignal});
-			}
-		}
-		if (haslink != 0){
-			for (antenna in antennas){
-				linked = 0;
-				for (linkedantenna in eqLogics[eqlogic]['rssi']){
-					if (antenna == linkedantenna && eqLogics[eqlogic]['rssi'][linkedantenna] != -200){
-						linked = 1;
-					}
-				}
-				if (linked == 0){
-					graph.addLink(antenna,eqLogics[eqlogic]['name'],{isdash: 1,lengthfactor: -0.1,signal : -200});
-				}
-			}
-		}
-		if (haslink == 0){
-			graph.addLink('local',eqLogics[eqlogic]['name'],{isdash: 1,lengthfactor: 0.5,signal : -200});
-		}*/
+		for (arroseur in eqLogic[arroseur]) 
+			graph.addNode(arroseur,{url : 'plugins/arrosageAuto/3rdparty/jeeblue.png',eqlogic :1,x:0,y:0});
 	}
 	var graphics = Viva.Graph.View.svgGraphics();
 	highlightRelatedNodes = function (nodeId, isOn) {
