@@ -1,46 +1,94 @@
 <?php
-  if (!isConnect('admin')) {
-    throw new Exception('401 Unauthorized');
-  }
-  $eqLogics = ChauffeEau::byType('arrosageAuto ');
+	if (!isConnect('admin')) {
+		throw new Exception('401 Unauthorized');
+	}
+	sendVarToJS('eqLogics', eqLogic::byType('arrosageAuto ');
 ?>
 <form class="form-horizontal">
-  <fieldset>
-    <legend>{{Les programmations de la zone :}}
-      <sup>
-        <i class="fa fa-question-circle tooltips" title="Saisir toutes les programmations pour la zone"></i>
-      </sup>
-      <a class="btn btn-success btn-xs ProgramationAttr" data-action="add" style="margin-left: 5px;">
-        <i class="fa fa-plus-circle"></i>
-        {{Ajouter une programmation}}
-      </a>
-    </legend>
-  </fieldset>
+	<fieldset>
+		<legend>{{Les programmations de la zone :}}
+			<sup>
+				<i class="fa fa-question-circle tooltips" title="Saisir toutes les programmations pour la zone"></i>
+			</sup>
+			<a class="btn btn-success btn-xs ProgramationAttr" data-action="add" style="margin-left: 5px;">
+				<i class="fa fa-plus-circle"></i>
+				{{Ajouter une programmation}}
+			</a>
+		</legend>
+	</fieldset>
 </form>
 <table id="table_programation" class="table table-bordered table-condensed">
-  <thead>
-    <tr>
-      <th></th>
-      <th>{{Jour actif}}</th>
-      <th>{{Heure}}</th>
-      <th>{{Branche}}</th>
-    </tr>
-  </thead>
-  <tbody>
-  	 <?php
-foreach ($eqLogics as $eqLogic) {
-	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getId() . '</span></td>';
-	echo '<td><span class="label label-info" style="font-size : 1em; cursor : default;">' . $eqLogic->getName() . '</span></td>';
-	$status = '<span class="label label-success" style="font-size : 1em;cursor:default;">{{OK}}</span>';
-	if ($eqLogic->getStatus('state') == 'nok') {
-		$status = '<span class="label label-danger" style="font-size : 1em;cursor:default;">{{NOK}}</span>';
-	}
-	echo '<td>' . $status . '</td>';
-	echo '<td><span class="label label-info" style="font-size : 1em;cursor:default;">' . $eqLogic->getStatus('lastCommunication') . '</span></td>';
-	echo '<td><span class="label label-info" style="font-size : 1em;cursor:default;">' . $eqLogic->getConfiguration('createtime') . '</span></td></tr>';
-}
-?>
-</tbody>
+	<thead>
+		<tr>
+			<th></th>
+			<th>{{Jour actif}}</th>
+			<th>{{Heure}}</th>
+			<th>{{Branche}}</th>
+		</tr>
+	</thead>
+	<tbody></tbody>
 </table>
-
-?>
+<script>	
+	$('.ProgramationAttr[data-action=add]').off().on('click',function(){
+		addProgramation({},$(this).closest('#table_programation'));
+	});
+	$.each(eqLogics, function (index,_eqLogic) {
+		if (typeof(_eqLogic.configuration.arroseur) !== 'undefined') {
+			for(var index in _eqLogic.configuration.arroseur) {
+				if( (typeof _eqLogic.configuration.arroseur[index] === "object") && (_eqLogic.configuration.arroseur[index] !== null) )
+					addArroseur(_eqLogic.configuration.arroseur[index],$('#table_programation'));
+			}
+		}
+	});
+	function addProgramation(_programation,  _el) {
+		var Heure=$('<select class="expressionAttr form-control" data-l1key="Heure" >');
+	    	var Minute=$('<select class="expressionAttr form-control" data-l1key="Minute" >');
+		var number = 0;
+	    	while (number < 24) {
+			Heure.append($('<option value="'+number+'">')
+				.text(number));
+		number++;
+		}
+		number = 0;
+	    	while (number < 60) {
+			Minute.append($('<option value="'+number+'">')
+				.text(number));
+		number++;
+		}
+		var tr = $('<tr class="ProgramationGroup">')
+			.append($('<td>')
+				.append($('<span class="input-group-btn">')
+					.append($('<a class="btn btn-default ProgramationAttr btn-sm" data-action="remove">')
+						.append($('<i class="fa fa-minus-circle">')))))
+			.append($('<td>')
+				.append($('<label class="checkbox-inline">')
+					.append($('<input type="checkbox" class="expressionAttr" data-l1key="1">'))
+					.append('{{Lundi}}'))
+				.append($('<label class="checkbox-inline">')
+					.append($('<input type="checkbox" class="expressionAttr" data-l1key="2">'))
+					.append('{{Mardi}}'))
+				.append($('<label class="checkbox-inline">')
+					.append($('<input type="checkbox" class="expressionAttr" data-l1key="3">'))
+					.append('{{Mercredi}}'))
+				.append($('<label class="checkbox-inline">')
+					.append($('<input type="checkbox" class="expressionAttr" data-l1key="4">'))
+					.append('{{Jeudi}}'))
+				.append($('<label class="checkbox-inline">')
+					.append($('<input type="checkbox" class="expressionAttr" data-l1key="5">'))
+					.append('{{Vendredi}}'))
+				.append($('<label class="checkbox-inline">')
+					.append($('<input type="checkbox" class="expressionAttr" data-l1key="6">'))
+					.append('{{Samedi}}'))
+				.append($('<label class="checkbox-inline">')
+					.append($('<input type="checkbox" class="expressionAttr" data-l1key="0" />'))
+					.append('{{Dimanche}}')))
+			.append($('<td>')
+				.append(Heure)
+				.append(Minute));
+		_el.append(tr);
+		_el.find('tr:last').setValues(_programation, '.expressionAttr');
+		$('.ProgramationAttr[data-action=remove]').off().on('click',function(){
+			$(this).closest('tr').remove();
+		});
+	}
+</script>
