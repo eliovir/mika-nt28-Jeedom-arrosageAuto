@@ -100,8 +100,8 @@ function addArroseur(_arroseur,  _el) {
 				.append($('<option value="1">')
 					.text('{{4/4}}'))))		
 		  .append($('<div class="turbine">')
-			  .append($('<input class="expressionAttr form-control" data-l1key="Distance" placeholder="Saisir la distance d\'arrosage (m)"/>'))
-			  .append($('<input class="expressionAttr form-control" data-l1key="Angle" placeholder="{{Saisir l\'angle d\'arrosage de votre turbine}} />'))));
+			  .append($('<input class="expressionAttr form-control" data-l1key="Distance" placeholder="{{Saisir la distance d\'arrosage (m)}}"/>'))
+			  .append($('<input class="expressionAttr form-control" data-l1key="Angle" placeholder="{{Saisir l\'angle d\'arrosage de votre turbine}}" />'))));
 	_el.append(tr);
 	_el.find('tr:last .gouteAgoute').hide();
 	_el.find('tr:last .tuyere').hide();
@@ -110,7 +110,7 @@ function addArroseur(_arroseur,  _el) {
 	$('.ArroseurAttr[data-action=remove]').off().on('click',function(){
 		$(this).closest('tr').remove();
 	});
-	$('.ArroseurGroup .expressionAttr[data-l1key=TypeGicler]').off().on('change',function(){
+	$('.ArroseurGroup .expressionAttr[data-l1key=Type]').off().on('change',function(){
 		switch($(this).val()){
 			case 'gouteAgoute':
 				$(this).closest('tr').find('.gouteAgoute').show();
