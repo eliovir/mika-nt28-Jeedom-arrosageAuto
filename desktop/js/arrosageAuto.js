@@ -76,7 +76,7 @@ function addArroseur(_arroseur,  _el) {
 			.append($('<a class="btn btn-default ArroseurAttr btn-sm" data-action="remove">')
 				.append($('<i class="fa fa-minus-circle">')))));	
 	tr.append($('<td>')
-		.append($('<select class="expressionAttr form-control" data-l1key="TypeGicler" >')
+		.append($('<select class="expressionAttr form-control" data-l1key="Type" >')
 			.append($('<option value="gouteAgoute">')
 				.text('{{Goutte à goutte}}'))
 			.append($('<option value="tuyere">')
@@ -90,7 +90,7 @@ function addArroseur(_arroseur,  _el) {
 			.append($('<input class="expressionAttr form-control" data-l1key="EspacementLateral" placeholder="Saisir l\'espacement latéral (cm)"/>'))
 			.append($('<input class="expressionAttr form-control" data-l1key="EspacemenGoutteurs" placeholder="Saisir l\'espacement des goutteurs (cm)"/>')))
 		  .append($('<div class="tuyere">')
-			  .append($('<select class="expressionAttr form-control" data-l1key="quart" >')
+			  .append($('<select class="expressionAttr form-control" data-l1key="Quart" >')
 				.append($('<option value="0,25">')
 					.text('{{1/4}}'))
 				.append($('<option value="0,5">')
@@ -100,11 +100,12 @@ function addArroseur(_arroseur,  _el) {
 				.append($('<option value="1">')
 					.text('{{4/4}}'))))		
 		  .append($('<div class="turbine">')
-			.append($('<input class="expressionAttr form-control" data-l1key="angle" placeholder="{{Saisir l\'angle d\'arrosage de votre turbine}} />'))));
+			  .append($('<input class="expressionAttr form-control" data-l1key="Distance" placeholder="Saisir la distance d\'arrosage (m)"/>'))
+			  .append($('<input class="expressionAttr form-control" data-l1key="Angle" placeholder="{{Saisir l\'angle d\'arrosage de votre turbine}} />'))));
 	_el.append(tr);
-	_el.find('.gouteAgoute').hide();
-	_el.find('.tuyere').hide();
-	_el.find('.turbine').hide();
+	_el.find('tr:last .gouteAgoute').hide();
+	_el.find('tr:last .tuyere').hide();
+	_el.find('tr:last .turbine').hide();
         _el.find('tr:last').setValues(_arroseur, '.expressionAttr');
 	$('.ArroseurAttr[data-action=remove]').off().on('click',function(){
 		$(this).closest('tr').remove();
