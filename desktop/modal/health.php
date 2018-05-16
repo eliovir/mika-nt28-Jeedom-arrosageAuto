@@ -2,7 +2,7 @@
 if (!isConnect('admin')) {
 	throw new Exception('401 Unauthorized');
 }
-$eqLogics = ChauffeEau::byType('arrosageAuto ');
+$eqLogics = eqLogic::byType('arrosageAuto ');
 ?>
 
 <table class="table table-condensed tablesorter" id="table_healthArrosageAuto ">
