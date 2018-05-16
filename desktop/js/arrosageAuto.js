@@ -107,6 +107,7 @@ function addArroseur(_arroseur,  _el) {
 	_el.find('tr:last .tuyere').hide();
 	_el.find('tr:last .turbine').hide();
         _el.find('tr:last').setValues(_arroseur, '.expressionAttr');
+        _el.find('tr:last .expressionAttr[data-l1key=Type]').trigger('change');
 	$('.ArroseurAttr[data-action=remove]').off().on('click',function(){
 		$(this).closest('tr').remove();
 	});
