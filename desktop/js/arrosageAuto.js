@@ -7,6 +7,14 @@ $('.bt_showExpressionTest').off('click').on('click', function () {
   $('#md_modal').dialog({title: "{{Testeur d'expression}}"});
   $("#md_modal").load('index.php?v=d&modal=expression.test').dialog('open');
 });
+$('#bt_planArrosageAuto').off('click').on('click', function () {
+	$('#md_modal').dialog({title: "{{Plan d'arrosage}}"});
+	$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=plan').dialog('open');
+});
+$('#bt_programArrosageAuto').off('click').on('click', function () {
+	$('#md_modal').dialog({title: "{{Programmation de l'arrosage}}"});
+	$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=programmation').dialog('open');
+});
 $('#bt_healthArrosageAuto').off('click').on('click', function () {
 	$('#md_modal').dialog({title: "{{Santé des zones d'arrosage}}"});
 	$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=health').dialog('open');
