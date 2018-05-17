@@ -114,8 +114,6 @@ function addArroseur(_arroseur,  _el) {
 	_el.find('tr:last .gouteAgoute').hide();
 	_el.find('tr:last .tuyere').hide();
 	_el.find('tr:last .turbine').hide();
-        _el.find('tr:last').setValues(_arroseur, '.expressionAttr');
-        _el.find('tr:last .expressionAttr[data-l1key=Type]').trigger('change');
 	$('.ArroseurAttr[data-action=remove]').off().on('click',function(){
 		$(this).closest('tr').remove();
 	});
@@ -138,6 +136,7 @@ function addArroseur(_arroseur,  _el) {
 			break;
 		 }
 	});
+        _el.find('tr:last').setValues(_arroseur, '.expressionAttr');
 }
 function addProgramation(_programation,  _el) {
 	var Heure=$('<select class="expressionAttr form-control" data-l1key="Heure" >');
