@@ -39,19 +39,19 @@ load_graph();
 function load_graph(){
     $('#plan_arrosage svg').remove();
 	var graph = Viva.Graph.graph();
-	graph.addNode("Source",{url : 'plugins/arrosageAuto/3rdparty/Source.png'});
+	graph.addNode('Source',{url : 'plugins/arrosageAuto/3rdparty/Source.png'});	
 	for (eqlogic in eqLogics) {
-		/*graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/Source.png'});
-		graph.addLink("Source", eqlogic);
+		graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/Source.png'});
+		graph.addLink(eqlogic,'Source',{isdash: 1,lengthfactor: 100,signal : 100});
 		topin = graph.getNode(eqlogic);
-		topin.isPinned = true;*/
+		topin.isPinned = true;
 		var lastArroseur = ''; 
 		for (arroseur in eqLogics[eqlogic]['arroseur']) {
 			graph.addNode(eqlogic+' - '+arroseur,{url : 'plugins/arrosageAuto/3rdparty/Arroseur.png'});
-			/*if(lastArroseur == '')
-				graph.addLink(eqlogic, arroseur);
+			if(lastArroseur == '')
+             			graph.addLink(eqlogic+' - '+arroseur,eqlogic,{isdash: 1,lengthfactor: 100,signal : 100});
 			else
-				graph.addLink(lastArroseur, arroseur);*/
+              			graph.addLink(eqlogic+' - '+arroseur,eqlogic+' - '+lastArroseur,{isdash: 1,lengthfactor: 100,signal : 100});
 			lastArroseur = arroseur;
 		}
 	}
