@@ -19,17 +19,17 @@ sendVarToJS('eqLogics', $eqLogics);
 ?>
 <script type="text/javascript" src="plugins/arrosageAuto/3rdparty/vivagraph/vivagraph.min.js"></script>
 <style>
-    #graph_network {
+    #plan_arrosage {
         height: 100%;
         width: 100%;
         position: absolute;
     }
-    #graph_network > svg {
+    #plan_arrosage > svg {
         height: 100%;
         width: 100%
     }
 </style>
-<div id="graph_network" class="tab-pane">
+<div id="plan_arrosage" class="tab-pane">
 	<a class="btn btn-success arrosageAutoRemoteAction" data-action="saveanttenna"><i class="fa fa-floppy-o"></i> {{Position Arroseurs}}</a>
 	<a class="btn btn-success arrosageAutoRemoteAction" data-action="refresh"><i class="fa fa-refresh"></i></a>
 </div>
@@ -37,21 +37,21 @@ sendVarToJS('eqLogics', $eqLogics);
 <script>
 load_graph();
 function load_graph(){
-    $('#graph_network svg').remove();
+    $('#plan_arrosage svg').remove();
 	var graph = Viva.Graph.graph();
 	graph.addNode("Source",{url : 'plugins/arrosageAuto/3rdparty/Source.png'});
 	for (eqlogic in eqLogics) {
-		graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/Source.png'});
+		/*graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/Source.png'});
 		graph.addLink("Source", eqlogic);
 		topin = graph.getNode(eqlogic);
-		topin.isPinned = true;
+		topin.isPinned = true;*/
 		var lastArroseur = ''; 
 		for (arroseur in eqLogics[eqlogic]['arroseur']) {
-			graph.addNode("Arroseur - "+arroseur,{url : 'plugins/arrosageAuto/3rdparty/Arroseur.png'});
-			if(lastArroseur == '')
+			graph.addNode(eqlogic+' - '+arroseur,{url : 'plugins/arrosageAuto/3rdparty/Arroseur.png'});
+			/*if(lastArroseur == '')
 				graph.addLink(eqlogic, arroseur);
 			else
-				graph.addLink(lastArroseur, arroseur);
+				graph.addLink(lastArroseur, arroseur);*/
 			lastArroseur = arroseur;
 		}
 	}
@@ -110,7 +110,7 @@ function load_graph(){
 	        graphics : graphics,
 		layout : layout,
 		prerender : 10000,
-		container: document.getElementById('graph_network')
+		container: document.getElementById('plan_arrosage')
     	});
 renderer.run();
 $('.arrosageAutoRemoteAction[data-action=refresh]').on('click',function(){
