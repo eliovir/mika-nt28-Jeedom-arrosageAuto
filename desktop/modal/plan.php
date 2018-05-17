@@ -40,11 +40,11 @@ function load_graph(){
     $('#graph_network svg').remove();
 	var graph = Viva.Graph.graph();
 	for (eqlogic in eqLogics) {
-		graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/jeeblue.png',eqlogic :1,x:0,y:0});
+		graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/Source.png',eqlogic :1,x:0,y:0});
 		topin = graph.getNode(eqlogic);
 		topin.isPinned = true;
-		for (arroseur in eqLogic[arroseur]) 
-			graph.addNode(arroseur,{url : 'plugins/arrosageAuto/3rdparty/jeeblue.png',eqlogic :1,x:0,y:0});
+		for (arroseur in eqLogics[eqlogic]['arroseur']) 
+			graph.addNode("Arroseur - "+arroseur,{url : 'plugins/arrosageAuto/3rdparty/Arroseur.png',eqlogic :0,x:0,y:0});
 	}
 	var graphics = Viva.Graph.View.svgGraphics();
 	highlightRelatedNodes = function (nodeId, isOn) {
@@ -59,28 +59,28 @@ function load_graph(){
 		name = node.id;
 		if (name == 'local'){
 			name = 'Local';
-	}
-       	var ui = Viva.Graph.svg('g'),
-	    svgText = Viva.Graph.svg('text').attr('y', '-4px').text(name),
-	    img = Viva.Graph.svg('image')
-		.attr('width', 48)
-                .attr('height', 48)
-                .link(node.data.url);
-              	ui.append(svgText);
-             	ui.append(img);
+		}
+		var ui = Viva.Graph.svg('g'),
+		    svgText = Viva.Graph.svg('text').attr('y', '-4px').text(name),
+		    img = Viva.Graph.svg('image')
+			.attr('width', 48)
+			.attr('height', 48)
+			.link(node.data.url);
+		ui.append(svgText);
+		ui.append(img);
 		$(ui).hover(function () {
-                    highlightRelatedNodes(node.id, true);
-                }, function () {
-                    highlightRelatedNodes(node.id, false);
-                });
-                return ui;	
-    })
-    .placeNode(function(nodeUI, pos){
+		    highlightRelatedNodes(node.id, true);
+		}, function () {
+		    highlightRelatedNodes(node.id, false);
+		});
+		return ui;	
+    	})
+    	.placeNode(function(nodeUI, pos){
 		nodeUI.attr('transform',
-				'translate(' +
-					(pos.x - 24) + ',' + (pos.y - 24) +
-				')');
-    });
+			'translate(' +
+				(pos.x - 24) + ',' + (pos.y - 24) +
+			')');
+    	});
 	var idealLength =400;
 	var layout = Viva.Graph.Layout.forceDirected(graph, {
                 springLength: idealLength,
@@ -92,28 +92,11 @@ function load_graph(){
                     spring.length = idealLength * (1-link.data.lengthfactor);
                 }
             });
-		graphics.link(function (link) {
-                dashvalue = '5, 0';
-				color = 'green';
-				if (link.data.signal <= -150) {
-					color = 'grey';
-				} else if (link.data.signal <= -92) {
-					color = 'red';
-				} else if (link.data.signal <= -86) {
-					color = 'orange';
-				} else if (link.data.signal <= -81) {
-					color = 'yellow';
-				}
-                if (link.data.isdash == 1) {
-                    dashvalue = '5, 2';
-                }
+	graphics.link(function (link) {
+		dashvalue = '5, 0';
+		color = 'green';
                 return Viva.Graph.svg('line').attr('stroke', color).attr('stroke-dasharray', dashvalue).attr('stroke-width', '0.6px');
-            });
-	/*for (antenna in antennas) {
-		if (parseInt(antennas[antenna]['x']) != 999){
-			layout.setNodePosition(antenna,parseInt(antennas[antenna]['x']),parseInt(antennas[antenna]['y']));
-		}
-	}*/
+        });
 	var renderer = Viva.Graph.View.renderer(graph, {
 	        graphics : graphics,
 		layout : layout,
