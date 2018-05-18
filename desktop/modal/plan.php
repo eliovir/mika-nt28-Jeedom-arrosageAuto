@@ -33,6 +33,7 @@ sendVarToJS('eqLogics', $eqLogics);
 <div id="plan_arrosage" class="tab-pane">
 	<a class="btn btn-success arrosageAutoRemoteAction" data-action="saveanttenna"><i class="fa fa-floppy-o"></i> {{Position Arroseurs}}</a>
 	<a class="btn btn-success arrosageAutoRemoteAction" data-action="refresh"><i class="fa fa-refresh"></i></a>
+	<input type="file" name="PlanImg" id="PlanImg" data-url="plugins/arrosageAuto/core/ajax/arrosageAuto.ajax.php?action=PlanImg" placeholder="{{Image de fond}}" class="form-control input-md"/>
 	<img class="CameraSnap" usemap="#map" src=""/>
 	<div id="div_displayArea"></div>
 	<map name="map" id="map"></map>
@@ -67,9 +68,21 @@ sendVarToJS('eqLogics', $eqLogics);
 </style>
 <script>
 var coords=[];
-if(areas.length>2){
+/*if(areas.length>2){
 	var coords=JSON.parse(areas);
-}	
+}*/	
+$('#PlanImg').fileupload({
+	dataType: 'json',
+	replaceFileInput: false,
+	//done: function (data) {
+	success: function(data) {
+		if (data.state != 'ok') {
+			$('#div_alert').showAlert({message: data.result, level: 'danger'});
+			return;
+			$('.CameraSnap').attr('src',data.result)
+		}
+	}
+});
 $('body').on('click', '.CameraSnap', function (e) {
 	setCoordinates(e);
 }); 
