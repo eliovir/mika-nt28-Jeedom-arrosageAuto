@@ -16,6 +16,9 @@ foreach (eqLogic::byType('arrosageAuto') as $eqLogic){
 	$eqLogics[$eqLogic->getName().' [' . $object . ']']=$info;
 }
 sendVarToJS('eqLogics', $eqLogics);
+$background=array_diff(scandir('plugins/arrosageAuto/plan/'), array('..', '.'));
+reset($background);
+$background = 'plugins/arrosageAuto/plan/'.$background[key($background)];
 ?>
 <script type="text/javascript" src="plugins/arrosageAuto/3rdparty/vivagraph/vivagraph.min.js"></script>
 <script type="text/javascript" src="plugins/arrosageAuto/3rdparty/maphilight/jquery.maphilight.min.js"></script>
@@ -34,7 +37,7 @@ sendVarToJS('eqLogics', $eqLogics);
 	<a class="btn btn-success arrosageAutoRemoteAction" data-action="saveanttenna"><i class="fa fa-floppy-o"></i> {{Position Arroseurs}}</a>
 	<a class="btn btn-success arrosageAutoRemoteAction" data-action="refresh"><i class="fa fa-refresh"></i></a>
 	<input type="file" name="PlanImg" id="PlanImg" data-url="plugins/arrosageAuto/core/ajax/arrosageAuto.ajax.php?action=PlanImg" placeholder="{{Image de fond}}" class="form-control input-md"/>
-	<img class="CameraSnap" usemap="#map" src="<? echo array_diff(scandir('plugins/arrosageAuto/plan/'), array('..', '.'))[0];?>"/>
+	<img class="CameraSnap" usemap="#map" src="<?php echo $background; ?>"/>
 	<div id="div_displayArea"></div>
 	<map name="map" id="map"></map>
 </div>
@@ -79,7 +82,7 @@ $('#PlanImg').fileupload({
 		if (data.state != 'ok') {
 			$('#div_alert').showAlert({message: data.result, level: 'danger'});
 			return;
-			$('.CameraSnap').attr('src',data.result)
+			$('.CameraSnap').attr('src','plugins/arrosageAuto/plan/'+data.result)
 		}
 	}
 });
