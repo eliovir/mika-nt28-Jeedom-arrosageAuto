@@ -6,6 +6,20 @@ try {
 	if (!isConnect('admin')) {
 		throw new Exception(__('401 - Accès non autorisé', __FILE__));
 	}
+	
+	if (init('action') == 'PlanImg') {
+		if (isset($_FILES['PlanImg'])){
+			$uploaddir = '';
+			$uploadfile = $uploaddir . basename($_FILES['PlanImg']['name']);
+
+			echo '<pre>';
+			if (move_uploaded_file($_FILES['PlanImg']['tmp_name'], $uploadfile))
+				ajax::success($uploadfile);
+			else
+				ajax::error('');
+		}
+		ajax::error('');
+	}
 	throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
 	/*     * *********Catch exeption*************** */
 } catch (Exception $e) {
