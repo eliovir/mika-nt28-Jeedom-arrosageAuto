@@ -9,7 +9,7 @@ try {
 	
 	if (init('action') == 'PlanImg') {
 		if (isset($_FILES['PlanImg'])){
-			$uploaddir = '../../plan/';
+			$uploaddir = 'plugins/arrosageAuto/plan/';
 			if(file_exists($uploaddir))
 				exec('sudo rm -R '.$uploaddir);
 			exec('sudo mkdir -p '.$uploaddir);
