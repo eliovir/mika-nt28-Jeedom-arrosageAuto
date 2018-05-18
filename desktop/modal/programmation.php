@@ -2,7 +2,7 @@
 	if (!isConnect('admin')) {
 		throw new Exception('401 Unauthorized');
 	}
-	sendVarToJS('eqLogics', eqLogic::byType('arrosageAuto ');
+	sendVarToJS('eqLogics', eqLogic::byType('arrosageAuto '));
 ?>
 <form class="form-horizontal">
 	<fieldset>
