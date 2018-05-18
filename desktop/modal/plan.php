@@ -34,7 +34,7 @@ sendVarToJS('eqLogics', $eqLogics);
 	<a class="btn btn-success arrosageAutoRemoteAction" data-action="saveanttenna"><i class="fa fa-floppy-o"></i> {{Position Arroseurs}}</a>
 	<a class="btn btn-success arrosageAutoRemoteAction" data-action="refresh"><i class="fa fa-refresh"></i></a>
 	<input type="file" name="PlanImg" id="PlanImg" data-url="plugins/arrosageAuto/core/ajax/arrosageAuto.ajax.php?action=PlanImg" placeholder="{{Image de fond}}" class="form-control input-md"/>
-	<img class="CameraSnap" usemap="#map" src=""/>
+	<img class="CameraSnap" usemap="#map" src="<? echo array_diff(scandir('plugins/arrosageAuto/plan/'), array('..', '.'))[0];?>"/>
 	<div id="div_displayArea"></div>
 	<map name="map" id="map"></map>
 </div>
