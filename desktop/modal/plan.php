@@ -23,7 +23,20 @@ $background = 'plugins/arrosageAuto/plan/'.$background[key($background)];
 <script type="text/javascript" src="plugins/arrosageAuto/3rdparty/vivagraph/vivagraph.min.js"></script>
 <script type="text/javascript" src="plugins/arrosageAuto/3rdparty/maphilight/jquery.maphilight.min.js"></script>
 <style>
+</style>
+<div id="plan_arrosage" class="tab-pane" usemap="#map">
+	<a class="btn btn-success arrosageAutoRemoteAction" data-action="saveanttenna"><i class="fa fa-floppy-o"></i> {{Position Arroseurs}}</a>
+	<a class="btn btn-success arrosageAutoRemoteAction" data-action="refresh"><i class="fa fa-refresh"></i></a>
+	<input type="file" name="PlanImg" id="PlanImg" data-url="plugins/arrosageAuto/core/ajax/arrosageAuto.ajax.php?action=PlanImg" placeholder="{{Image de fond}}" class="form-control input-md"/>
+	<img class="CameraSnap"  src=""/>
+	<div id="div_displayArea"></div>
+	<map name="map" id="map"></map>
+</div>
+<style>
     #plan_arrosage {
+	background-repeat: no-repeat;
+	background-image:url(<?php echo $background; ?>);
+  	position:relative;
         height: 100%;
         width: 100%;
         position: absolute;
@@ -32,41 +45,25 @@ $background = 'plugins/arrosageAuto/plan/'.$background[key($background)];
         height: 100%;
         width: 100%
     }
-</style>
-<div id="plan_arrosage" class="tab-pane">
-	<a class="btn btn-success arrosageAutoRemoteAction" data-action="saveanttenna"><i class="fa fa-floppy-o"></i> {{Position Arroseurs}}</a>
-	<a class="btn btn-success arrosageAutoRemoteAction" data-action="refresh"><i class="fa fa-refresh"></i></a>
-	<input type="file" name="PlanImg" id="PlanImg" data-url="plugins/arrosageAuto/core/ajax/arrosageAuto.ajax.php?action=PlanImg" placeholder="{{Image de fond}}" class="form-control input-md"/>
-	<img class="CameraSnap" usemap="#map" src="<?php echo $background; ?>"/>
-	<div id="div_displayArea"></div>
-	<map name="map" id="map"></map>
-</div>
-<style>
-.plan_arrosage {
-  background-repeat: no-repeat;
-  position:relative;
-  width: 100%;
-  height: 100%;
-}
 .cornerResizers {
-  display: block;
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background-color: #333;
-  border: 1px solid #fff;
-  overflow: hidden;
-  cursor: move;
+  	display: block;
+  	position: absolute;
+  	width: 6px;
+	height: 6px;
+	background-color: #333;
+	border: 1px solid #fff;
+	overflow: hidden;
+	cursor: move;
 }
 .medianResizers {
-  display: block;
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background-color: #fff;
-  border: 1px solid #333;
-  overflow: hidden;
-  cursor: move;
+	display: block;
+	position: absolute;
+	width: 4px;
+	height: 4px;
+	background-color: #fff;
+	border: 1px solid #333;
+	overflow: hidden;
+	cursor: move;
 }
 </style>
 <script>
@@ -82,13 +79,13 @@ $('#PlanImg').fileupload({
 		if (data.state != 'ok') {
 			$('#div_alert').showAlert({message: data.result, level: 'danger'});
 			return;
-			$('.CameraSnap').attr('src','plugins/arrosageAuto/plan/'+data.result)
 		}
+		$('#plan_arrosage').css("background-image", "url(plugins/arrosageAuto/plan/'+data.result)"); 
 	}
 });
-$('body').on('click', '.CameraSnap', function (e) {
+/*$('body').on('click', '#plan_arrosage', function (e) {
 	setCoordinates(e);
-}); 
+}); */
 var onImgLoad = function(selector, callback){
     $(selector).each(function(){
         if (this.complete || /*for IE 10-*/ $(this).height() > 0) {
@@ -101,11 +98,8 @@ var onImgLoad = function(selector, callback){
         }
     });
 };
-onImgLoad('.CameraSnap', function(){
-  	updateCoords();
-});
 function hightlight(){
-	$('.CameraSnap').maphilight({
+	$('#plan_arrosage').maphilight({
 		stroke: true,
 		fade: true, 
 		strokeColor: '4F95EA',
@@ -122,7 +116,7 @@ function hightlight(){
 function setCoordinates(e) {
 	var x = e.pageX;
 	var y = e.pageY;
-	var offset = $('.CameraSnap').offset();
+	var offset = $('#plan_arrosage').offset();
 	x -= parseInt(offset.left);
 	y -= parseInt(offset.top);
 	if(x < 0) { x = 0; }
@@ -235,16 +229,16 @@ function load_graph(){
 	graph.addNode('Source',{url : 'plugins/arrosageAuto/3rdparty/Source.png'});	
 	for (eqlogic in eqLogics) {
 		graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/Source.png'});
-		graph.addLink(eqlogic,'Source',{isdash: 1,lengthfactor: 100,signal : 100});
+		graph.addLink(eqlogic,'Source',{isdash: 1,lengthfactor: eqlogic['length']});
 		topin = graph.getNode(eqlogic);
 		topin.isPinned = true;
 		var lastArroseur = ''; 
 		for (arroseur in eqLogics[eqlogic]['arroseur']) {
 			graph.addNode(eqlogic+' - '+arroseur,{url : 'plugins/arrosageAuto/3rdparty/Arroseur.png'});
 			if(lastArroseur == '')
-             			graph.addLink(eqlogic+' - '+arroseur,eqlogic,{isdash: 1,lengthfactor: 100,signal : 100});
+             			graph.addLink(eqlogic+' - '+arroseur,eqlogic,{isdash: 1,lengthfactor: eqlogic+' - '+arroseur['length']});
 			else
-              			graph.addLink(eqlogic+' - '+arroseur,eqlogic+' - '+lastArroseur,{isdash: 1,lengthfactor: 100,signal : 100});
+              			graph.addLink(eqlogic+' - '+arroseur,eqlogic+' - '+lastArroseur,{isdash: 1,lengthfactor: eqlogic+' - '+arroseur['length']});
 			lastArroseur = arroseur;
 		}
 	}
