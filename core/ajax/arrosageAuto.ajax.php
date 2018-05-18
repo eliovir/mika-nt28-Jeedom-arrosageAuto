@@ -9,9 +9,12 @@ try {
 	
 	if (init('action') == 'PlanImg') {
 		if (isset($_FILES['PlanImg'])){
-			$uploaddir = '';
+			$uploaddir = '../../plan/';
+			if(file_exists($uploaddir))
+				exec('sudo rm -R '.$uploaddir);
+			exec('sudo mkdir -p '.$uploaddir);
+			exec('sudo chmod 777 -R '.$uploaddir);
 			$uploadfile = $uploaddir . basename($_FILES['PlanImg']['name']);
-
 			echo '<pre>';
 			if (move_uploaded_file($_FILES['PlanImg']['tmp_name'], $uploadfile))
 				ajax::success($uploadfile);
