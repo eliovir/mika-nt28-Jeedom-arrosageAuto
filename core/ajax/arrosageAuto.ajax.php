@@ -16,7 +16,7 @@ try {
 			exec('sudo chmod 777 -R '.$uploaddir);
 			$uploadfile = $uploaddir . basename($_FILES['PlanImg']['name']);
 			if (move_uploaded_file($_FILES['PlanImg']['tmp_name'], $uploadfile))
-				ajax::success(basename($_FILES['PlanImg']['name']);
+				ajax::success(basename($_FILES['PlanImg']['name']));
 			else
 				ajax::error('');
 		}
