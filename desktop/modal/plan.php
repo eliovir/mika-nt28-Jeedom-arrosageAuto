@@ -9,7 +9,7 @@ if($Position == ''){
 	$Position['Source']['y']=0;
 }
 foreach (eqLogic::byType('arrosageAuto') as $eqLogic){
-	if(isset($Position[$eqLogic->getName().' [' . $object . ']'])){
+	//if(isset($Position[$eqLogic->getName().' [' . $object . ']'])){
 		$info =array();
 		$object = $eqLogic->getObject();
 		if (is_null($object)) {
@@ -18,11 +18,15 @@ foreach (eqLogic::byType('arrosageAuto') as $eqLogic){
 			$object = $object->getName();
 		}
 		$info['name'] = $eqLogic->getName().' [' . $object . ']';
-		$info['arroseur'] = $eqLogic->getConfiguration('arroseur');
+        foreach($eqLogic->getConfiguration('arroseur') as $key => $Arroseur){
+          $info['arroseur'][$info['name'] . ' - '.$key]=$Arroseur;
+          $info['arroseur'][$info['name'] . ' - '.$key]['x']=0;
+          $info['arroseur'][$info['name'] . ' - '.$key]['y']=0;
+        }
 		$info['x']=0;
 		$info['y']=0;
 		$Position[$eqLogic->getName().' [' . $object . ']']=$info;
-	}
+	//}
 }
 config::save('planPosition', $Position,'arrosageAuto');
 sendVarToJS('eqLogics', $Position);
@@ -35,8 +39,8 @@ $background = 'plugins/arrosageAuto/plan/'.$background[key($background)];
 <style>
 </style>
 <div id="plan_arrosage" class="tab-pane" usemap="#map">
-	<a class="btn btn-success arrosageAutoRemoteAction" data-action="saveanttenna"><i class="fa fa-floppy-o"></i> {{Position Arroseurs}}</a>
-	<a class="btn btn-success arrosageAutoRemoteAction" data-action="refresh"><i class="fa fa-refresh"></i></a>
+	<a class="btn btn-success arrosageAutoAction" data-action="savearroseur"><i class="fa fa-floppy-o"></i> {{Position Arroseurs}}</a>
+	<a class="btn btn-success arrosageAutoAction" data-action="refresh"><i class="fa fa-refresh"></i></a>
 	<input type="file" name="PlanImg" id="PlanImg" data-url="plugins/arrosageAuto/core/ajax/arrosageAuto.ajax.php?action=PlanImg" placeholder="{{Image de fond}}" class="form-control input-md"/>
 	<img class="CameraSnap"  src=""/>
 	<div id="div_displayArea"></div>
@@ -239,17 +243,19 @@ function load_graph(){
 	graph.addNode('Source',{url : 'plugins/arrosageAuto/3rdparty/Source.png',x:eqLogics['Source']['x'],y:eqLogics['Source']['y']});	
 	for (eqlogic in eqLogics) {
 		graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/Source.png',x:eqlogic['x'],y:eqlogic['y']});
-		graph.addLink(eqlogic,'Source',{isdash: 1,lengthfactor: eqlogic['length']});
+		graph.addLink(eqlogic,'Source');
 		topin = graph.getNode(eqlogic);
 		topin.isPinned = true;
 		var lastArroseur = ''; 
 		for (arroseur in eqLogics[eqlogic]['arroseur']) {
-			graph.addNode(eqlogic+' - '+arroseur,{url : 'plugins/arrosageAuto/3rdparty/Arroseur.png',x:arroseur['x'],y:arroseur['y']});
+			graph.addNode(arroseur,{url : 'plugins/arrosageAuto/3rdparty/Arroseur.png',x:arroseur['x'],y:arroseur['y']});
 			if(lastArroseur == '')
-             			graph.addLink(eqlogic+' - '+arroseur,eqlogic,{isdash: 1,lengthfactor: eqlogic+' - '+arroseur['length']});
+             			graph.addLink(arroseur,eqlogic);
 			else
-              			graph.addLink(eqlogic+' - '+arroseur,eqlogic+' - '+lastArroseur,{isdash: 1,lengthfactor: eqlogic+' - '+arroseur['length']});
+              			graph.addLink(arroseur,lastArroseur);
 			lastArroseur = arroseur;
+          	topin = graph.getNode(arroseur);
+			topin.isPinned = true;
 		}
 	}
 	var graphics = Viva.Graph.View.svgGraphics();
@@ -293,10 +299,7 @@ function load_graph(){
                 stableThreshold: 0.1,
                 dragCoeff: 0.02,
                 springCoeff: 0.0005,
-                gravity: -0.5,
-                springTransform: function (link, spring) {
-                	spring.length = idealLength * (1-link.data.lengthfactor);
-                }
+                gravity: -0.5
         });
 	graphics.link(function (link) {
 		dashvalue = '5, 0';
@@ -310,41 +313,27 @@ function load_graph(){
 		container: document.getElementById('plan_arrosage')
     	});
 	renderer.run();
-	$('.arrosageAutoRemoteAction[data-action=refresh]').on('click',function(){
+	$('.arrosageAutoAction[data-action=refresh]').on('click',function(){
 		$('#md_modal').dialog('close');
 			$('#md_modal').dialog({title: "{{Plan d'arrosage}}"});
 			$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=plan&id=arrosageAuto').dialog('open');
 	});
-	$('.arrosageAutoRemoteAction[data-action=savearroseur]').on('click',function(){
-		var arroseur= {}
+	$('.arrosageAutoAction[data-action=savearroseur]').on('click',function(){
+      	var arroseur= {}
 		graph.forEachNode(function (node) {
-			if (node.data.arroseur == 1){
-				var position = layout.getNodePosition(node.id);
+            	var position = layout.getNodePosition(node.id);
 				arroseur[node.id] = position.x +'|'+position.y;
-			}
 		});
-		$.ajax({
-			type: "POST",
-			url: "plugins/arrosageAuto/core/ajax/arrosageAuto.ajax.php", 
-			data: {
-				action: "saveArroseurPosition",
-				arroseurs: json_encode(arroseur)
-			},
-			dataType: 'json',
-			error: function (request, status, error) {
-				handleAjaxError(request, status, error);
-			},
-			success: function (data) { // si l'appel a bien fonctionné
-				if (data.state != 'ok') {
-					$('#div_alert').showAlert({message: data.result, level: 'danger'});
-					return;
-				}
-				$('#div_alert').showAlert({message: 'Positions des arroseurs sauvé avec succes', level: 'success'});
-				$('#md_modal').dialog('close');
-				$('#md_modal').dialog({title: "{{Plan d'arrosage}}"});
-				$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=plan&id=arrosageAuto').dialog('open');
-			}
-		});
+		jeedom.config.save({
+          	plugin:'arrosageAuto',
+            configuration: {'planPosition': arroseur},
+            error: function (error) {
+                $('#div_alert').showAlert({message: error.message, level: 'danger'});
+            },
+            success: function () {
+                $('#div_alert').showAlert({message: '{{Sauvegarde réussie}}', level: 'success'});
+            }
+        });
 	});
 }
 </script>
