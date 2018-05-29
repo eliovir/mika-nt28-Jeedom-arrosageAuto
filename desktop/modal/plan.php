@@ -2,20 +2,30 @@
 if (!isConnect('admin')) {
 	throw new Exception('{{401 - Accès non autorisé}}');
 }
-$eqLogics = array();
-foreach (eqLogic::byType('arrosageAuto') as $eqLogic){
-	$info =array();
-	$object = $eqLogic->getObject();
-	if (is_null($object)) {
-		$object = 'Aucun';
-	} else {
-		$object = $object->getName();
-	}
-	$info['name'] = $eqLogic->getName().' [' . $object . ']';
-	$info['arroseur'] = $eqLogic->getConfiguration('arroseur');
-	$eqLogics[$eqLogic->getName().' [' . $object . ']']=$info;
+$Position=config::byKey('planPosition', 'arrosageAuto');
+if($Position == ''){
+	$Position = array();
+	$Position['Source']['x']=0;
+	$Position['Source']['y']=0;
 }
-sendVarToJS('eqLogics', $eqLogics);
+foreach (eqLogic::byType('arrosageAuto') as $eqLogic){
+	if(isset($Position[$eqLogic->getName().' [' . $object . ']'])){
+		$info =array();
+		$object = $eqLogic->getObject();
+		if (is_null($object)) {
+			$object = 'Aucun';
+		} else {
+			$object = $object->getName();
+		}
+		$info['name'] = $eqLogic->getName().' [' . $object . ']';
+		$info['arroseur'] = $eqLogic->getConfiguration('arroseur');
+		$info['x']=0;
+		$info['y']=0;
+		$Position[$eqLogic->getName().' [' . $object . ']']=$info;
+	}
+}
+config::save('planPosition', $Position,'arrosageAuto');
+sendVarToJS('eqLogics', $Position);
 $background=array_diff(scandir('plugins/arrosageAuto/plan/'), array('..', '.'));
 reset($background);
 $background = 'plugins/arrosageAuto/plan/'.$background[key($background)];
@@ -226,15 +236,15 @@ load_graph();
 function load_graph(){
     $('#plan_arrosage svg').remove();
 	var graph = Viva.Graph.graph();
-	graph.addNode('Source',{url : 'plugins/arrosageAuto/3rdparty/Source.png'});	
+	graph.addNode('Source',{url : 'plugins/arrosageAuto/3rdparty/Source.png',x:eqLogics['Source']['x'],y:eqLogics['Source']['y']});	
 	for (eqlogic in eqLogics) {
-		graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/Source.png'});
+		graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/Source.png',x:eqlogic['x'],y:eqlogic['y']});
 		graph.addLink(eqlogic,'Source',{isdash: 1,lengthfactor: eqlogic['length']});
 		topin = graph.getNode(eqlogic);
 		topin.isPinned = true;
 		var lastArroseur = ''; 
 		for (arroseur in eqLogics[eqlogic]['arroseur']) {
-			graph.addNode(eqlogic+' - '+arroseur,{url : 'plugins/arrosageAuto/3rdparty/Arroseur.png'});
+			graph.addNode(eqlogic+' - '+arroseur,{url : 'plugins/arrosageAuto/3rdparty/Arroseur.png',x:arroseur['x'],y:arroseur['y']});
 			if(lastArroseur == '')
              			graph.addLink(eqlogic+' - '+arroseur,eqlogic,{isdash: 1,lengthfactor: eqlogic+' - '+arroseur['length']});
 			else
@@ -285,9 +295,9 @@ function load_graph(){
                 springCoeff: 0.0005,
                 gravity: -0.5,
                 springTransform: function (link, spring) {
-                    spring.length = idealLength * (1-link.data.lengthfactor);
+                	spring.length = idealLength * (1-link.data.lengthfactor);
                 }
-            });
+        });
 	graphics.link(function (link) {
 		dashvalue = '5, 0';
 		color = 'green';
@@ -299,44 +309,42 @@ function load_graph(){
 		prerender : 10000,
 		container: document.getElementById('plan_arrosage')
     	});
-renderer.run();
-$('.arrosageAutoRemoteAction[data-action=refresh]').on('click',function(){
-	$('#md_modal').dialog('close');
-		$('#md_modal').dialog({title: "{{Plan d'arrosage}}"});
-		$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=plan&id=arrosageAuto').dialog('open');
-});
-$('.arrosageAutoRemoteAction[data-action=savearroseur]').on('click',function(){
-	var arroseur= {}
-	graph.forEachNode(function (node) {
-	if (node.data.arroseur == 1){
-		var position = layout.getNodePosition(node.id);
-		arroseur[node.id] = position.x +'|'+position.y;
-	}
-});
-
-$.ajax({
-            type: "POST",
-            url: "plugins/arrosageAuto/core/ajax/arrosageAuto.ajax.php", 
-            data: {
-                action: "saveArroseurPosition",
-				arroseurs: json_encode(arroseur)
-            },
-            dataType: 'json',
-            error: function (request, status, error) {
-            handleAjaxError(request, status, error);
-        },
-        success: function (data) { // si l'appel a bien fonctionné
-        if (data.state != 'ok') {
-            $('#div_alert').showAlert({message: data.result, level: 'danger'});
-            return;
-        }
-		$('#div_alert').showAlert({message: 'Positions des arroseurs sauvé avec succes', level: 'success'});
+	renderer.run();
+	$('.arrosageAutoRemoteAction[data-action=refresh]').on('click',function(){
 		$('#md_modal').dialog('close');
-		$('#md_modal').dialog({title: "{{Plan d'arrosage}}"});
-		$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=plan&id=arrosageAuto').dialog('open');
-        }
-    });
-});
-
+			$('#md_modal').dialog({title: "{{Plan d'arrosage}}"});
+			$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=plan&id=arrosageAuto').dialog('open');
+	});
+	$('.arrosageAutoRemoteAction[data-action=savearroseur]').on('click',function(){
+		var arroseur= {}
+		graph.forEachNode(function (node) {
+			if (node.data.arroseur == 1){
+				var position = layout.getNodePosition(node.id);
+				arroseur[node.id] = position.x +'|'+position.y;
+			}
+		});
+		$.ajax({
+			type: "POST",
+			url: "plugins/arrosageAuto/core/ajax/arrosageAuto.ajax.php", 
+			data: {
+				action: "saveArroseurPosition",
+				arroseurs: json_encode(arroseur)
+			},
+			dataType: 'json',
+			error: function (request, status, error) {
+				handleAjaxError(request, status, error);
+			},
+			success: function (data) { // si l'appel a bien fonctionné
+				if (data.state != 'ok') {
+					$('#div_alert').showAlert({message: data.result, level: 'danger'});
+					return;
+				}
+				$('#div_alert').showAlert({message: 'Positions des arroseurs sauvé avec succes', level: 'success'});
+				$('#md_modal').dialog('close');
+				$('#md_modal').dialog({title: "{{Plan d'arrosage}}"});
+				$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=plan&id=arrosageAuto').dialog('open');
+			}
+		});
+	});
 }
 </script>
