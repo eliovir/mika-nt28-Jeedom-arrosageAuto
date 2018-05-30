@@ -147,7 +147,7 @@ class arrosageAuto extends eqLogic {
 		$QtsEau=$TypeArrosage['volume'][$key];
 		//Ajouter la verification du nombre de start dans la journée pour repartir la quantité
 		$NbProgramation=0;
-		foreach($this->getConfiguration('programation') as $programmation){
+		foreach(config::byKey('Programmations', 'arrosageAuto') as $programmation){
 			if($programmation[date('w')])
 				$NbProgramation++;
 		}
@@ -292,7 +292,7 @@ class arrosageAuto extends eqLogic {
 	}
 	public function NextProg(){
 		$nextTime=null;
-		foreach($this->getConfiguration('programation') as $ConigSchedule){
+		foreach(config::byKey('Programmations', 'arrosageAuto') as $ConigSchedule){
 			$offset=0;
 			if(date('H') > $ConigSchedule["Heure"])
 				$offset++;
