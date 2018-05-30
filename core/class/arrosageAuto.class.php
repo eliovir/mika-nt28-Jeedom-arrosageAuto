@@ -244,7 +244,7 @@ class arrosageAuto extends eqLogic {
 	public function EvaluateCondition($Condition){
 		$_scenario = null;
 		$expression = scenarioExpression::setTags($Condition, $_scenario, true);
-		$message = __('Evaluation de la condition : ['.$Condition.'][', __FILE__) . trim($expression) . '] = ';
+		$message = __('Evaluation de la condition : ['.jeedom::toHumanReadable($Condition).'][', __FILE__) . trim($expression) . '] = ';
 		$result = evaluate($expression);
 		$message .=$this->boolToText($result);
 		log::add('arrosageAuto','info',$this->getHumanName().' : '.$message);
