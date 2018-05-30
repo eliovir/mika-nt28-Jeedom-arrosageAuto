@@ -4,12 +4,18 @@ function arrosageAuto_install(){
 }
 function arrosageAuto_update(){
 	log::add('arrosageAuto','debug','Lancement du script de mise a jours'); 
+	$ProgramationCenter=array();
 	foreach(eqLogic::byType('arrosageAuto') as $arrosageAuto){
+		foreach($arrosageAuto->getConfiguration('programation') as $programmation){
+			$ProgramationCenter[]=$programmation;
+		}
+		$arrosageAuto->setConfiguration('programation','');
 		$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('Zone_id' => $arrosageAuto->getId()));
 		if (is_object($cron))
 			$cron->remove();
 		$arrosageAuto->save();
 	}
+	config::save('Programmations', $ProgramationCenter,'arrosageAuto');
 	log::add('arrosageAuto','debug','Fin du script de mise a jours');
 }
 function arrosageAuto_remove(){
