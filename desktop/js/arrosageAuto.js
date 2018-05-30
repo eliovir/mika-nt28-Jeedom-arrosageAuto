@@ -14,7 +14,7 @@ $('#bt_planArrosageAuto').off('click').on('click', function () {
 $('#bt_programArrosageAuto').off('click').on('click', function () {
 	bootbox.dialog({
 		title: "{{Programmation de l'arrosage}}",
-		message: $.load('index.php?v=d&plugin=arrosageAuto&modal=programmation'),
+		message: $('<div>').load('index.php?v=d&plugin=arrosageAuto&modal=programmation'),
 		height: "auto",
 		width: "auto",
 		buttons: {
