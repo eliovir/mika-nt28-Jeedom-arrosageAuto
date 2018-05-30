@@ -1,13 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class arrosageAuto extends eqLogic {	
-	public static function deamon_stop() {	
-		foreach(eqLogic::byType('arrosageAuto') as $zone){
-			$cron = cron::byClassAndFunction('arrosageAuto', 'pull',array('id' => $zone->getId()));
-			if (is_object($cron)) 	
-				$cron->remove();
-		}
-	}
 	public static function cron() {	
 		$NextProg=self::NextProg();
 		if($NextProg > time()){
