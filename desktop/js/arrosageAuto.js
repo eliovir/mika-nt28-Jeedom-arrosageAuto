@@ -12,8 +12,40 @@ $('#bt_planArrosageAuto').off('click').on('click', function () {
 	$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=plan').dialog('open');
 });
 $('#bt_programArrosageAuto').off('click').on('click', function () {
-	$('#md_modal').dialog({title: "{{Programmation de l'arrosage}}"});
-	$('#md_modal').load('index.php?v=d&plugin=arrosageAuto&modal=programmation').dialog('open');
+	bootbox.dialog({
+		title: "{{Programmation de l'arrosage}}",
+		message: $.load('index.php?v=d&plugin=arrosageAuto&modal=programmation'),
+		height: "auto",
+		width: "auto",
+		buttons: {
+			"Annuler": {
+				className: "btn-default",
+				callback: function () {
+					//el.atCaret('insert', result.human);
+				}
+			},
+			success: {
+				label: "Valider",
+				className: "btn-primary",
+				callback: function () {
+					var ProgramationArray= new Array();
+					$('#programationtab .ProgramationGroup').each(function( index ) {
+						ProgramationArray.push($(this).getValues('.expressionAttr')[0])
+					});
+					jeedom.config.save({
+						plugin:'arrosageAuto',
+						configuration: {'Programmations': ProgramationArray},
+						error: function (error) {
+							$('#div_alert').showAlert({message: error.message, level: 'danger'});
+						},
+						success: function () {
+							$('#div_alert').showAlert({message: '{{Sauvegarde réussie}}', level: 'success'});
+						 }
+					});
+				}
+			},
+		}
+	});
 });
 $('#bt_healthArrosageAuto').off('click').on('click', function () {
 	$('#md_modal').dialog({title: "{{Santé des zones d'arrosage}}"});
