@@ -15,19 +15,19 @@
 				{{Ajouter une programmation}}
 			</a>
 		</legend>
+		<table id="table_programation" class="table table-bordered table-condensed">
+			<thead>
+				<tr>
+					<th></th>
+					<th>{{Jour actif}}</th>
+					<th>{{Heure}}</th>
+					<th>{{Branche}}</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
 	</fieldset>
 </form>
-<table id="table_programation" class="table table-bordered table-condensed">
-	<thead>
-		<tr>
-			<th></th>
-			<th>{{Jour actif}}</th>
-			<th>{{Heure}}</th>
-			<th>{{Branche}}</th>
-		</tr>
-	</thead>
-	<tbody></tbody>
-</table>
 <script>	
 	$('body').on('click','.ProgramationAttr[data-action=add]',function(){
 		addProgramation({},$(this).closest('fieldset').find('#table_programation'));
