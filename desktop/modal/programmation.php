@@ -29,7 +29,7 @@
 	<tbody></tbody>
 </table>
 <script>	
-	$('.ProgramationAttr[data-action=add]').off().on('click',function(){
+	$('body').off().on('click','.ProgramationAttr[data-action=add]',function(){
 		addProgramation({},$(this).closest('#table_programation'));
 	});
 	$.each(Programmations, function (index,_programation) {
@@ -86,20 +86,4 @@
 			$(this).closest('tr').remove();
 		});
 	}
-	$('.arrosageAutoAction[data-action=savearroseur]').on('click',function(){
-		var ProgramationArray= new Array();
-		$('#programationtab .ProgramationGroup').each(function( index ) {
-			ProgramationArray.push($(this).getValues('.expressionAttr')[0])
-		});
-		jeedom.config.save({
-			plugin:'arrosageAuto',
-		    	configuration: {'Programmations': ProgramationArray},
-			error: function (error) {
-				$('#div_alert').showAlert({message: error.message, level: 'danger'});
-		    	},
-		    	success: function () {
-				$('#div_alert').showAlert({message: '{{Sauvegarde réussie}}', level: 'success'});
-		   	 }
-		});
-	});
 </script>
