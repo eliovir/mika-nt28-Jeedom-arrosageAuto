@@ -29,8 +29,8 @@
 	<tbody></tbody>
 </table>
 <script>	
-	$('body').off().on('click','.ProgramationAttr[data-action=add]',function(){
-		addProgramation({},$(this).closest('#table_programation'));
+	$('body').on('click','.ProgramationAttr[data-action=add]',function(){
+		addProgramation({},$(this).closest('fieldset').find('#table_programation'));
 	});
 	$.each(Programmations, function (index,_programation) {
 		addProgramation(_programation,$('#table_programation'));
