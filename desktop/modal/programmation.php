@@ -2,7 +2,7 @@
 	if (!isConnect('admin')) {
 		throw new Exception('401 Unauthorized');
 	}
-	sendVarToJS('eqLogics', eqLogic::byType('arrosageAuto '));
+	sendVarToJS('Programmations', config::byKey('Programmations', 'arrosageAuto'));
 ?>
 <form class="form-horizontal">
 	<fieldset>
@@ -32,13 +32,8 @@
 	$('.ProgramationAttr[data-action=add]').off().on('click',function(){
 		addProgramation({},$(this).closest('#table_programation'));
 	});
-	$.each(eqLogics, function (index,_eqLogic) {
-		if (typeof(_eqLogic.configuration.arroseur) !== 'undefined') {
-			for(var index in _eqLogic.configuration.arroseur) {
-				if( (typeof _eqLogic.configuration.arroseur[index] === "object") && (_eqLogic.configuration.arroseur[index] !== null) )
-					addArroseur(_eqLogic.configuration.arroseur[index],$('#table_programation'));
-			}
-		}
+	$.each(Programmations, function (index,_programation) {
+		addProgramation(_programation,$('#table_programation'));
 	});
 	function addProgramation(_programation,  _el) {
 		var Heure=$('<select class="expressionAttr form-control" data-l1key="Heure" >');
@@ -91,4 +86,20 @@
 			$(this).closest('tr').remove();
 		});
 	}
+	$('.arrosageAutoAction[data-action=savearroseur]').on('click',function(){
+		var ProgramationArray= new Array();
+		$('#programationtab .ProgramationGroup').each(function( index ) {
+			ProgramationArray.push($(this).getValues('.expressionAttr')[0])
+		});
+		jeedom.config.save({
+			plugin:'arrosageAuto',
+		    	configuration: {'Programmations': ProgramationArray},
+			error: function (error) {
+				$('#div_alert').showAlert({message: error.message, level: 'danger'});
+		    	},
+		    	success: function () {
+				$('#div_alert').showAlert({message: '{{Sauvegarde réussie}}', level: 'success'});
+		   	 }
+		});
+	});
 </script>
