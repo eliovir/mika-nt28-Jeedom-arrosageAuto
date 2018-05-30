@@ -15,21 +15,17 @@ $('#bt_programArrosageAuto').off('click').on('click', function () {
 	bootbox.dialog({
 		title: "{{Programmation de l'arrosage}}",
 		message: $('<div>').load('index.php?v=d&plugin=arrosageAuto&modal=programmation'),
-		height: "auto",
-		width: "auto",
+		width: "1024px",
 		buttons: {
 			"Annuler": {
-				className: "btn-default",
-				callback: function () {
-					//el.atCaret('insert', result.human);
-				}
+				className: "btn-default"
 			},
 			success: {
 				label: "Valider",
 				className: "btn-primary",
 				callback: function () {
 					var ProgramationArray= new Array();
-					$('#programationtab .ProgramationGroup').each(function( index ) {
+					$('#table_programation .ProgramationGroup').each(function( index ) {
 						ProgramationArray.push($(this).getValues('.expressionAttr')[0])
 					});
 					jeedom.config.save({
