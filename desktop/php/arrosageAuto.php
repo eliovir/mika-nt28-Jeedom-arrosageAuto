@@ -99,10 +99,6 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 					<i class="fa fa-list-alt"></i> Commandes</a>
 			</li>
 			<li role="presentation">
-				<a href="#programationtab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
-					<i class="fa fa-calendar"></i> {{Programation}}</a>
-			</li>
-			<li role="presentation">
 				<a href="#conditiontab" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="false">
 					<i class="fa fa-asterisk"></i> {{Conditions}}</a>
 			</li>
@@ -234,31 +230,6 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 									</sup>
 								</th>
 								<th>{{Parametre}}</th>
-							</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
-				</div>
-				<div role="tabpanel" class="tab-pane" id="programationtab">
-					<form class="form-horizontal">
-						<fieldset>
-							<legend>{{Les programmations de la zone :}}
-								<sup>
-									<i class="fa fa-question-circle tooltips" title="Saisir toutes les programmations pour la zone"></i>
-								</sup>
-								<a class="btn btn-success btn-xs ProgramationAttr" data-action="add" style="margin-left: 5px;">
-									<i class="fa fa-plus-circle"></i>
-									{{Ajouter une programmation}}
-								</a>
-							</legend>
-						</fieldset>
-					</form>
-					<table id="table_programation" class="table table-bordered table-condensed">
-						<thead>
-							<tr>
-								<th></th>
-								<th>{{Jour actif}}</th>
-								<th>{{Heure}}</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
