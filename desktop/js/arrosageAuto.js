@@ -53,12 +53,10 @@ $('#bt_healthArrosageAuto').off('click').on('click', function () {
 });
 function saveEqLogic(_eqLogic) {
 	_eqLogic.configuration.arroseur=new Object();
-	//_eqLogic.configuration.programation=new Object();
 	_eqLogic.configuration.condition=new Object();
 	_eqLogic.configuration.action=new Object();
 	var ConditionArray= new Array();
 	var ActionArray= new Array();
-	var ProgramationArray= new Array();
 	var ArroseurArray= new Array();
 	$('#arroseurtab .ArroseurGroup').each(function( index ) {
 		ArroseurArray.push($(this).getValues('.expressionAttr')[0])
@@ -66,23 +64,17 @@ function saveEqLogic(_eqLogic) {
 	$('#conditiontab .ConditionGroup').each(function( index ) {
 		ConditionArray.push($(this).getValues('.expressionAttr')[0])
 	});
-	/*$('#programationtab .ProgramationGroup').each(function( index ) {
-		ProgramationArray.push($(this).getValues('.expressionAttr')[0])
-	});*/
-
 	$('#actiontab .ActionGroup').each(function( index ) {
 		ActionArray.push($(this).getValues('.expressionAttr')[0])
 	});
 	_eqLogic.configuration.arroseur=ArroseurArray;
 	_eqLogic.configuration.condition=ConditionArray;
-	_eqLogic.configuration.programation=ProgramationArray;
 	_eqLogic.configuration.action=ActionArray;
    	return _eqLogic;
 }
 function printEqLogic(_eqLogic) {
 	$('.ArroseurGroup').remove();
 	$('.ConditionGroup').remove();
-	//$('.ProgramationGroup').remove();
 	$('.ActionGroup').remove();
 	if (typeof(_eqLogic.configuration.arroseur) !== 'undefined') {
 		for(var index in _eqLogic.configuration.arroseur) {
@@ -96,12 +88,6 @@ function printEqLogic(_eqLogic) {
 				addCondition(_eqLogic.configuration.condition[index],$('#conditiontab').find('table tbody'));
 		}
 	}
-	/*if (typeof(_eqLogic.configuration.programation) !== 'undefined') {
-		for(var index in _eqLogic.configuration.programation) {
-			if( (typeof _eqLogic.configuration.programation[index] === "object") && (_eqLogic.configuration.programation[index] !== null) )
-				addProgramation(_eqLogic.configuration.programation[index],$('#programationtab').find('table tbody'));
-		}
-	}*/
 	if (typeof(_eqLogic.configuration.action) !== 'undefined') {
 		for(var index in _eqLogic.configuration.action) {
 			if( (typeof _eqLogic.configuration.action[index] === "object") && (_eqLogic.configuration.action[index] !== null) )
@@ -170,57 +156,6 @@ function addArroseur(_arroseur,  _el) {
 	});
         _el.find('tr:last').setValues(_arroseur, '.expressionAttr');
 }
-function addProgramation(_programation,  _el) {
-	var Heure=$('<select class="expressionAttr form-control" data-l1key="Heure" >');
-    var Minute=$('<select class="expressionAttr form-control" data-l1key="Minute" >');
-	var number = 0;
-    while (number < 24) {
-		Heure.append($('<option value="'+number+'">')
-			.text(number));
-    	number++;
-	}
-  	number = 0;
-    while (number < 60) {
-		Minute.append($('<option value="'+number+'">')
-			.text(number));
-    	number++;
-	}
-	var tr = $('<tr class="ProgramationGroup">')
-		.append($('<td>')
-			.append($('<span class="input-group-btn">')
-				.append($('<a class="btn btn-default ProgramationAttr btn-sm" data-action="remove">')
-					.append($('<i class="fa fa-minus-circle">')))))
-		.append($('<td>')
-			.append($('<label class="checkbox-inline">')
-				.append($('<input type="checkbox" class="expressionAttr" data-l1key="1">'))
-				.append('{{Lundi}}'))
-			.append($('<label class="checkbox-inline">')
-				.append($('<input type="checkbox" class="expressionAttr" data-l1key="2">'))
-				.append('{{Mardi}}'))
-			.append($('<label class="checkbox-inline">')
-				.append($('<input type="checkbox" class="expressionAttr" data-l1key="3">'))
-				.append('{{Mercredi}}'))
-			.append($('<label class="checkbox-inline">')
-				.append($('<input type="checkbox" class="expressionAttr" data-l1key="4">'))
-				.append('{{Jeudi}}'))
-			.append($('<label class="checkbox-inline">')
-				.append($('<input type="checkbox" class="expressionAttr" data-l1key="5">'))
-				.append('{{Vendredi}}'))
-			.append($('<label class="checkbox-inline">')
-				.append($('<input type="checkbox" class="expressionAttr" data-l1key="6">'))
-				.append('{{Samedi}}'))
-			.append($('<label class="checkbox-inline">')
-				.append($('<input type="checkbox" class="expressionAttr" data-l1key="0" />'))
-				.append('{{Dimanche}}')))
-		.append($('<td>')
-			.append(Heure)
-			.append(Minute));
-        _el.append(tr);
-        _el.find('tr:last').setValues(_programation, '.expressionAttr');
-	$('.ProgramationAttr[data-action=remove]').off().on('click',function(){
-		$(this).closest('tr').remove();
-	});
-}
 function addCondition(_condition,_el) {
 	var tr = $('<tr class="ConditionGroup">')
 		.append($('<td>')
@@ -274,9 +209,6 @@ function addAction(_action,  _el) {
  }
 $('.ArroseurAttr[data-action=add]').off().on('click',function(){
 	addArroseur({},$(this).closest('.tab-pane').find('table'));
-});
-$('.ProgramationAttr[data-action=add]').off().on('click',function(){
-	addProgramation({},$(this).closest('.tab-pane').find('table'));
 });
 $('.conditionAttr[data-action=add]').off().on('click',function(){
 	addCondition({},$(this).closest('.tab-pane').find('table'));
