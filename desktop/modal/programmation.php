@@ -2,6 +2,11 @@
 	if (!isConnect('admin')) {
 		throw new Exception('401 Unauthorized');
 	}
+$Branches=array();
+foreach(eqLogic::byType('arrosageAuto') as $eqLogic){
+  $Branches[]=array('id'=>$eqLogic->getId(),'name'=>$eqLogic->getName());
+}
+	sendVarToJS('Branches', $Branches);
 	sendVarToJS('Programmations', config::byKey('Programmations', 'arrosageAuto'));
 ?>
 <form class="form-horizontal">
@@ -29,7 +34,7 @@
 	</fieldset>
 </form>
 <script>	
-	$('body').on('click','.ProgramationAttr[data-action=add]',function(){
+	$('.ProgramationAttr[data-action=add]').off().on('click',function(){
 		addProgramation({},$(this).closest('fieldset').find('#table_programation'));
 	});
 	$.each(Programmations, function (index,_programation) {
@@ -50,6 +55,11 @@
 				.text(number));
 		number++;
 		}
+     	var Branche=$('<select class="expressionAttr form-control input-sm cmdAction" data-l1key="evaluation" multiple>');
+      	for(var index in Branches) {
+			Branche.append($('<option value="'+Branches[index].id+'">')
+				.text(Branches[index].name));
+		};
 		var tr = $('<tr class="ProgramationGroup">')
 			.append($('<td>')
 				.append($('<span class="input-group-btn">')
@@ -79,7 +89,8 @@
 					.append('{{Dimanche}}')))
 			.append($('<td>')
 				.append(Heure)
-				.append(Minute));
+				.append(Minute))
+			.append($('<td>').append(Branche));
 		_el.append(tr);
 		_el.find('tr:last').setValues(_programation, '.expressionAttr');
 		$('.ProgramationAttr[data-action=remove]').off().on('click',function(){
