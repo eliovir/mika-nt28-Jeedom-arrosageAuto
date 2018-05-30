@@ -21,7 +21,7 @@ $('#bt_healthArrosageAuto').off('click').on('click', function () {
 });
 function saveEqLogic(_eqLogic) {
 	_eqLogic.configuration.arroseur=new Object();
-	_eqLogic.configuration.programation=new Object();
+	//_eqLogic.configuration.programation=new Object();
 	_eqLogic.configuration.condition=new Object();
 	_eqLogic.configuration.action=new Object();
 	var ConditionArray= new Array();
@@ -34,9 +34,9 @@ function saveEqLogic(_eqLogic) {
 	$('#conditiontab .ConditionGroup').each(function( index ) {
 		ConditionArray.push($(this).getValues('.expressionAttr')[0])
 	});
-	$('#programationtab .ProgramationGroup').each(function( index ) {
+	/*$('#programationtab .ProgramationGroup').each(function( index ) {
 		ProgramationArray.push($(this).getValues('.expressionAttr')[0])
-	});
+	});*/
 
 	$('#actiontab .ActionGroup').each(function( index ) {
 		ActionArray.push($(this).getValues('.expressionAttr')[0])
@@ -50,7 +50,7 @@ function saveEqLogic(_eqLogic) {
 function printEqLogic(_eqLogic) {
 	$('.ArroseurGroup').remove();
 	$('.ConditionGroup').remove();
-	$('.ProgramationGroup').remove();
+	//$('.ProgramationGroup').remove();
 	$('.ActionGroup').remove();
 	if (typeof(_eqLogic.configuration.arroseur) !== 'undefined') {
 		for(var index in _eqLogic.configuration.arroseur) {
@@ -64,12 +64,12 @@ function printEqLogic(_eqLogic) {
 				addCondition(_eqLogic.configuration.condition[index],$('#conditiontab').find('table tbody'));
 		}
 	}
-	if (typeof(_eqLogic.configuration.programation) !== 'undefined') {
+	/*if (typeof(_eqLogic.configuration.programation) !== 'undefined') {
 		for(var index in _eqLogic.configuration.programation) {
 			if( (typeof _eqLogic.configuration.programation[index] === "object") && (_eqLogic.configuration.programation[index] !== null) )
 				addProgramation(_eqLogic.configuration.programation[index],$('#programationtab').find('table tbody'));
 		}
-	}
+	}*/
 	if (typeof(_eqLogic.configuration.action) !== 'undefined') {
 		for(var index in _eqLogic.configuration.action) {
 			if( (typeof _eqLogic.configuration.action[index] === "object") && (_eqLogic.configuration.action[index] !== null) )
