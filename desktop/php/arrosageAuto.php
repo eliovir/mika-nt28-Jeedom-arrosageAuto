@@ -224,9 +224,15 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 									</sup>
 								</th>
 								<th>
-									{{Debit (mm/H ou L/H)}}
+									{{Debit (mmou L/H)}}
 									<sup>
 										<i class="fa fa-question-circle tooltips" title="Saisir le debit de l'arroseur  (mm/H ou L/H)" style="font-size : 1em;color:grey;"></i>
+									</sup>
+								</th>
+								<th>
+									{{Pression minimal (bar)}}
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Saisir la pression minimal de l'arroseur  (mm/H ou L/H)" style="font-size : 1em;color:grey;"></i>
 									</sup>
 								</th>
 								<th>{{Parametre}}</th>
