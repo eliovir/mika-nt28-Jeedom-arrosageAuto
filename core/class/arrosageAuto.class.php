@@ -42,6 +42,7 @@ class arrosageAuto extends eqLogic {
 	public static function cron() {	
 		$NextProg=self::NextProg();
 		$DebitArroseurs=0;
+		$PressionsArroseurs=0;
 		$TempsArroseurs=0;
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			if(!$zone->getIsEnable() && !$zone->getCmd(null,'isArmed')->execCmd()){
@@ -49,8 +50,10 @@ class arrosageAuto extends eqLogic {
 				continue;
 			}
 			$DebitArroseurs+=$zone->CheckDebit();
-			if(!self::CheckPompe($DebitArroseurs)){
+			$PressionsArroseurs+=$zone->CheckPression();
+			if(!self::CheckPompe($DebitArroseurs,$PressionsArroseurs)){
 				$DebitArroseurs=0;
+				$PressionsArroseurs=0;
 				$TempsArroseurs+=$zone->EvaluateTime(jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto')));	
 			}
 			$zone->CreateCron(date('i H d m w Y',$NextProg+$TempsArroseurs));
@@ -113,18 +116,33 @@ class arrosageAuto extends eqLogic {
 		$cron->save();
 		return $cron;
 	}
-	public static function CheckPompe($DebitArroseurs){
+	public static function CheckPompe($Debit,$Pressions){
 		$DebitPmp=config::byKey('debit','arrosageAuto');
-		if($DebitPmp<$DebitArroseurs)
+		$PressionsPmp=config::byKey('pression','arrosageAuto');
+		if($DebitPmp<$Debit)
+			return false;
+		if($PressionsPmp<$Pressions)
 			return false;
 		return true;
 	}
 	public function CheckDebit(){
-		$Debit=0;
+		$Debit=0;		
 		foreach($this->getConfiguration('arroseur') as $Arroseur){
 			$Debit += $Arroseur['Debit'];
+			$Return["Pression"] += $Arroseur['Pression'];
 		}
 		return $Debit; 
+	}
+	public function CheckPression(){
+		$Pression=0;		
+		foreach($this->getConfiguration('arroseur') as $Arroseur){
+			$Pression += $Arroseur['Pression'];
+		}
+		return $Pression; 
+	}
+	public function getPression($Pression,$Debit){
+		//Équation de Hazen-Williams
+		return $Pression-(($Debit*$Longeur)/(0.849*150*$Air*$Rayon));
 	}
 	public function ExecuteArrosage(){
 		$this->ExecuteAction('start');
