@@ -49,7 +49,7 @@ class arrosageAuto extends eqLogic {
 					log::add('arrosageAuto','info',$zone->getHumanName().' : La zone est desactivée');
 					continue;
 				}
-				$DebitArroseurs+=$zone->CheckDebit()
+				$DebitArroseurs+=$zone->CheckDebit();
 				if(!self::CheckPompe($DebitArroseurs)){
 					$DebitArroseurs=0;
 					$TempsArroseurs+=$zone->EvaluateTime(jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto')));	
