@@ -148,7 +148,9 @@ class arrosageAuto extends eqLogic {
 		}
 		$replace['#cmdColor#'] = ($this->getPrimaryCategory() == '') ? '' : jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
 		$cron = cron::byClassAndFunction('arrosageAuto', 'Arrosage',array('id' => $this->getId()));
-		$replace['#NextStart#'] = $cron->getNextRunDate();
+		$replace['#NextStart#'] = ' - ';
+		if(is_object($cron))
+			$replace['#NextStart#'] = $cron->getNextRunDate();
 		if($plui=$this->CheckMeteo() === false)		
 			$replace['#NextStop#'] = 'Météo incompatible';
 		else{
