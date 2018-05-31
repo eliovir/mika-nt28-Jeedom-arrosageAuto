@@ -43,20 +43,18 @@ class arrosageAuto extends eqLogic {
 		$NextProg=self::NextProg();
 		$DebitArroseurs=0;
 		$TempsArroseurs=0;
-		if($NextProg > time()){
-			foreach(eqLogic::byType('arrosageAuto') as $zone){
-				if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
-					log::add('arrosageAuto','info',$zone->getHumanName().' : La zone est desactivée');
-					continue;
-				}
-				$DebitArroseurs+=$zone->CheckDebit();
-				if(!self::CheckPompe($DebitArroseurs)){
-					$DebitArroseurs=0;
-					$TempsArroseurs+=$zone->EvaluateTime(jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto')));	
-				}
-				$zone->CreateCron(date('i H d m w Y',$NextProg+$TempsArroseurs));
-				$zone->refreshWidget();
+		foreach(eqLogic::byType('arrosageAuto') as $zone){
+			if($zone->getIsEnable() && $zone->getCmd(null,'isArmed')->execCmd()){
+				log::add('arrosageAuto','info',$zone->getHumanName().' : La zone est desactivée');
+				continue;
 			}
+			$DebitArroseurs+=$zone->CheckDebit();
+			if(!self::CheckPompe($DebitArroseurs)){
+				$DebitArroseurs=0;
+				$TempsArroseurs+=$zone->EvaluateTime(jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto')));	
+			}
+			$zone->CreateCron(date('i H d m w Y',$NextProg+$TempsArroseurs));
+			$zone->refreshWidget();
 		}
 	}
 	public static function Arrosage($_option){
