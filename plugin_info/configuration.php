@@ -85,7 +85,7 @@
 						<thead>
 							<tr>
 								<th>{{Type de plantation}}</th>
-								<th>{{Volume / m²}}</th>
+								<th>{{Pluviometerie (mm)}}</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
