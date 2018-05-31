@@ -106,7 +106,9 @@ function addArroseur(_arroseur,  _el) {
 			.append($('<option value="turbine">')
 				.text('{{Turbine}}'))));
 	tr.append($('<td>')
-		  .append($('<input class="expressionAttr form-control" data-l1key="Debit" placeholder="Saisir le débit de votre arroseur (mm/H ou L/H)"/>')));
+		  .append($('<input class="expressionAttr form-control" data-l1key="Debit" placeholder="Saisir le débit de votre arroseur (mm ou L/H)"/>')));
+	tr.append($('<td>')
+		  .append($('<input class="expressionAttr form-control" data-l1key="Pression" placeholder="Saisir la pression minimal de votre arroseur"/>')));
 	tr.append($('<td>')
 		  .append($('<div class="gouteAgoute">')
 			.append($('<input class="expressionAttr form-control" data-l1key="EspacementLateral" placeholder="Saisir l\'espacement latéral (cm)"/>'))
