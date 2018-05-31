@@ -55,6 +55,7 @@ class arrosageAuto extends eqLogic {
 					$TempsArroseurs+=$zone->EvaluateTime(jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto')));	
 				}
 				$zone->CreateCron(date('i H d m w Y',$NextProg+$TempsArroseurs));
+				$zone->refreshWidget();
 			}
 		}
 	}
