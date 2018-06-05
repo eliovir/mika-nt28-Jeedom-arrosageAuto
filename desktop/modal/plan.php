@@ -2,12 +2,11 @@
 if (!isConnect('admin')) {
 	throw new Exception('{{401 - Accès non autorisé}}');
 }
-$Position=config::byKey('planPosition', 'arrosageAuto');
-if($Position == ''){
-	$Position = array();
-	$Position['Source']['x']=0;
-	$Position['Source']['y']=0;
-}
+$planPosition=config::byKey('planPosition', 'arrosageAuto');
+$Position = array();
+echo json_encode($planPosition);
+$Position['Source']['x']=intval($planPosition['Source']['x']);
+$Position['Source']['y']=intval($planPosition['Source']['y']);
 foreach (eqLogic::byType('arrosageAuto') as $eqLogic){
 	//if(isset($Position[$eqLogic->getName().' [' . $object . ']'])){
 		$info =array();
@@ -20,15 +19,15 @@ foreach (eqLogic::byType('arrosageAuto') as $eqLogic){
 		$info['name'] = $eqLogic->getName().' [' . $object . ']';
         foreach($eqLogic->getConfiguration('arroseur') as $key => $Arroseur){
           $info['arroseur'][$info['name'] . ' - '.$key]=$Arroseur;
-          $info['arroseur'][$info['name'] . ' - '.$key]['x']=0;
-          $info['arroseur'][$info['name'] . ' - '.$key]['y']=0;
+          $info['arroseur'][$info['name'] . ' - '.$key]['x']=intval($planPosition[$info['name'] . ' - '.$key]['x']);
+          $info['arroseur'][$info['name'] . ' - '.$key]['y']=intval($planPosition[$info['name'] . ' - '.$key]['x']);
         }
-		$info['x']=0;
-		$info['y']=0;
+		$info['x']=intval($planPosition[$info['name']]['x']);
+		$info['y']=intval($planPosition[$info['name']]['y']);
 		$Position[$eqLogic->getName().' [' . $object . ']']=$info;
 	//}
 }
-config::save('planPosition', $Position,'arrosageAuto');
+//config::save('planPosition', $Position,'arrosageAuto');
 sendVarToJS('eqLogics', $Position);
 $background=array_diff(scandir('plugins/arrosageAuto/plan/'), array('..', '.'));
 reset($background);
@@ -242,13 +241,14 @@ function load_graph(){
 	var graph = Viva.Graph.graph();
 	graph.addNode('Source',{url : 'plugins/arrosageAuto/3rdparty/Source.png',x:eqLogics['Source']['x'],y:eqLogics['Source']['y']});	
 	for (eqlogic in eqLogics) {
-		graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/Source.png',x:eqlogic['x'],y:eqlogic['y']});
+      alert(eqlogic+' - '+eqLogics[eqlogic]['x']);
+		graph.addNode(eqlogic,{url : 'plugins/arrosageAuto/3rdparty/Source.png',x:eqLogics[eqlogic]['x'],y:eqLogics[eqlogic]['y']});
 		graph.addLink(eqlogic,'Source');
 		topin = graph.getNode(eqlogic);
 		topin.isPinned = true;
 		var lastArroseur = ''; 
 		for (arroseur in eqLogics[eqlogic]['arroseur']) {
-			graph.addNode(arroseur,{url : 'plugins/arrosageAuto/3rdparty/Arroseur.png',x:arroseur['x'],y:arroseur['y']});
+			graph.addNode(arroseur,{url : 'plugins/arrosageAuto/3rdparty/Arroseur.png',x:eqLogics[eqlogic]['arroseur'][arroseur]['x'],y:eqLogics[eqlogic]['arroseur'][arroseur]['y']});
 			if(lastArroseur == '')
              			graph.addLink(arroseur,eqlogic);
 			else
@@ -321,8 +321,10 @@ function load_graph(){
 	$('.arrosageAutoAction[data-action=savearroseur]').on('click',function(){
       	var arroseur= {}
 		graph.forEachNode(function (node) {
-            	var position = layout.getNodePosition(node.id);
-				arroseur[node.id] = position.x +'|'+position.y;
+          var position = layout.getNodePosition(node.id);
+          arroseur[node.id] = new Object();
+          arroseur[node.id].x=position.x;
+          arroseur[node.id].y=position.y;
 		});
 		jeedom.config.save({
           	plugin:'arrosageAuto',
