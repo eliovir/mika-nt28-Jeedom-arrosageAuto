@@ -8,6 +8,26 @@
 ?>
 <div class="row">
 	<div class="col-sm-6">
+		<legend>{{Source d'eau}}</legend>
+		<form class="form-horizontal">
+			<fieldset>
+				<div class="form-group">
+					<label class="col-lg-5 control-label">{{Débit de l'arrivée d'eau}}</label>
+					<div class="col-lg-6">
+						<input type="text" class="configKey"  data-l1key="debit" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-5 control-label">{{Pressioni maximal de l'arrivée d'eau (bar)}}</label>
+					<div class="col-lg-6">
+						<input type="text" class="configKey"  data-l1key="pression" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+	<div class="col-sm-6">
+		<legend>{{Météo}}</legend>
 		<form class="form-horizontal">
 			<fieldset>
 				<div class="form-group">
@@ -65,17 +85,11 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group">
-					<label class="col-lg-5 control-label">{{Débit de l'arrivée d'eau}}</label>
-					<div class="col-lg-6">
-						<input type="text" class="configKey"  data-l1key="debit" />
-					</div>
-				</div>
 			</fieldset>
 		</form>
 	</div>
 	 <div class="col-sm-6">
-		<legend>Type de plantation
+		<legend>{{Type de plantation}}
 			<a class="btn btn-success btn-xs pull-right cursor" id="bt_AddTypePlantation"><i class="fa fa-check"></i> {{Ajouter}}</a>
 		</legend>
 		<form class="form-horizontal">
@@ -85,7 +99,7 @@
 						<thead>
 							<tr>
 								<th>{{Type de plantation}}</th>
-								<th>{{Volume / m²}}</th>
+								<th>{{Pluviometerie (mm)}}</th>
 							</tr>
 						</thead>
 						<tbody></tbody>

@@ -5,7 +5,8 @@
 	"author" : "Halbout Michael",
 	"require" : "2.4",
 	"category" : "automatisation",
-	"hasOwnDeamon" : true,
+	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
+	"hasOwnDeamon" : false,
 	"issue" : "https://github.com/mika-nt28/Jeedom-arrosageAuto/issues",
  	"changelog" : "https://github.com/mika-nt28/Jeedom-arrosageAuto/commits/master",
  	"documentation" : "https://mika-nt28.github.io/Jeedom-arrosageAuto/"
