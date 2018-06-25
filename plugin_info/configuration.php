@@ -12,13 +12,13 @@
 		<form class="form-horizontal">
 			<fieldset>
 				<div class="form-group">
-					<label class="col-lg-5 control-label">{{Débit de l'arrivée d'eau}}</label>
+					<label class="col-lg-5 control-label">{{Débit de l'arrivée d'eau (mm ou L/H)}}</label>
 					<div class="col-lg-6">
 						<input type="text" class="configKey"  data-l1key="debit" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-5 control-label">{{Pressioni maximal de l'arrivée d'eau (bar)}}</label>
+					<label class="col-lg-5 control-label">{{Pression maximal de l'arrivée d'eau (bar)}}</label>
 					<div class="col-lg-6">
 						<input type="text" class="configKey"  data-l1key="pression" />
 					</div>
