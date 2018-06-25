@@ -224,7 +224,7 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 									</sup>
 								</th>
 								<th>
-									{{Debit (mmou L/H)}}
+									{{Debit (mm ou L/H)}}
 									<sup>
 										<i class="fa fa-question-circle tooltips" title="Saisir le debit de l'arroseur  (mm/H ou L/H)" style="font-size : 1em;color:grey;"></i>
 									</sup>
