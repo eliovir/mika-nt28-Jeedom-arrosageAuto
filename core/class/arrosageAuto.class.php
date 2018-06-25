@@ -235,19 +235,19 @@ class arrosageAuto extends eqLogic {
 		return $this->Ratio($Temps);
 	}
 	public function Ratio($Value){
-		$cmd=$this->getCmd(null, 'coefficient');
+     		$cmd=$this->getCmd(null, 'coefficient');
 		if(!is_object($cmd))
 			return $Value;
 		$min=$cmd->getConfiguration('minValue');
 		$max=$cmd->getConfiguration('maxValue');
-		if($min == '' && $max == '')
-			return $Value;
+      		$coef=$cmd->execCmd();
 		if($min == '')
 			$min=0;
 		if($max == '')
 			$max=300;
-		return round(($Value/100)*($max-$min)+$min);
-		
+		$temps = round($Value*$coef/100);
+      		log::add('arrosageAuto','info',$this->getHumanName().' : Temps d\'arrosage de '.$temps.'s avec un coeficient de '.$coef.'%');
+		return $temps;
 	}
 	public function ExecuteAction($Type) {
 		foreach($this->getConfiguration('action') as $cmd){
