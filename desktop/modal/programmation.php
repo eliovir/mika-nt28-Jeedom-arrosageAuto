@@ -23,10 +23,10 @@ foreach(eqLogic::byType('arrosageAuto') as $eqLogic){
 		<table id="table_programation" class="table table-bordered table-condensed">
 			<thead>
 				<tr>
-					<th></th>
-					<th>{{Jour actif}}</th>
-					<th>{{Heure}}</th>
-					<th>{{Branche}}</th>
+					<th style="width:30px;"></th>
+					<th style="width:600px;">{{Jour actif}}</th>
+					<th style="width:100px;">{{Heure}}</th>
+					<th style="width:300px;">{{Branche}}</th>
 				</tr>
 			</thead>
 			<tbody></tbody>
