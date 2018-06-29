@@ -15,7 +15,7 @@ $('#bt_programArrosageAuto').off('click').on('click', function () {
 	bootbox.dialog({
 		title: "{{Programmation de l'arrosage}}",
 		message: $('<div>').load('index.php?v=d&plugin=arrosageAuto&modal=programmation'),
-		width: "100%",
+		size: "large",
 		buttons: {
 			"Annuler": {
 				className: "btn-default"
