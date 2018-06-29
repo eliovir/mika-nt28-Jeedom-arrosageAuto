@@ -6,9 +6,13 @@ class arrosageAuto extends eqLogic {
 		$PressionsArroseurs=0;
 		$TempsArroseurs=0;
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
-			$NextProg=$zone->NextProg();
 			if(!$zone->getIsEnable() && !$zone->getCmd(null,'isArmed')->execCmd()){
 				log::add('arrosageAuto','info',$zone->getHumanName().' : La zone est desactivée');
+				continue;
+			}
+			$NextProg=$zone->NextProg();
+			if($NextProg == null){
+				log::add('arrosageAuto','info',$zone->getHumanName().' : Aucune programmation');
 				continue;
 			}
 			$DebitArroseurs+=$zone->CheckDebit();
@@ -46,7 +50,7 @@ class arrosageAuto extends eqLogic {
 	}
 	public function CheckProgActiveBranche($Branches){
 		foreach($Branches as $Branche){
-			if($Branche['id'] == $this->getId())
+			if($Branche == $this->getId())
 				return true;
 		}
 		return false;
@@ -327,10 +331,10 @@ class arrosageAuto extends eqLogic {
 			$Commande->setEqLogic_id($this->getId());
 			$Commande->setType($Type);
 			$Commande->setSubType($SubType);
+			$Commande->setTemplate('dashboard',$Template );
+			$Commande->setTemplate('mobile', $Template);
+			$Commande->save();
 		}
-   		$Commande->setTemplate('dashboard',$Template );
-		$Commande->setTemplate('mobile', $Template);
-		$Commande->save();
 		return $Commande;
 	}
 }
