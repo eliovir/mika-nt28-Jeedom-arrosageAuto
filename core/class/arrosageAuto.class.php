@@ -17,11 +17,15 @@ class arrosageAuto extends eqLogic {
 			}
 			$DebitArroseurs+=$zone->CheckDebit();
 			$PressionsArroseurs+=$zone->CheckPression();
+			$plui=jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto'));
+			$PowerTime=cache::byKey('arrosageAuto::Plui::'.$this->getId())->getValue(0);
+			if($plui != $PowerTime || $PowerTime == 0)
+				$PowerTime=$zone->EvaluateTime($plui,date('w',$NextProg));	
 			if(!self::CheckPompe($DebitArroseurs,$PressionsArroseurs)){
 				$DebitArroseurs=0;
 				$PressionsArroseurs=0;
+				$TempsArroseurs+=$PowerTime;
 			}
-			$TempsArroseurs=$zone->EvaluateTime(jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto')),date('w',$NextProg));	
 			$zone->CreateCron(date('i H d m w Y',$NextProg+$TempsArroseurs));
 			$zone->refreshWidget();
 		}
@@ -117,10 +121,13 @@ class arrosageAuto extends eqLogic {
 	}
 	public function ExecuteArrosage($plui){
 		$this->ExecuteAction('start');
-		$PowerTime=$this->EvaluateTime($plui);
-		log::add('arrosageAuto','info',$this->getHumanName().' : Estimation du temps d\'activation '.$PowerTime.'s');
+		$PowerTime=cache::byKey('arrosageAuto::Plui::'.$this->getId())->getValue(0);
+		if($plui != $PowerTime)
+			$PowerTime=$this->EvaluateTime($plui);
 		sleep($PowerTime);
 		$this->ExecuteAction('stop');
+		cache::set('arrosageAuto::PowerTime::'.$this->getId(),$Temps, 0);
+		cache::set('arrosageAuto::Plui::'.$this->getId(),$Temps, 0);
 	}
 	public function toHtml($_version = 'dashboard') {
 		$replace = $this->preToHtml($_version);
@@ -142,8 +149,7 @@ class arrosageAuto extends eqLogic {
 		if($plui=$this->CheckMeteo() === false)		
 			$replace['#NextStop#'] = 'Météo incompatible';
 		else{
-			$PowerTime=$this->EvaluateTime($plui,date('w'/*,$cron->getNextRunDate()*/));	
-			$replace['#NextStop#'] = $PowerTime;
+			$replace['#NextStop#'] = cache::byKey('arrosageAuto::PowerTime::'.$this->getId())->getValue(0);
 		}
 		if ($_version == 'dview' || $_version == 'mview') {
 			$object = $this->getObject();
@@ -204,8 +210,10 @@ class arrosageAuto extends eqLogic {
 		if($Pluviometrie == 0)
 			return $Pluviometrie;
 		log::add('arrosageAuto','info',$this->getHumanName().' : Nous devons arroser '.$QtsEau.' mm/m² avec un pluviometrie de '.$Pluviometrie.'mm/s');
-		$Temps=$QtsEau/$Pluviometrie;
-		return $this->UpdateCoefficient($Temps);
+		$Temps=$this->UpdateCoefficient($QtsEau/$Pluviometrie);
+		cache::set('arrosageAuto::Plui::'.$this->getId(),$plui, 0);
+		cache::set('arrosageAuto::PowerTime::'.$this->getId(),$Temps, 0);
+		return $Temps;
 	}
 	public function UpdateCoefficient($Value){
      		$cmd=$this->getCmd(null, 'coefficient');
