@@ -186,7 +186,9 @@ class arrosageAuto extends eqLogic {
 		if (is_object($cron)) 	
 			$cron->remove();
 	}
-	public function EvaluateTime($plui=0,$day=date('w')) {
+	public function EvaluateTime($plui=0,$day=null) {
+     	 	if($day == null)
+        		$day=date('w');
 		$TypeArrosage=config::byKey('configuration','arrosageAuto');
 		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
 		$QtsEau=$TypeArrosage['volume'][$key];
