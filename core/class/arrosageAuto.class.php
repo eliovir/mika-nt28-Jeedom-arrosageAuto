@@ -142,7 +142,7 @@ class arrosageAuto extends eqLogic {
 		if($plui=$this->CheckMeteo() === false)		
 			$replace['#NextStop#'] = 'Météo incompatible';
 		else{
-			$PowerTime=$this->EvaluateTime($plui,date('w',$cron->getNextRunDate()));	
+			$PowerTime=$this->EvaluateTime($plui,date('w'/*,$cron->getNextRunDate()*/));	
 			$replace['#NextStop#'] = $PowerTime;
 		}
 		if ($_version == 'dview' || $_version == 'mview') {
