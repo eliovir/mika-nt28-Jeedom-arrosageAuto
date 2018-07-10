@@ -20,8 +20,8 @@ class arrosageAuto extends eqLogic {
 			if(!self::CheckPompe($DebitArroseurs,$PressionsArroseurs)){
 				$DebitArroseurs=0;
 				$PressionsArroseurs=0;
-				$TempsArroseurs+=$zone->EvaluateTime(jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto')));	
 			}
+			$TempsArroseurs=$zone->EvaluateTime(jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto')),date('w',$NextProg));	
 			$zone->CreateCron(date('i H d m w Y',$NextProg+$TempsArroseurs));
 			$zone->refreshWidget();
 		}
@@ -41,11 +41,7 @@ class arrosageAuto extends eqLogic {
 				log::add('arrosageAuto','info',$zone->getHumanName().' : La météo n\'est pas idéale pour l\'arrosage');
 				exit;
 			}
-			$zone->ExecuteAction('start');
-			$PowerTime=$zone->EvaluateTime($plui);
-			log::add('arrosageAuto','info',$zone->getHumanName().' : Estimation du temps d\'activation '.$PowerTime.'s');
-			sleep($PowerTime);
-			$zone->ExecuteAction('stop');
+			$zone->ExecuteArrosage($plui);
 		}
 	}
 	public function CheckProgActiveBranche($Branches){
@@ -119,7 +115,7 @@ class arrosageAuto extends eqLogic {
 		//Équation de Hazen-Williams
 		return $Pression-(($Debit*$Longeur)/(0.849*150*$Air*$Rayon));
 	}
-	public function ExecuteArrosage(){
+	public function ExecuteArrosage($plui){
 		$this->ExecuteAction('start');
 		$PowerTime=$this->EvaluateTime($plui);
 		log::add('arrosageAuto','info',$this->getHumanName().' : Estimation du temps d\'activation '.$PowerTime.'s');
@@ -146,7 +142,7 @@ class arrosageAuto extends eqLogic {
 		if($plui=$this->CheckMeteo() === false)		
 			$replace['#NextStop#'] = 'Météo incompatible';
 		else{
-			$PowerTime=$this->EvaluateTime($plui);	
+			$PowerTime=$this->EvaluateTime($plui,date('w',$cron->getNextRunDate()));	
 			$replace['#NextStop#'] = $PowerTime;
 		}
 		if ($_version == 'dview' || $_version == 'mview') {
@@ -190,14 +186,14 @@ class arrosageAuto extends eqLogic {
 		if (is_object($cron)) 	
 			$cron->remove();
 	}
-	public function EvaluateTime($plui=0) {
+	public function EvaluateTime($plui=0,$day=date('w')) {
 		$TypeArrosage=config::byKey('configuration','arrosageAuto');
 		$key=array_search($this->getConfiguration('TypeArrosage'),$TypeArrosage['type']);
 		$QtsEau=$TypeArrosage['volume'][$key];
 		//Ajouter la verification du nombre de start dans la journée pour repartir la quantité
 		$NbProgramation=0;
 		foreach(config::byKey('Programmations', 'arrosageAuto') as $programmation){
-			if($programmation[date('w')])
+			if($programmation[$day])
 				$NbProgramation++;
 		}
 		$QtsEau-=$plui;
