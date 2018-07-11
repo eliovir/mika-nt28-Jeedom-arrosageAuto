@@ -104,7 +104,9 @@ function addArroseur(_arroseur,  _el) {
 			.append($('<option value="tuyere">')
 				.text('{{Tuyère}}'))
 			.append($('<option value="turbine">')
-				.text('{{Turbine}}'))));
+				.text('{{Turbine}}'))
+			.append($('<option value="oscillant">')
+				.text('{{Oscillant}}')))); 
 	tr.append($('<td>')
 		  .append($('<input class="expressionAttr form-control" data-l1key="Debit" placeholder="Saisir le débit de votre arroseur (mm ou L/H)"/>')));
 	tr.append($('<td>')
@@ -150,6 +152,12 @@ function addArroseur(_arroseur,  _el) {
 				$(this).closest('tr').find('.tuyere').hide();
 				$(this).closest('tr').find('.turbine').show();
 			break;
+			case 'oscillant':
+				$(this).closest('tr').find('.gouteAgoute').hide();
+				$(this).closest('tr').find('.tuyere').hide();
+				$(this).closest('tr').find('.turbine').hide();
+			break;
+				
 		 }
 	});
         _el.find('tr:last').setValues(_arroseur, '.expressionAttr');
