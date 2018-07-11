@@ -18,7 +18,7 @@ class arrosageAuto extends eqLogic {
 			$DebitArroseurs+=$zone->CheckDebit();
 			$PressionsArroseurs+=$zone->CheckPression();
 			$plui=jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto'));
-			$PowerTime=cache::byKey('arrosageAuto::Plui::'.$zone->getId())->getValue(0);
+			$PowerTime=cache::byKey('arrosageAuto::PowerTime::'.$zone->getId())->getValue(0);
 			if($plui != $PowerTime || $PowerTime == 0)
 				$PowerTime=$zone->EvaluateTime($plui,date('w',$NextProg));	
 			if(!self::CheckPompe($DebitArroseurs,$PressionsArroseurs)){
@@ -188,6 +188,12 @@ class arrosageAuto extends eqLogic {
 		$regCoefficient->save();
 	}
 	public function preRemove() {
+		$Plui=cache::byKey('arrosageAuto::Plui::'.$this->getId());
+		if (is_object($Plui)) 	
+			$Plui->remove();
+		$PowerTime = cache::byKey('arrosageAuto::PowerTime::'.$this->getId());
+		if (is_object($PowerTime)) 	
+			$PowerTime->remove();
 		$cron = cron::byClassAndFunction('arrosageAuto', 'Arrosage',array('id' => $this->getId()));
 		if (is_object($cron)) 	
 			$cron->remove();
