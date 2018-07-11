@@ -18,7 +18,7 @@ class arrosageAuto extends eqLogic {
 			$DebitArroseurs+=$zone->CheckDebit();
 			$PressionsArroseurs+=$zone->CheckPression();
 			$plui=jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto'));
-			$PowerTime=cache::byKey('arrosageAuto::Plui::'.$this->getId())->getValue(0);
+			$PowerTime=cache::byKey('arrosageAuto::Plui::'.$zone->getId())->getValue(0);
 			if($plui != $PowerTime || $PowerTime == 0)
 				$PowerTime=$zone->EvaluateTime($plui,date('w',$NextProg));	
 			if(!self::CheckPompe($DebitArroseurs,$PressionsArroseurs)){
