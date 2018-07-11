@@ -320,6 +320,11 @@ class arrosageAuto extends eqLogic {
 					//$Pluviometrie[] = $Arroseur['Debit'] /($Arroseur['Distance'] * $Arroseur['Angle']);
 					$Pluviometrie[] = 15;
 				break;
+				case'oscillant':
+					//$Pluviometrie[] = $Arroseur['Debit'] /($Arroseur['Distance'] * $Arroseur['Angle']);
+					$Pluviometrie[] = 15;
+				break;
+					
 			 }
 		}
 		$Pluviometrie = array_sum($Pluviometrie)/count($Pluviometrie);
