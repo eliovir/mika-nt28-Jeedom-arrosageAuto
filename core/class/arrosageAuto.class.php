@@ -24,7 +24,7 @@ class arrosageAuto extends eqLogic {
 			if(!self::CheckPompe($DebitArroseurs,$PressionsArroseurs)){
 				$DebitArroseurs=0;
 				$PressionsArroseurs=0;
-				$TempsArroseurs+=$PowerTime;
+				$TempsArroseurs+=$PowerTime+config::byKey('temps','arrosageAuto');
 			}
 			$zone->CreateCron(date('i H d m w Y',$NextProg+$TempsArroseurs));
 			$zone->refreshWidget();
