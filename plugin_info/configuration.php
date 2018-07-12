@@ -12,6 +12,12 @@
 		<form class="form-horizontal">
 			<fieldset>
 				<div class="form-group">
+					<label class="col-lg-5 control-label">{{Temps entre 2 branches arrosages}}</label>
+					<div class="col-lg-6">
+						<input type="text" class="configKey"  data-l1key="temps" />
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="col-lg-5 control-label">{{Débit de l'arrivée d'eau (mm ou L/H)}}</label>
 					<div class="col-lg-6">
 						<input type="text" class="configKey"  data-l1key="debit" />
