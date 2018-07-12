@@ -369,7 +369,7 @@ class arrosageAutoCmd extends cmd {
 				case 'regCoefficient':
 					$Listener->event($_options['slider']);
 					$plui=jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto'));
-					$this->getEqLogic()->EvaluateTime($plui) {
+					$this->getEqLogic()->EvaluateTime($plui);
 					$this->getEqLogic()->refreshWidget();
 				break;
 			}
