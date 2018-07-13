@@ -26,7 +26,7 @@ class arrosageAuto extends eqLogic {
 				$PressionsArroseurs=0;
 				$TempsArroseurs+=$ActiveTime+config::byKey('temps','arrosageAuto');
 			}
-			$zone->CreateCron(date('i H d m w Y',$NextProg+$TempsArroseurs,$ActiveTime+10));
+			$zone->CreateCron(date('i H d m w Y',$NextProg+$TempsArroseurs),$ActiveTime+10);
 			$zone->refreshWidget();
 		}
 	}
