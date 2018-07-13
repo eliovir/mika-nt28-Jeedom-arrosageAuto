@@ -168,6 +168,11 @@ class arrosageAuto extends eqLogic {
 	        'border' => true,
 	        'border-radius' => true
 	));
+	
+	public function preSave() {
+		if(!self::CheckPompe($this->CheckDebit() ,$this->CheckPression())		   
+			throw new Exception(__('Le bilan des arroseurs est superieur a la source', __FILE__));
+	}
 	public function postSave() {
 		$isArmed=$this->AddCommande("État activation","isArmed","info","binary",false,'lock');
 		$isArmed->event(true);
