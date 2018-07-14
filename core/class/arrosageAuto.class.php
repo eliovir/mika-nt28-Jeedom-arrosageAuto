@@ -170,7 +170,7 @@ class arrosageAuto extends eqLogic {
 	));
 	
 	public function preSave() {
-		if(!self::CheckPompe($this->CheckDebit() ,$this->CheckPression())		   
+		if(!self::CheckPompe($this->CheckDebit() ,$this->CheckPression()))	   
 			throw new Exception(__('Le bilan des arroseurs est superieur a la source', __FILE__));
 	}
 	public function postSave() {
