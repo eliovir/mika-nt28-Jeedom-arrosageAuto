@@ -29,7 +29,7 @@ class arrosageAuto extends eqLogic {
 				log::add('arrosageAuto','info',$Zone->getHumanName().' : La zone est desactivée');
 				continue;
 			}
-			$NextProg=$zone->NextProg();
+			$NextProg=$Zone->NextProg();
 		}
 	}
 	public static function deamon_stop() {	
