@@ -9,7 +9,9 @@ class arrosageAuto extends eqLogic {
 			}
 			if(cache::byKey('arrosageAuto::isStart::'.$zone->getId())->getValue(false))
 				continue;
-			$NextProg=$zone->NextProg();
+			$cron = cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('id' => $zone->getId()));
+			if (!is_object($cron)) 
+				$NextProg=$zone->NextProg();
 			
 		}
 	}
@@ -199,6 +201,7 @@ class arrosageAuto extends eqLogic {
 		$regCoefficient=$this->AddCommande("Réglage coefficient","regCoefficient","action","slider",true,'coefArros');
 		$regCoefficient->setValue($Coef->getId());
 		$regCoefficient->save();
+		$this->NextProg();
 	}
 	public function preRemove() {
 		$isStart=cache::byKey('arrosageAuto::isStart::'.$this->getId());
