@@ -7,7 +7,7 @@ class arrosageAuto extends eqLogic {
 				log::add('arrosageAuto','info',$zone->getHumanName().' : La zone est desactivée');
 				continue;
 			}
-			if(cache::byKey('arrosageAuto::isStart::'.$Branche->getId())->getValue(false))
+			if(cache::byKey('arrosageAuto::isStart::'.$zone->getId())->getValue(false))
 				continue;
 			$NextProg=$zone->NextProg();
 			
