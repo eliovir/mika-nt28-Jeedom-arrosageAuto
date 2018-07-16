@@ -22,6 +22,37 @@ try {
 		}
 		ajax::error('');
 	}
+	if (init('action') == 'getData') {
+		if (init('object_id') == '') {
+			$_GET['object_id'] = $_SESSION['user']->getOptions('defaultDashboardObject');
+		}
+		$object = object::byId(init('object_id'));
+		if (!is_object($object)) {
+			$object = object::rootObject();
+		}
+		if (!is_object($object)) {
+			throw new Exception('{{Aucun objet racine trouvé}}');
+		}
+		$date = array(
+			'start' => init('dateStart'),
+			'end' => init('dateEnd'),
+		);
+		if ($date['start'] == '') {
+			$date['start'] = date('Y-m-d', strtotime('-1 month'));
+			if (init('groupBy', 'day') == 'month') {
+				$date['start'] = date('Y-m-d', strtotime('-1 year'));
+			}
+		}
+		if ($date['end'] == '') {
+			$date['end'] = date('Y-m-d');
+		}
+		$arrosageAuto = arrosageAuto::getGraph($date['start'], $date['end'], $object->getId());
+		ajax::success(array(
+			'datas' => $arrosageAuto,
+			'date' => $date,
+			'object' => utils::o2a($object)
+		));
+	}
 	throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
 	/*     * *********Catch exeption*************** */
 } catch (Exception $e) {
