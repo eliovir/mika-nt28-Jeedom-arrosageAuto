@@ -2,32 +2,15 @@
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class arrosageAuto extends eqLogic {	
 	public static function cron() {	
-		$DebitArroseurs=0;
-		$PressionsArroseurs=0;
-		$TempsArroseurs=0;
 		foreach(eqLogic::byType('arrosageAuto') as $zone){
 			if(!$zone->getIsEnable() && !$zone->getCmd(null,'isArmed')->execCmd()){
 				log::add('arrosageAuto','info',$zone->getHumanName().' : La zone est desactivée');
 				continue;
 			}
+			if(cache::byKey('arrosageAuto::isStart::'.$Branche->getId())->getValue(false))
+				continue;
 			$NextProg=$zone->NextProg();
-			if($NextProg == null){
-				log::add('arrosageAuto','info',$zone->getHumanName().' : Aucune programmation');
-				continue;
-			}
-			if(cache::byKey('arrosageAuto::isStart::'.$zone->getId())->getValue(false))
-				continue;
-			$DebitArroseurs+=$zone->CheckDebit();
-			$PressionsArroseurs+=$zone->CheckPression();
-			$plui=jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto'));
-			$ActiveTime=$zone->EvaluateTime($plui,date('w',$NextProg));	
-			if(!self::CheckPompe($DebitArroseurs,$PressionsArroseurs)){
-				$DebitArroseurs=0;
-				$PressionsArroseurs=0;
-				$TempsArroseurs+=$ActiveTime+config::byKey('temps','arrosageAuto');
-			}
-			$zone->CreateCron(date('i H d m w Y',$NextProg+$TempsArroseurs),$ActiveTime+10);
-			$zone->refreshWidget();
+			
 		}
 	}
 	public static function Arrosage($_option){
@@ -48,18 +31,36 @@ class arrosageAuto extends eqLogic {
 			$zone->ExecuteArrosage($plui);
 		}
 	}
-	public function CheckProgActiveBranche($Branches){
+	public function CheckProgActiveBranche($Branches,$NextProg){
+		$DebitArroseurs=0;
+		$PressionsArroseurs=0;
+		$TempsArroseurs=0;
 		foreach($Branches as $Branche){
-			if($Branche == $this->getId())
-				return true;
+			$Branche=eqLogic::byId(str_replace('#','',$Branche));
+			if(!is_object($Branche)){
+				log::add('arrosageAuto','info',$this->getHumanName().' : Branche inconne');
+				continue;
+			}
+			if($NextProg == null){
+				log::add('arrosageAuto','info',$Branche->getHumanName().' : Aucune programmation');
+				continue;
+			}
+			$DebitArroseurs+=$Branche->CheckDebit();
+			$PressionsArroseurs+=$Branche->CheckPression();
+			$plui=jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto'));
+			$ActiveTime=$Branche->EvaluateTime($plui,date('w',$NextProg));	
+			if(!self::CheckPompe($DebitArroseurs,$PressionsArroseurs)){
+				$DebitArroseurs=0;
+				$PressionsArroseurs=0;
+				$TempsArroseurs+=$ActiveTime+config::byKey('temps','arrosageAuto');
+			}
+			$Branche->CreateCron(date('i H d m w Y',$NextProg+$TempsArroseurs),$ActiveTime+10);
+			$Branche->refreshWidget();
 		}
-		return false;
 	}
 	public function NextProg(){
 		$nextTime=null;
 		foreach(config::byKey('Programmations', 'arrosageAuto') as $ConigSchedule){
-			if(!$this->CheckProgActiveBranche($ConigSchedule["evaluation"]))
-				continue;
 			$offset=0;
 			if(date('H') > $ConigSchedule["Heure"])
 				$offset++;
@@ -75,6 +76,7 @@ class arrosageAuto extends eqLogic {
 			if($nextTime == null || $nextTime > $timestamp)
 				$nextTime = $timestamp;
 		}
+		$this->CheckProgActiveBranche($ConigSchedule["evaluation"],$nextTime);
 		return $nextTime;
 	}
 	public function CreateCron($Schedule,$Timeout='999999') {
@@ -168,6 +170,11 @@ class arrosageAuto extends eqLogic {
 	        'border' => true,
 	        'border-radius' => true
 	));
+	
+	public function preSave() {
+		if(!self::CheckPompe($this->CheckDebit() ,$this->CheckPression()))	   
+			throw new Exception(__('Le bilan des arroseurs est superieur a la source', __FILE__));
+	}
 	public function postSave() {
 		$isArmed=$this->AddCommande("État activation","isArmed","info","binary",false,'lock');
 		$isArmed->event(true);
