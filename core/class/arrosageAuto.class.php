@@ -7,7 +7,7 @@ class arrosageAuto extends eqLogic {
 				log::add('arrosageAuto','info',$zone->getHumanName().' : La zone est desactivée');
 				continue;
 			}
-			if(cache::byKey('arrosageAuto::isStart::'.$Branche->getId())->getValue(false))
+			if(cache::byKey('arrosageAuto::isStart::'.$zone->getId())->getValue(false))
 				continue;
 			$NextProg=$zone->NextProg();
 			
@@ -124,13 +124,18 @@ class arrosageAuto extends eqLogic {
 		return $Pression-(($Debit*$Longeur)/(0.849*150*$Air*$Rayon));
 	}
 	public function ExecuteArrosage($plui){
+		$_parameter['Start']=time();
+		$_parameter['Plui']=$plui;
+		$_parameter['Pluviometrie']=$this->CalculPluviometrie();
 		$this->ExecuteAction('start');
 		cache::set('arrosageAuto::isStart::'.$this->getId(),true, 0);
 		$ActiveTime=$this->EvaluateTime($plui);
+		$_parameter['ActiveTime']=$ActiveTime;
 		sleep($ActiveTime);
 		$this->ExecuteAction('stop');
 		cache::set('arrosageAuto::ActiveTime::'.$this->getId(),0, 0);
 		cache::set('arrosageAuto::isStart::'.$this->getId(),false, 0);
+		$this->addCacheStatistique($_parameter);
 	}
 	public function toHtml($_version = 'dashboard') {
 		$replace = $this->preToHtml($_version);
@@ -343,6 +348,16 @@ class arrosageAuto extends eqLogic {
 		$Pluviometrie = array_sum($Pluviometrie)/count($Pluviometrie);
 		return $Pluviometrie/3600; //Conversion de mm/H en mm/s
 	}
+	public function addCacheStatistique($_parameter) {
+		$cache = cache::byKey('arrosageAuto::Statistique::'.$this->getId());
+		$value = json_decode($cache->getValue('[]'), true);
+		$value[$key] = $_parameter;
+		if(count($value) >=255){			
+			unset($value[0]);
+			array_shift($value);
+		}
+		cache::set('arrosageAuto::Statistique::'.$this->getId(),json_encode($value), 0);
+	}
 	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Template='') {
 		$Commande = $this->getCmd(null,$_logicalId);
 		if (!is_object($Commande))
@@ -360,6 +375,30 @@ class arrosageAuto extends eqLogic {
 			$Commande->save();
 		}
 		return $Commande;
+	}
+	public static function getGraph($_startTime = null, $_endTime = null, $_object_id) {
+		$return = array(
+			'category' => array('other' => array(), 'light' => array(), 'multimedia' => array(), 'heating' => array(), 'electrical' => array(), 'automatism' => array()),
+			'translation' => array('other' => __('Autre', __FILE__), 'light' => __('Lumière', __FILE__), 'multimedia' => __('Multimedia', __FILE__), 'heating' => __('Chauffage', __FILE__), 'electrical' => __('Electroménager', __FILE__), 'automatism' => __('Automatisme', __FILE__)),
+			'object' => array()
+		);
+		$object = object::byId($_object_id);
+		if (!is_object($object)) {
+			throw new Exception(__('Objet non trouvé. Vérifiez l\'id : ', __FILE__) . $_object_id);
+		}
+		$objects = $object->getChilds();
+		$objects[] = $object;
+		foreach ($objects as $object) {
+			$return['object'][$object->getName()] = array();
+			foreach ($object->getEqLogic(true, false, 'arrosageAuto') as $arrosageAuto) {
+				$startTime=explode('-',$_startTime);
+				$startUnixTime=mktime(0,0,0,$startTime[1],$startTime[2],$startTime[0]);
+				$endTime=explode('-',$_endTime);
+				$endUnixTime=mktime(0,0,0,$endTime[1],$endTime[2],$endTime[0]);				
+				$return['object'][$object->getName()][$arrosageAuto->getName()] = cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId());
+			}
+		}
+		return $return;
 	}
 }
 class arrosageAutoCmd extends cmd {

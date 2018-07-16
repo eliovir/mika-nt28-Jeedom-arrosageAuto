@@ -7,6 +7,7 @@
 	"category" : "automatisation",
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
 	"hasOwnDeamon" : false,
+	"display" : "panel",
 	"issue" : "https://github.com/mika-nt28/Jeedom-arrosageAuto/issues",
  	"changelog" : "https://github.com/mika-nt28/Jeedom-arrosageAuto/commits/master",
  	"documentation" : "https://mika-nt28.github.io/Jeedom-arrosageAuto/"
