@@ -1,36 +1,61 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class arrosageAuto extends eqLogic {	
-	public static function cron() {	
-		foreach(eqLogic::byType('arrosageAuto') as $zone){
-			if(!$zone->getIsEnable() && !$zone->getCmd(null,'isArmed')->execCmd()){
-				log::add('arrosageAuto','info',$zone->getHumanName().' : La zone est desactivée');
+	public static function deamon_info() {
+		$return = array();
+		$return['log'] = 'arrosageAuto';
+		$return['launchable'] = 'ok';
+		$return['state'] = 'nok';
+		foreach(eqLogic::byType('arrosageAuto') as $Zone){
+			if($Zone->getIsEnable() && $Zone->getCmd(null,'isArmed')->execCmd()){
+				$cron = cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('id' => $Zone->getId()));
+				if (!is_object($cron))	
+					return $cron;
+			}
+		}
+		$return['state'] = 'ok';
+		return $return;
+	}
+	public static function deamon_start($_debug = false) {
+		log::remove('arrosageAuto');
+		self::deamon_stop();
+		$deamon_info = self::deamon_info();
+		if ($deamon_info['launchable'] != 'ok') 
+			return;
+		if ($deamon_info['state'] == 'ok') 
+			return;
+		foreach(eqLogic::byType('arrosageAuto') as $Zone){
+			if(!$Zone->getIsEnable() && !$Zone->getCmd(null,'isArmed')->execCmd()){
+				log::add('arrosageAuto','info',$Zone->getHumanName().' : La zone est desactivée');
 				continue;
 			}
-			if(cache::byKey('arrosageAuto::isStart::'.$zone->getId())->getValue(false))
-				continue;
-			$cron = cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('id' => $zone->getId()));
-			if (!is_object($cron)) 
-				$NextProg=$zone->NextProg();
-			
+			$NextProg=$zone->NextProg();
 		}
 	}
+	public static function deamon_stop() {	
+		foreach(eqLogic::byType('arrosageAuto') as $Zone){
+			$cron = cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('id' => $Zone->getId()));
+			if (is_object($cron)) 	
+				$cron->remove();
+		}
+	}
+
 	public static function Arrosage($_option){
-		$zone=eqLogic::byId($_option['id']);
-		if(is_object($zone)){			
-			if(!$zone->getCmd(null,'isArmed')->execCmd()){
-				log::add('arrosageAuto','info',$zone->getHumanName().' : La zone est desactivée');
+		$Zone=eqLogic::byId($_option['id']);
+		if(is_object($Zone)){			
+			if(!$Zone->getCmd(null,'isArmed')->execCmd()){
+				log::add('arrosageAuto','info',$Zone->getHumanName().' : La zone est desactivée');
 				exit;
 			}
-			if(!$zone->CheckCondition()){
-				log::add('arrosageAuto','info',$zone->getHumanName().' : Les conditions ne sont pas evaluées');
+			if(!$Zone->CheckCondition()){
+				log::add('arrosageAuto','info',$Zone->getHumanName().' : Les conditions ne sont pas evaluées');
 				exit;
 			}
-			if($plui=$zone->CheckMeteo() === false){
-				log::add('arrosageAuto','info',$zone->getHumanName().' : La météo n\'est pas idéale pour l\'arrosage');
+			if($plui=$Zone->CheckMeteo() === false){
+				log::add('arrosageAuto','info',$Zone->getHumanName().' : La météo n\'est pas idéale pour l\'arrosage');
 				exit;
 			}
-			$zone->ExecuteArrosage($plui);
+			$Zone->ExecuteArrosage($plui);
 		}
 	}
 	public function CheckProgActiveBranche($Branches,$NextProg){
