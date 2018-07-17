@@ -95,7 +95,7 @@ class arrosageAuto extends eqLogic {
 		$nextTime=null;
 		foreach(config::byKey('Programmations', 'arrosageAuto') as $ConigSchedule){
 			if(array_search($this->getId(),$ConigSchedule["evaluation"]) === false){
-				log::add('arrosageAuto','info',$this->getHumanName().' : La programmation existe deja');
+				log::add('arrosageAuto','debug',$this->getHumanName().' : Zone inactive dans cette programmation : '.json_encode($ConigSchedule)));
 				continue;
 			}
 			$offset=0;
