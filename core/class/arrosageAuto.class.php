@@ -61,21 +61,21 @@ class arrosageAuto extends eqLogic {
 		}
 	}
 	public function CheckProgActiveBranche($Branches,$NextProg){
+		if($NextProg == null){
+			log::add('arrosageAuto','debug',$this->getHumanName().' : Aucune programmation');
+			continue;
+		}
 		$DebitArroseurs=0;
 		$PressionsArroseurs=0;
 		$TempsArroseurs=0;
 		foreach($Branches as $Branche){
 			$Zone=eqLogic::byId(str_replace('#','',$Branche));
 			if(!is_object($Zone)){
-				log::add('arrosageAuto','info',$this->getHumanName().' : Zone inconne');
-				continue;
-			}
-			if($NextProg == null){
-				log::add('arrosageAuto','info',$Zone->getHumanName().' : Aucune programmation');
+				log::add('arrosageAuto','debug',$this->getHumanName().' : Zone inconne');
 				continue;
 			}
 			if (is_object(cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('id' => $Zone->getId())))){
-				//log::add('arrosageAuto','info',$Zone->getHumanName().' : La programmation existe deja');
+				log::add('arrosageAuto','debug',$Zone->getHumanName().' : La programmation existe deja');
 				continue;
 			}
 			$DebitArroseurs+=$Zone->CheckDebit();
