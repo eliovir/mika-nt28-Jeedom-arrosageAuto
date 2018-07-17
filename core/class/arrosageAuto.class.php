@@ -63,7 +63,7 @@ class arrosageAuto extends eqLogic {
 	public function CheckProgActiveBranche($Branches,$NextProg){
 		if($NextProg == null){
 			log::add('arrosageAuto','debug',$this->getHumanName().' : Aucune programmation');
-			continue;
+			return;
 		}
 		$DebitArroseurs=0;
 		$PressionsArroseurs=0;
