@@ -105,7 +105,10 @@ class arrosageAuto extends eqLogic {
 			if(date('H') == $ConigSchedule["Heure"] && date('i') >= $ConigSchedule["Minute"])	
 				$offset++;
 			for($day=0;$day<7;$day++){
-				if($ConigSchedule[date('w')+$day+$offset]){
+				$jour=date('w')+$day+$offset;
+				if($jour > 6)
+					$jour= 7-$jour;
+				if($ConigSchedule[$jour]){
 					$offset+=$day;
 					$timestamp=mktime ($ConigSchedule["Heure"], $ConigSchedule["Minute"], 0, date("n") , date("j") , date("Y"))+ (3600 * 24) * $offset;
 					break;
