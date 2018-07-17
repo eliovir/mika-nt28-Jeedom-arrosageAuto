@@ -93,6 +93,7 @@ class arrosageAuto extends eqLogic {
 	}
 	public function NextProg(){
 		$nextTime=null;
+		$Branches=null;
 		foreach(config::byKey('Programmations', 'arrosageAuto') as $ConigSchedule){
 			if(array_search($this->getId(),$ConigSchedule["evaluation"]) === false){
 				log::add('arrosageAuto','debug',$this->getHumanName().' : Zone inactive dans cette programmation : '.json_encode($ConigSchedule));
@@ -110,10 +111,12 @@ class arrosageAuto extends eqLogic {
 					break;
 				}
 			}
-			if($nextTime == null || $nextTime > $timestamp)
+			if($nextTime == null || $nextTime > $timestamp){
+				$Branches=$ConigSchedule["evaluation"];
 				$nextTime = $timestamp;
+			}
 		}
-		$this->CheckProgActiveBranche($ConigSchedule["evaluation"],$nextTime);
+		$this->CheckProgActiveBranche($Branches,$nextTime);
 		return $nextTime;
 	}
 	public function CreateCron($Schedule,$Timeout='999999') {
