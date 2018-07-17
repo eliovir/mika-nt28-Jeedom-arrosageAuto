@@ -25,7 +25,7 @@ class arrosageAuto extends eqLogic {
 		if ($deamon_info['state'] == 'ok') 
 			return;
 		foreach(eqLogic::byType('arrosageAuto') as $Zone){
-			if(!$Zone->getIsEnable() && !$Zone->getCmd(null,'isArmed')->execCmd()){
+			if(!$Zone->getIsEnable() || !$Zone->getCmd(null,'isArmed')->execCmd()){
 				log::add('arrosageAuto','info',$Zone->getHumanName().' : La zone est desactivée');
 				continue;
 			}
