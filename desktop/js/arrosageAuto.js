@@ -36,6 +36,24 @@ $('#bt_programArrosageAuto').off('click').on('click', function () {
 						},
 						success: function () {
 							$('#div_alert').showAlert({message: '{{Sauvegarde réussie}}', level: 'success'});
+							$.ajax({
+								type: 'POST',
+								url: 'plugins/arrosageAuto/core/ajax/arrosageAuto.ajax.php',
+								data: {
+								    action: 'UpdateCron'
+								},
+								dataType: 'json',
+								error: function (request, status, error) {
+								    handleAjaxError(request, status, error);
+								},
+								success: function (data) {
+								    	if (data.state != 'ok') {
+										$('#div_alert').showAlert({message: data.result, level: 'danger'});
+										return;
+								    	}
+									$('#div_alert').showAlert({message: data.result, level: 'success'});
+								 }
+							});
 						 }
 					});
 				}
