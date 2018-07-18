@@ -74,9 +74,12 @@ class arrosageAuto extends eqLogic {
 				log::add('arrosageAuto','debug',$this->getHumanName().' : Zone inconne');
 				continue;
 			}
-			if (is_object(cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('id' => $Zone->getId())))){
-				log::add('arrosageAuto','debug',$Zone->getHumanName().' : La programmation existe deja');
-				continue;
+			$cron=cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('id' => $Zone->getId()));
+			if (is_object($cron)){
+				if(strtotime($cron->getNextRunDate()) < $NextProg){
+					log::add('arrosageAuto','debug',$Zone->getHumanName().' : Une programmation plus tot existe deja');
+					continue;
+				}
 			}
 			$DebitArroseurs+=$Zone->CheckDebit();
 			$PressionsArroseurs+=$Zone->CheckPression();
