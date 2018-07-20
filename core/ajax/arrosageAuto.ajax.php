@@ -56,12 +56,7 @@ try {
 		if ($date['end'] == '') {
 			$date['end'] = date('Y-m-d');
 		}
-		$arrosageAuto = arrosageAuto::getGraph($date['start'], $date['end'], $object->getId());
-		ajax::success(array(
-			'datas' => $arrosageAuto,
-			'date' => $date,
-			'object' => utils::o2a($object)
-		));
+		ajax::success(arrosageAuto::getGraph($date['start'], $date['end'], $object->getId()));
 	}
 	throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
 	/*     * *********Catch exeption*************** */
