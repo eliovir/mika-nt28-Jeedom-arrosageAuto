@@ -399,7 +399,7 @@ class arrosageAuto extends eqLogic {
 	public function addCacheStatistique($_parameter) {
 		$cache = cache::byKey('arrosageAuto::Statistique::'.$this->getId());
 		$value = json_decode($cache->getValue('[]'), true);
-		$value[$key] = $_parameter;
+		$value[] = $_parameter;
 		if(count($value) >=255){			
 			unset($value[0]);
 			array_shift($value);
