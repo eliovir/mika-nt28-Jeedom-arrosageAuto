@@ -451,9 +451,7 @@ class arrosageAutoCmd extends cmd {
 				break;
 				case 'regCoefficient':
 					$Listener->event($_options['slider']);
-					$plui=jeedom::evaluateExpression(config::byKey('cmdPrecipitation','arrosageAuto'));
-					$this->getEqLogic()->EvaluateTime($plui);
-					$this->getEqLogic()->refreshWidget();
+					arrosageAuto::deamon_start();
 				break;
 			}
 			$Listener->setCollectDate(date('Y-m-d H:i:s'));
