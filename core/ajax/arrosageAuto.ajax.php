@@ -48,13 +48,13 @@ try {
 			'end' => init('dateEnd'),
 		);
 		if ($date['start'] == '') {
-			$date['start'] = date('Y-m-d', strtotime('-1 month'));
+			$date['start'] = strtotime('-1 month');
 			if (init('groupBy', 'day') == 'month') {
-				$date['start'] = date('Y-m-d', strtotime('-1 year'));
+				$date['start'] = strtotime('-1 year');
 			}
 		}
 		if ($date['end'] == '') {
-			$date['end'] = date('Y-m-d');
+			$date['end'] = time();
 		}
 		ajax::success(arrosageAuto::getGraph($date['start'], $date['end'], $object->getId()));
 	}
