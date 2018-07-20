@@ -7,6 +7,16 @@ try {
 		throw new Exception(__('401 - Accès non autorisé', __FILE__));
 	}
 	
+	if (init('action') == 'UpdateCron') {	
+		foreach(eqLogic::byType('arrosageAuto') as $Zone){
+			if(!$Zone->getIsEnable() || !$Zone->getCmd(null,'isArmed')->execCmd()){
+				log::add('arrosageAuto','info',$Zone->getHumanName().' : La zone est desactivée');
+				continue;
+			}
+			$Zone->NextProg();
+		}
+		ajax::success("{{La programmation a bien été appliquer au zone d'arrosage}}");
+	}
 	if (init('action') == 'PlanImg') {
 		if (isset($_FILES['PlanImg'])){
 			$uploaddir = 'plugins/arrosageAuto/plan/';
