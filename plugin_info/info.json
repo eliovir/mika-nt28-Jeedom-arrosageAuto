@@ -9,6 +9,6 @@
 	"hasOwnDeamon" : true,
 	"display" : "panel",
 	"issue" : "https://github.com/mika-nt28/Jeedom-arrosageAuto/issues",
- 	"changelog" : "https://github.com/mika-nt28/Jeedom-arrosageAuto/commits/master",
+ 	"changelog" : "https://github.com/mika-nt28/Jeedom-arrosageAuto/commits/stable",
  	"documentation" : "https://mika-nt28.github.io/Jeedom-arrosageAuto/"
 }
