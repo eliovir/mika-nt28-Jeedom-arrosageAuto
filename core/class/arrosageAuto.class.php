@@ -424,12 +424,15 @@ class arrosageAuto extends eqLogic {
 		}
 		return $Commande;
 	}
-	public static function getGraph($_startTime = null, $_endTime = null, $_object_id) {
-		$objects[] = $object;
-		foreach ($objects as $object) {
-			$return['object'][$object->getName()] = array();
-			foreach ($object->getEqLogic(true, false, 'arrosageAuto') as $arrosageAuto) {		
-				$return = cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId());
+	public static function getGraph($_startTime = null, $_endTime = null, $_object_id) {	
+		$object = object::byId($_object_id);	
+		if (!is_object($object)) {
+			throw new Exception(__('Objet non trouvé. Vérifiez l\'id : ', __FILE__) . $_object_id);	
+		}	
+		foreach ($object->getEqLogic(true, false, 'arrosageAuto') as $arrosageAuto) {		
+			foreach(cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId()) as $Statistique){
+				if($Statistique['Start'] > $_startTime && $Statistique['Start'] < $_endTime)
+					$return[]=$Statistique;
 			}
 		}
 		return $return;
