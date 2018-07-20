@@ -425,25 +425,11 @@ class arrosageAuto extends eqLogic {
 		return $Commande;
 	}
 	public static function getGraph($_startTime = null, $_endTime = null, $_object_id) {
-		$return = array(
-			'category' => array('other' => array(), 'light' => array(), 'multimedia' => array(), 'heating' => array(), 'electrical' => array(), 'automatism' => array()),
-			'translation' => array('other' => __('Autre', __FILE__), 'light' => __('Lumière', __FILE__), 'multimedia' => __('Multimedia', __FILE__), 'heating' => __('Chauffage', __FILE__), 'electrical' => __('Electroménager', __FILE__), 'automatism' => __('Automatisme', __FILE__)),
-			'object' => array()
-		);
-		$object = object::byId($_object_id);
-		if (!is_object($object)) {
-			throw new Exception(__('Objet non trouvé. Vérifiez l\'id : ', __FILE__) . $_object_id);
-		}
-		$objects = $object->getChilds();
 		$objects[] = $object;
 		foreach ($objects as $object) {
 			$return['object'][$object->getName()] = array();
-			foreach ($object->getEqLogic(true, false, 'arrosageAuto') as $arrosageAuto) {
-				$startTime=explode('-',$_startTime);
-				$startUnixTime=mktime(0,0,0,$startTime[1],$startTime[2],$startTime[0]);
-				$endTime=explode('-',$_endTime);
-				$endUnixTime=mktime(0,0,0,$endTime[1],$endTime[2],$endTime[0]);				
-				$return['object'][$object->getName()][$arrosageAuto->getName()] = cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId());
+			foreach ($object->getEqLogic(true, false, 'arrosageAuto') as $arrosageAuto) {		
+				$return = cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId());
 			}
 		}
 		return $return;
