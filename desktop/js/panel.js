@@ -71,7 +71,7 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 					name: i + ' Plui (mm)',
 					data:  data.result[i].Plui,
 					type: 'column',
-					stack : 1,
+					stack : i,
 					stacking : 'normal',
 					dataGrouping: {
 						approximation: "sum",
@@ -88,7 +88,7 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 					name: i + ' Arrosage (mm)',
 					data:  data.result[i].Pluviometrie,
 					type: 'column',
-					stack : 1,
+					stack : i,
 					stacking : 'normal',
 					dataGrouping: {
 						approximation: "sum",
