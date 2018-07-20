@@ -62,6 +62,8 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
 			}
+			if(data.result == null)
+				return;
 			var series = [];
 			series.push({
 				step: true,
