@@ -432,7 +432,7 @@ class arrosageAuto extends eqLogic {
 		foreach ($object->getEqLogic(true, false, 'arrosageAuto') as $arrosageAuto) {		
 			foreach(cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId()) as $Statistique){
 				if($Statistique['Start'] > $_startTime && $Statistique['Start'] < $_endTime)
-					$return[]=$Statistique;
+					$return[$arrosageAuto->getName()][]=$Statistique;
 			}
 		}
 		return $return;
