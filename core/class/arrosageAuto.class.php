@@ -17,7 +17,7 @@ class arrosageAuto extends eqLogic {
 		return $return;
 	}
 	public static function deamon_start($_debug = false) {
-		log::remove('arrosageAuto');
+		//log::remove('arrosageAuto');
 		self::deamon_stop();
 		$deamon_info = self::deamon_info();
 		if ($deamon_info['launchable'] != 'ok') 
@@ -430,10 +430,14 @@ class arrosageAuto extends eqLogic {
 			throw new Exception(__('Objet non trouvé. Vérifiez l\'id : ', __FILE__) . $_object_id);	
 		}	
 		foreach ($object->getEqLogic(true, false, 'arrosageAuto') as $arrosageAuto) {		
-			foreach(cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId()) as $Statistique){
-				if($Statistique['Start'] > $_startTime && $Statistique['Start'] < $_endTime)
-					$return[$arrosageAuto->getName()][]=$Statistique;
+			$cache = cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId());
+			foreach(json_decode($cache->getValue('[]'), true) as $Statistique){
+				if($Statistique['Start'] > $_startTime && $Statistique['Start'] < $_endTime){
+					$Curve['Plui'][]=array($Statistique['Start'],floatval($Statistique['Plui']));
+					$Curve['Pluviometrie'][]=array($Statistique['Start'],floatval($Statistique['Pluviometrie']));
+				}
 			}
+			$return[$arrosageAuto->getName()]=$Curve;
 		}
 		return $return;
 	}
