@@ -65,40 +65,42 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 			if(data.result == null)
 				return;
 			var series = [];
-			series.push({
-				step: true,
-				name: 'Plui (mm)',
-				data:  data.result.Plui,
-				type: 'column',
-				stack : 1,
-				stacking : 'normal',
-				dataGrouping: {
-					approximation: "sum",
-					enabled: true,
-					forced: true,
-					units: [[groupBy,[1]]]
-				},
-				tooltip: {
-					valueDecimals: 2
-				},
-			});
-			series.push({
-				step: true,
-				name: 'Arrosage (mm)',
-				data:  data.result.Pluviometrie,
-				type: 'column',
-				stack : 1,
-				stacking : 'normal',
-				dataGrouping: {
-					approximation: "sum",
-					enabled: true,
-					forced: true,
-					units: [[groupBy,[1]]]
-				},
-				tooltip: {
-					valueDecimals: 2
-				},
-			});
+			for(var i in data.result){
+				series.push({
+					step: true,
+					name: i + ' Plui (mm)',
+					data:  data.result[i].Plui,
+					type: 'column',
+					stack : 1,
+					stacking : 'normal',
+					dataGrouping: {
+						approximation: "sum",
+						enabled: true,
+						forced: true,
+						units: [[groupBy,[1]]]
+					},
+					tooltip: {
+						valueDecimals: 2
+					},
+				});
+				series.push({
+					step: true,
+					name: i + ' Arrosage (mm)',
+					data:  data.result[i].Pluviometrie,
+					type: 'column',
+					stack : 1,
+					stacking : 'normal',
+					dataGrouping: {
+						approximation: "sum",
+						enabled: true,
+						forced: true,
+						units: [[groupBy,[1]]]
+					},
+					tooltip: {
+						valueDecimals: 2
+					},
+				});
+			}
 			drawSimpleGraph('div_graphPluviometerie',series);
 		}
 	});
