@@ -36,9 +36,9 @@ if (init('groupBy', 'day') == 'month') {
 				<li class="nav-header">{{Liste objets}}</li>
 				<li class="filter" style="margin-bottom: 5px;"><input class="filter form-control input-sm" placeholder="{{Rechercher}}" style="width: 100%"/></li>
 				<?php
-					foreach (eqLogic::byType('arrosageAuto') as $eqLogic) {
-						$object_li=$eqLogic->getObject();
-						if ($object_li->getIsVisible() == 1) {
+					$allObject = object::buildTree();
+					foreach ($allObject as $object_li) {
+						if(count($object_li->getEqLogic(true, false, 'arrosageAuto') > 0 && $object_li->getIsVisible() == 1) {
 							$margin = 15 * $object_li->parentNumber();
 							if ($object_li->getId() == $object->getId()) {
 								echo '<li class="cursor li_object active" ><a href="index.php?v=d&m=arrosageAuto&p=panel&object_id=' . $object_li->getId() . '" style="position:relative;left:' . $margin . 'px;">' . $object_li->getHumanName(true) . '</a></li>';
