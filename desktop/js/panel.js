@@ -65,7 +65,7 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 			if(data.result == null)
 				return;
 			var series = [];
-			var categories = null;			
+			var categories = [];			
 			for(var i in data.result){
 				categories.push(i);
 				series.push({
