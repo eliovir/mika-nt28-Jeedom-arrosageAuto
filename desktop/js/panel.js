@@ -65,7 +65,9 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 			if(data.result == null)
 				return;
 			var series = [];
+			var categories = null;			
 			for(var i in data.result){
+				categories.push(i);
 				series.push({
 					step: true,
 					name: i + ' Pluie (mm)',
@@ -101,12 +103,12 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 					},
 				});
 			}
-			drawSimpleGraph('div_graphPluviometerie',series);
+			drawSimpleGraph('div_graphPluviometerie',series,categories);
 		}
 	});
 }
 
-function drawSimpleGraph(_el, _serie) {
+function drawSimpleGraph(_el, _serie,_categories) {
 	var legend = {
 		enabled: true,
 		borderColor: 'black',
@@ -168,6 +170,7 @@ function drawSimpleGraph(_el, _serie) {
 			}
 		},
 		xAxis: {
+			categories: _categories,
 			type: 'datetime'
 		},
 		scrollbar: {
