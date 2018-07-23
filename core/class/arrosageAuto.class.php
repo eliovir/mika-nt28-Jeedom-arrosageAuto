@@ -152,17 +152,14 @@ class arrosageAuto extends eqLogic {
 	}
 	public function CheckDebit(){
 		$Debit=0;		
-		foreach($this->getConfiguration('arroseur') as $Arroseur){
+		foreach($this->getConfiguration('arroseur') as $Arroseur)
 			$Debit += $Arroseur['Debit'];
-			$Return["Pression"] += $Arroseur['Pression'];
-		}
 		return $Debit; 
 	}
 	public function CheckPression(){
 		$Pression=0;		
-		foreach($this->getConfiguration('arroseur') as $Arroseur){
+		foreach($this->getConfiguration('arroseur') as $Arroseur)
 			$Pression += $Arroseur['Pression'];
-		}
 		return $Pression; 
 	}
 	public function getPression($Pression,$Debit){
@@ -194,9 +191,8 @@ class arrosageAuto extends eqLogic {
 		foreach ($this->getCmd() as $cmd) {
 			if ($cmd->getDisplay('hideOn' . $version) == 1)
 				continue;
-			$replace['#'.$cmd->getLogicalId().'#']= $cmd->toHtml($_version, $cmdColor);
+			$replace['#'.$cmd->getLogicalId().'#']= $cmd->toHtml($_version);
 		}
-		$replace['#cmdColor#'] = ($this->getPrimaryCategory() == '') ? '' : jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
 		$cron = cron::byClassAndFunction('arrosageAuto', 'Arrosage',array('id' => $this->getId()));
 		$replace['#NextStart#'] = ' - ';
 		if(is_object($cron))

@@ -68,7 +68,7 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 			for(var i in data.result){
 				series.push({
 					step: true,
-					name: i + ' Plui (mm)',
+					name: i + ' Pluie (mm)',
 					data:  data.result[i].Plui,
 					type: 'column',
 					stack : i,
