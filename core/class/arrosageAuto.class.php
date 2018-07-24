@@ -174,6 +174,7 @@ class arrosageAuto extends eqLogic {
 		cache::set('arrosageAuto::isStart::'.$this->getId(),true, 0);
 		$ActiveTime=$this->EvaluateTime($plui);
 		$_parameter['ActiveTime']=$ActiveTime;
+		$_parameter['ConsomationEau']=$this->ConsomationEau($ActiveTime);
 		sleep($ActiveTime);
 		$this->ExecuteAction('stop');
 		cache::set('arrosageAuto::ActiveTime::'.$this->getId(),0, 0);
@@ -366,6 +367,12 @@ class arrosageAuto extends eqLogic {
 			return false;		
 		return true;
 	}
+	public function ConsomationEau($Temps){
+		$ConsomationEau=array();
+		foreach($this->getConfiguration('arroseur') as $Arroseur)
+			$ConsomationEau[] = $Arroseur['Debit'] * $Temps;
+		return array_sum($ConsomationEau)/count($ConsomationEau);
+	}
 	public function CalculPluviometrie(){
 		$Pluviometrie=array();
 		foreach($this->getConfiguration('arroseur') as $Arroseur){
@@ -431,6 +438,7 @@ class arrosageAuto extends eqLogic {
 				if($Statistique['Start'] > $_startTime && $Statistique['Start'] < $_endTime){
 					$Curve['Plui'][]=array($Statistique['Start']*1000,floatval($Statistique['Plui']));
 					$Curve['Pluviometrie'][]=array($Statistique['Start']*1000,floatval($Statistique['Pluviometrie']));
+					$Curve['ConsomationEau'][]=array($Statistique['Start']*1000,floatval($Statistique['ConsomationEau']));
 				}
 			}
 			$return[$arrosageAuto->getName()]=$Curve;
