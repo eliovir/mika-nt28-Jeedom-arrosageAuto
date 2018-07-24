@@ -370,8 +370,8 @@ class arrosageAuto extends eqLogic {
 	public function ConsomationEau($Temps){
 		$ConsomationEau=array();
 		foreach($this->getConfiguration('arroseur') as $Arroseur)
-			$ConsomationEau[] = $Arroseur['Debit'] * $Temps;
-		return array_sum($ConsomationEau)/count($ConsomationEau);
+			$ConsomationEau[] = $Arroseur['Debit'] * $Temps / 3600;
+		return array_sum($ConsomationEau);
 	}
 	public function CalculPluviometrie(){
 		$Pluviometrie=array();
