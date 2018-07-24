@@ -436,9 +436,9 @@ class arrosageAuto extends eqLogic {
 			$cache = cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId());
 			foreach(json_decode($cache->getValue('[]'), true) as $Statistique){
 				if($Statistique['Start'] > $_startTime && $Statistique['Start'] < $_endTime){
-					$Curve['Pluviometrie']['Plui'][]=array($Statistique['Start']*1000,floatval($Statistique['Plui']));
-					$Curve['Pluviometrie']['Pluviometrie'][]=array($Statistique['Start']*1000,floatval($Statistique['Pluviometrie']));
-					$Curve['ConsomationEau']['ConsomationEau'][]=array($Statistique['Start']*1000,floatval($Statistique['ConsomationEau']));
+					$Curve['Plui'][]=array($Statistique['Start']*1000,floatval($Statistique['Plui']));
+					$Curve['Pluviometrie'][]=array($Statistique['Start']*1000,floatval($Statistique['Pluviometrie']));
+					$Curve['ConsomationEau'][]=array($Statistique['Start']*1000,floatval($Statistique['ConsomationEau']));
 				}
 			}
 			$return[$arrosageAuto->getName()]=$Curve;
