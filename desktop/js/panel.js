@@ -64,56 +64,16 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 			}
 			if(data.result == null)
 				return;
-			if(data.result.Pluviometrie != null){
-				var series = [];
-				var categories = [];			
-				for(var i in data.result.Pluviometrie){
-					categories.push(i);
-					series.push({
-						step: true,
-						name: i + ' Pluie (mm)',
-						data:  data.result[i].Plui,
-						type: 'column',
-						stack : i,
-						stacking : 'normal',
-						dataGrouping: {
-							approximation: "sum",
-							enabled: true,
-							forced: true,
-							units: [[groupBy,[1]]]
-						},
-						tooltip: {
-							valueDecimals: 2
-						},
-					});
-					series.push({
-						step: true,
-						name: i + ' Arrosage (mm)',
-						data:  data.result[i].Pluviometrie,
-						type: 'column',
-						stack : i,
-						stacking : 'normal',
-						dataGrouping: {
-							approximation: "sum",
-							enabled: true,
-							forced: true,
-							units: [[groupBy,[1]]]
-						},
-						tooltip: {
-							valueDecimals: 2
-						},
-					});
-				}
-				drawSimpleGraph('div_graphPluviometerie',series,categories);
-			}
-			if(data.result.ConsomationEau != null){
-				var series = [];	
+			var series = [];
+			var categories = [];			
+			for(var i in data.result){
+				categories.push(i);
 				series.push({
 					step: true,
-					name: ' Consomation d\'eau (L)',
-					data:  data.result.ConsomationEau.ConsomationEau,
+					name: i + ' Pluie (mm)',
+					data:  data.result[i].Plui,
 					type: 'column',
-					stack : 1,
+					stack : i,
 					stacking : 'normal',
 					dataGrouping: {
 						approximation: "sum",
@@ -125,8 +85,49 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 						valueDecimals: 2
 					},
 				});
-				drawSimpleGraph('div_graphConsommationEau',series,null);
+				series.push({
+					step: true,
+					name: i + ' Arrosage (mm)',
+					data:  data.result[i].Pluviometrie,
+					type: 'column',
+					stack : i,
+					stacking : 'normal',
+					dataGrouping: {
+						approximation: "sum",
+						enabled: true,
+						forced: true,
+						units: [[groupBy,[1]]]
+					},
+					tooltip: {
+						valueDecimals: 2
+					},
+				});
 			}
+			drawSimpleGraph('div_graphPluviometerie',series,categories);
+
+			var series = [];
+			var categories = [];			
+			for(var i in data.result){
+				categories.push(i);	
+				series.push({
+					step: true,
+					name: i + ' Arrosage (mm)',
+					data:  data.result[i].ConsomationEau,
+					type: 'column',
+					stack : i,
+					stacking : 'normal',
+					dataGrouping: {
+						approximation: "sum",
+						enabled: true,
+						forced: true,
+						units: [[groupBy,[1]]]
+					},
+					tooltip: {
+						valueDecimals: 2
+					},
+				});
+			};
+			drawSimpleGraph('div_graphConsommationEau',series,categories);
 		}
 	});
 }
