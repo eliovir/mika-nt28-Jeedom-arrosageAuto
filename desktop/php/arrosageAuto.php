@@ -196,6 +196,24 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 									</select>
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" >
+									{{Etat de l'électrovanne}}
+									<sup>
+										<i class="fa fa-question-circle tooltips" title="Choisissez les types d'arrosage pour cette zone" style="font-size : 1em;color:grey;"></i>
+									</sup>
+								</label>
+								<div class="col-sm-5">
+									<div class="input-group">
+										<input class="eqLogicAttr form-control input-sm cmdAction" data-l1key="configuration" data-l2key="EtatElectrovanne"/>
+										<span class="input-group-btn">
+											<a class="btn btn-success btn-sm listCmdAction"  data-type="info">
+												<i class="fa fa-list-alt"></i>
+											</a>
+										</span>
+									</div>
+								</div>
+							</div>
 						</fieldset>
 					</form>
 				</div>
