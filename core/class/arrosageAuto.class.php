@@ -495,7 +495,7 @@ class arrosageAutoCmd extends cmd {
 			switch($this->getLogicalId()){
 				case 'armed':
 					$Listener->event(true);
-					cache::set('arrosageAuto::ArrosageValide::'.$this->getEqLogic()->getId(),true, 0);
+					arrosageAuto::deamon_start();
 				break;
 				case 'released':
 					$Listener->event(false);
@@ -505,6 +505,7 @@ class arrosageAutoCmd extends cmd {
 					$cron = cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('Zone_id' => $this->getEqLogic()->getId()));
 					if (is_object($cron)) 	
 						$cron->remove();
+						$this->getEqLogic()->refreshWidget();
 				break;
 				case 'regCoefficient':
 					$Listener->event($_options['slider']);
