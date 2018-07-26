@@ -11,6 +11,13 @@ Configuration
 
 ![introduction01](../images/Configuration.jpg)
 
+Caracterisation de la source d'eau
+---
+
+* Temps entre 2 branches arrosages : ceci est un delais (min) qui entre 2 arrosage d'une meme programation
+* Débit de l'arrivée d'eau (mm ou L/H) : Debit de votre sources
+* Pression maximal de l'arrivée d'eau (bar) : Pression de votre sources
+
 Conditions météorologiques
 ---
 Le plugin est capable de prendre en compte la météo.
@@ -42,13 +49,14 @@ Pour chaque zone d'arrosage créée, le plugin va créer les commandes suivantes
 
 ![introduction01](../images/arrosageAuto_screenshot_Widget.jpg)
 
-Paramétrage
+Creation d'une branche / zone d'arrosage
 ===
 
 ![introduction01](../images/MesZones.jpg)
 
 Comme pour tous les plugins, nous allons commencer par créer une zone avec le bouton Ajouter. 
 Maintenant nous pouvons configurer notre zone d'arrosage.
+
 
 Configuration générale Jeedom
 ---
@@ -68,14 +76,6 @@ Calcul pluviométrie pour un goutte à goutte :
 
 Pluviométrie (mm/h) = (10 000 x débit du goutteur (L/h))/(Espacement latéral (cm) x Espacement des goutteurs (cm))
 
-Programation
----
-
-![introduction01](../images/Programation.jpg)
-
-Nous pouvons pour chaque zone déterminer plusieurs crénaux d'arrosage.
-La quantité totale d'arrosage definie sera répartie entre ces programmation.
-
 Conditions
 ---
 
@@ -91,3 +91,30 @@ Actions
 ![introduction01](../images/Actions.jpg)
 
 Choisissez les actions à mener sans oublier de configurer leur valeurs et l'étape à laquelle on veut qu'elles s'exécutent.
+
+Programamtion des arrosages
+===
+
+La programmation est général, c'est a dire que l'on determine a quel heure on doit arroser pour chaque zone et le plugin se charge du reste.
+Si vous decidé d'arroser plusieur zone dans le meme crenaux, mais que la source d'eau n'a pas les ressource (debit / pression) necessaire alors l'arrosage se decalera du temps d'arrosage des premier crenaux avec le temps entre 2 arrosage.
+
+Pour programmer un nouvelle arrosage, il suffit faut se rendre sur la page de configuration des arroseurs puis d'ouvrir la programmation
+
+![introduction01](../images/Programation.jpg)
+
+Pour ajouter a la liste un nouveaux creneaux d'arrosage il suffit de cliquer sur *Ajouter une programmation*
+* Selectionner les jours de la programmation
+* Selectionner l'heure de la programmation
+* Selectionner les zone a arroser pour cette programmation
+			
+Affichage des staisitques d'arrosage
+===
+
+Le plugin a un panel qui vous donne des statistique sur l'arrosage realisé.
+Jeedom n'autorise pas par defaut l'affichage d'un panel, il vous sera donc necessaire de l'activé dans un premier temps.
+
+![introduction01](../images/ActivationPanel.jpg)
+
+Ensuite rendez vous dans Accueil > Arrosage automatique et vous verrez l'affichage des statistiques de vos arrosages comme ceci 
+
+![introduction01](../images/arrosageAuto_screenshot_Panel.jpg)
