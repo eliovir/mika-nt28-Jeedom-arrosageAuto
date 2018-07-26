@@ -36,6 +36,7 @@ class arrosageAuto extends eqLogic {
 				log::add('arrosageAuto','info',$Zone->getHumanName().' : La zone est desactivée');
 				continue;
 			}
+			cache::set('arrosageAuto::ArrosageValide::'.$Zone->getId(),true, 0);
 			if($Zone->getConfiguration('EtatElectrovanne') != '')
 				$Zone->ListenState();
 			$Zone->NextProg();
@@ -170,8 +171,7 @@ class arrosageAuto extends eqLogic {
 			$cron = new cron();
 		$cron->setClass('arrosageAuto');
 		$cron->setFunction("Arrosage");
-		$options['id']= $this->getId();
-		$cron->setOption($options);
+		$cron->setOption(array('Zone_id' => $this->getId()));
 		$cron->setEnable(1);
 		$cron->setSchedule($Schedule);
 		$cron->setTimeout($Timeout);
@@ -495,13 +495,17 @@ class arrosageAutoCmd extends cmd {
 			switch($this->getLogicalId()){
 				case 'armed':
 					$Listener->event(true);
-					cache::set('arrosageAuto::ArrosageValide::'.$Zone->getId(),true, 0);
+					arrosageAuto::deamon_start();
 				break;
 				case 'released':
 					$Listener->event(false);
+					$cache = cache::byKey('arrosageAuto::ActiveTime::'.$this->getEqLogic()->getId());
+					if (is_object($cache)) 	
+						$cache->remove();
 					$cron = cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('Zone_id' => $this->getEqLogic()->getId()));
 					if (is_object($cron)) 	
 						$cron->remove();
+						$this->getEqLogic()->refreshWidget();
 				break;
 				case 'regCoefficient':
 					$Listener->event($_options['slider']);
