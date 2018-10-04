@@ -55,7 +55,7 @@ class arrosageAuto extends eqLogic {
 	public static function pull($_option) {
 		$Zone = eqLogic::byId($_option['Zone_id']);
 		if (is_object($Zone) && $Zone->getIsEnable()) {
-			$State=cache::byKey('arrosageAuto::isStart::'.$this->getId());
+			$State=cache::byKey('arrosageAuto::isStart::'.$Zone->getId());
 			if($_option['value'] != $State->getValue(false)){
 				log::add('arrosageAuto','info',$Zone->getHumanName().' : Changement d\'etat de l\'électrovanne non autorisé, la gestion automatique est desactivé');
 				$Zone->checkAndUpdateCmd('isArmed',false);
