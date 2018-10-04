@@ -55,7 +55,7 @@ class arrosageAuto extends eqLogic {
 	public static function pull($_option) {
 		$Zone = eqLogic::byId($_option['Zone_id']);
 		if (is_object($Zone) && $Zone->getIsEnable()) {
-			$State=cache::byKey('arrosageAuto::isStart::'.$this->getId());
+			$State=cache::byKey('arrosageAuto::isStart::'.$Zone->getId());
 			if($_option['value'] != $State->getValue(false)){
 				log::add('arrosageAuto','info',$Zone->getHumanName().' : Changement d\'etat de l\'électrovanne non autorisé, la gestion automatique est desactivé');
 				$Zone->checkAndUpdateCmd('isArmed',false);
@@ -476,6 +476,9 @@ class arrosageAuto extends eqLogic {
 		}	
 		foreach ($object->getEqLogic(true, false, 'arrosageAuto') as $arrosageAuto) {		
 			$cache = cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId());
+			$Curve['Plui']=array();
+			$Curve['Pluviometrie']=array();
+			$Curve['ConsomationEau']=array();
 			foreach(json_decode($cache->getValue('[]'), true) as $Statistique){
 				if($Statistique['Start'] > $_startTime && $Statistique['Start'] < $_endTime){
 					$Curve['Plui'][]=array($Statistique['Start']*1000,floatval($Statistique['Plui']));
