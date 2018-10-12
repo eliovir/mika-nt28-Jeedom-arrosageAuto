@@ -110,7 +110,11 @@ class arrosageAuto extends eqLogic {
 		foreach($Branches as $Branche){
 			$Zone=eqLogic::byId(str_replace('#','',$Branche));
 			if(!is_object($Zone)){
-				log::add('arrosageAuto','debug',$this->getHumanName().' : Zone inconne');
+				log::add('arrosageAuto','debug',$this->getHumanName().' : Zone inconne '.'('.$Branche.')'.);
+				continue;
+			}	
+			if(!$Zone->getCmd(null,'isArmed')->execCmd()){
+				log::add('arrosageAuto','info',$Zone->getHumanName().' : La zone est desactivée');
 				continue;
 			}
 			$cron=cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('Zone_id' => $Zone->getId()));
