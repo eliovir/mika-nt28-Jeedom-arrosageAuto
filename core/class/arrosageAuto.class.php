@@ -93,8 +93,7 @@ class arrosageAuto extends eqLogic {
 				exit;
 			}
 			$plui=$Zone->CheckMeteo();
-			$_parameter['Plui']=$plui;
-			$Zone->addCacheStatistique(mktime(0,0,0),$_parameter);
+			$Zone->addCacheStatistique(mktime(0,0,0),$plui);
 			if($plui === false){
 				log::add('arrosageAuto','info',$Zone->getHumanName().' : La météo n\'est pas idéale pour l\'arrosage');
 				exit;
@@ -213,7 +212,6 @@ class arrosageAuto extends eqLogic {
 	}
 	public function ExecuteArrosage($plui){
 		$_parameter['Start']=time();
-		$_parameter['Plui']=$plui;
 		$_parameter['Pluviometrie']=$this->CalculPluviometrie();
 		$this->ExecuteAction('start');
 		cache::set('arrosageAuto::isStart::'.$this->getId(),true, 0);
@@ -224,7 +222,7 @@ class arrosageAuto extends eqLogic {
 		$this->ExecuteAction('stop');
 		cache::set('arrosageAuto::ActiveTime::'.$this->getId(),0, 0);
 		cache::set('arrosageAuto::isStart::'.$this->getId(),false, 0);
-		$this->addCacheStatistique(mktime(0,0,0),$_parameter);
+		$this->addCacheStatistique(mktime(0,0,0),$plui,$_parameter);
 		$this->NextProg();
 	}
 	public function toHtml($_version = 'dashboard') {
@@ -446,11 +444,13 @@ class arrosageAuto extends eqLogic {
 		$Pluviometrie = array_sum($Pluviometrie)/count($Pluviometrie);
 		return $Pluviometrie/3600; //Conversion de mm/H en mm/s
 	}
-	public function addCacheStatistique($_date,$_parameter) {
+	public function addCacheStatistique($_date,$_plui,$_parameter='') {
 		if(cache::byKey('arrosageAuto::ArrosageValide::'.$this->getId())->getValue(true)){
 			$cache = cache::byKey('arrosageAuto::Statistique::'.$this->getId());
 			$value = json_decode($cache->getValue('[]'), true);
-			$value[$_date] = array_merge($value[$_date],$_parameter);
+			$value[$_date]['Plui'] = $_plui;
+			if($_parameter != '')
+				$value[$_date]['Arrosage'][] = $_parameter;
 			if(count($value) >=255){			
 				unset($value[0]);
 				array_shift($value);
@@ -486,12 +486,17 @@ class arrosageAuto extends eqLogic {
 			$Curve['Plui']=array();
 			$Curve['Pluviometrie']=array();
 			$Curve['ConsomationEau']=array();
-			foreach(json_decode($cache->getValue('[]'), true) as $Statistique){
-				if($Statistique['Start'] > $_startTime && $Statistique['Start'] < $_endTime){
+			foreach(json_decode($cache->getValue('[]'), true) as $Date => $Statistique){
+				$Curve['Plui'][]=array($Date*1000,floatval($Statistique['Plui']));
+				foreach($Statistique['Arrosage'] as $Arrosage){
+					$Curve['Pluviometrie'][]=array($Arrosage['Start']*1000,floatval($Arrosage['Pluviometrie']));
+					$Curve['ConsomationEau'][]=array($Arrosage['Start']*1000,floatval($Arrosage['ConsomationEau']));
+				}
+				/*if($Statistique['Start'] > $_startTime && $Statistique['Start'] < $_endTime){
 					$Curve['Plui'][]=array($Statistique['Start']*1000,floatval($Statistique['Plui']));
 					$Curve['Pluviometrie'][]=array($Statistique['Start']*1000,floatval($Statistique['Pluviometrie']));
 					$Curve['ConsomationEau'][]=array($Statistique['Start']*1000,floatval($Statistique['ConsomationEau']));
-				}
+				}*/
 			}
 			$return[$arrosageAuto->getName()]=$Curve;
 		}
