@@ -6,7 +6,7 @@ function arrosageAuto_update(){
 	log::add('arrosageAuto','debug','Lancement du script de mise a jours'); 
 	foreach(eqLogic::byType('arrosageAuto') as $arrosageAuto){
 		//Mise a jour des statistique
-		$cache = cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId()));
+		$cache = cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId());
 		if(is_object($cache))
 			$cache->remove();
 	}
