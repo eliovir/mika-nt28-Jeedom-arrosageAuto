@@ -94,7 +94,7 @@ class arrosageAuto extends eqLogic {
 			}
 			$plui=$Zone->CheckMeteo();
 			$_parameter['Plui']=$plui;
-			$this->addCacheStatistique(mktime(0,0,0),$_parameter);
+			$Zone->addCacheStatistique(mktime(0,0,0),$_parameter);
 			if($plui === false){
 				log::add('arrosageAuto','info',$Zone->getHumanName().' : La météo n\'est pas idéale pour l\'arrosage');
 				exit;
