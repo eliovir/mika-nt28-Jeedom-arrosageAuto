@@ -92,7 +92,10 @@ class arrosageAuto extends eqLogic {
 				log::add('arrosageAuto','info',$Zone->getHumanName().' : Les conditions ne sont pas evaluées');
 				exit;
 			}
-			if($plui=$Zone->CheckMeteo() === false){
+			$plui=$Zone->CheckMeteo();
+			$_parameter['Plui']=$plui;
+			$this->addCacheStatistique(mktime(0,0,0),$_parameter);
+			if($plui === false){
 				log::add('arrosageAuto','info',$Zone->getHumanName().' : La météo n\'est pas idéale pour l\'arrosage');
 				exit;
 			}
@@ -221,7 +224,7 @@ class arrosageAuto extends eqLogic {
 		$this->ExecuteAction('stop');
 		cache::set('arrosageAuto::ActiveTime::'.$this->getId(),0, 0);
 		cache::set('arrosageAuto::isStart::'.$this->getId(),false, 0);
-		$this->addCacheStatistique($_parameter);
+		$this->addCacheStatistique(mktime(0,0,0),$_parameter);
 		$this->NextProg();
 	}
 	public function toHtml($_version = 'dashboard') {
@@ -443,11 +446,11 @@ class arrosageAuto extends eqLogic {
 		$Pluviometrie = array_sum($Pluviometrie)/count($Pluviometrie);
 		return $Pluviometrie/3600; //Conversion de mm/H en mm/s
 	}
-	public function addCacheStatistique($_parameter) {
+	public function addCacheStatistique($_date,$_parameter) {
 		if(cache::byKey('arrosageAuto::ArrosageValide::'.$this->getId())->getValue(true)){
 			$cache = cache::byKey('arrosageAuto::Statistique::'.$this->getId());
 			$value = json_decode($cache->getValue('[]'), true);
-			$value[] = $_parameter;
+			$value[$_date] = array_merge($value[$_date],$_parameter);
 			if(count($value) >=255){			
 				unset($value[0]);
 				array_shift($value);
