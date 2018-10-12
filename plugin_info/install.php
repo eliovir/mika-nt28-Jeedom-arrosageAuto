@@ -19,6 +19,11 @@ function arrosageAuto_update(){
 		if (is_object($cron)) 	
 			$cron->remove();
 		$arrosageAuto->save();
+		
+		//Mise a jour des statistique
+		$cache = cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId()));
+		if(is_object($cache))
+			$cache->remove()
 	}
 	config::save('Programmations', $ProgramationCenter,'arrosageAuto');
 	log::add('arrosageAuto','debug','Fin du script de mise a jours');
