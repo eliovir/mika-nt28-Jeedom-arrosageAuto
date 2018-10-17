@@ -8,9 +8,6 @@ class arrosageAuto extends eqLogic {
 		$return['state'] = 'nok';
 		foreach(eqLogic::byType('arrosageAuto') as $Zone){
 			if($Zone->getIsEnable() && $Zone->getCmd(null,'isArmed')->execCmd()){
-				$cron = cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('Zone_id' => $Zone->getId()));
-				if (!is_object($cron))	
-					return $return;
 				if($Zone->getConfiguration('EtatElectrovanne') != ''){
 					$listener = listener::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $Zone->getId()));
 					if (!is_object($listener))	
@@ -58,7 +55,7 @@ class arrosageAuto extends eqLogic {
 			if(is_object($startDate)){
 				$start = strtotime($startDate->execCmd());
 				if(time() >= $start){
-					$isStart=cache::byKey('arrosageAuto::isStart::'.$this->getId());
+					$isStart=cache::byKey('arrosageAuto::isStart::'.$Zone->getId());
 					if (is_object($isStart) && !$isStart->getValue(false)) 	
 						$Zone->startArrosage($plui);
 					$Temps = $Zone->getCmd(null,'Temps');
