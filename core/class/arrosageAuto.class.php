@@ -500,7 +500,7 @@ class arrosageAutoCmd extends cmd {
 				break;
 				case 'regCoefficient':
 					$Listener->event($_options['slider']);
-					$this->getEqLogic()->zoneStart();
+					$this->getEqLogic()->EvaluateTime();
 				break;
 			}
 			$Listener->setCollectDate(date('Y-m-d H:i:s'));
