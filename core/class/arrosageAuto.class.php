@@ -253,7 +253,7 @@ class arrosageAuto extends eqLogic {
 	public function postSave() {
 		$this->AddCommande("Début","NextStart","info","string",true);
 		$this->AddCommande("Temps","Temps","info","string",true);
-		$this->AddCommande("État activation","isArmed","info","binary",false,'lock');
+		$isArmed=$this->AddCommande("État activation","isArmed","info","binary",false,'lock');
 		$isArmed->event(true);
 		$isArmed->setCollectDate(date('Y-m-d H:i:s'));
 		$isArmed->save();
