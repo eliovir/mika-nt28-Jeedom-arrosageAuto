@@ -52,6 +52,12 @@ class arrosageAuto extends eqLogic {
 				$listener->remove();
 		}
 	}
+	public static function cron() {
+		foreach(eqLogic::byType('arrosageAuto') as $Zone){
+			$plui=$Zone->CheckMeteo();
+			$Zone->addCacheStatistique(mktime(0,0,0),$plui);
+		}
+	}
 	public static function pull($_option) {
 		$Zone = eqLogic::byId($_option['Zone_id']);
 		if (is_object($Zone) && $Zone->getIsEnable()) {
@@ -64,7 +70,7 @@ class arrosageAuto extends eqLogic {
 				$cron = cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('Zone_id' => $Zone->getId()));
 				if (is_object($cron)) 	
 					$cron->remove();
-				}
+			}
 		}
 	}
 	public function ListenState() {
