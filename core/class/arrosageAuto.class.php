@@ -154,9 +154,10 @@ class arrosageAuto extends eqLogic {
 				log::add('arrosageAuto','info',$Zone->getHumanName().' : La zone est desactivée');
 				continue;
 			}
-			$cron=cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('Zone_id' => $Zone->getId()));
-			if (is_object($cron)){
-				if(strtotime($cron->getNextRunDate()) < $NextProg){
+			$startDate = $Zone->getCmd(null,'NextStart');
+			if(is_object($startDate)){
+				$start = strtotime($startDate->execCmd());
+				if($start < $NextProg){
 					log::add('arrosageAuto','debug',$Zone->getHumanName().' : Une programmation plus tot existe deja');
 					continue;
 				}
@@ -172,7 +173,6 @@ class arrosageAuto extends eqLogic {
 			}
 			
 			$Zone->checkAndUpdateCmd('NextStart',date('d/m/Y H:i',$NextProg+$TempsArroseurs));
-			$Zone->refreshWidget();
 		}
 	}
 	public function NextProg(){
@@ -495,7 +495,6 @@ class arrosageAutoCmd extends cmd {
 				break;
 				case 'released':
 					$Listener->event(false);
-					$this->getEqLogic()->refreshWidget();
 					$this->getEqLogic()->zoneStop();
 				break;
 				case 'regCoefficient':
