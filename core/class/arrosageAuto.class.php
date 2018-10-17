@@ -252,7 +252,7 @@ class arrosageAuto extends eqLogic {
 	}
 	public function postSave() {
 		$this->AddCommande("Début","NextStart","info","string",true);
-		$this->AddCommande("Temps","Temps","info","string",true);
+		$this->AddCommande("Temps","Temps","info","string",true,'','s');
 		$isArmed=$this->AddCommande("État activation","isArmed","info","binary",false,'lock');
 		$isArmed->event(true);
 		$isArmed->setCollectDate(date('Y-m-d H:i:s'));
@@ -439,7 +439,7 @@ class arrosageAuto extends eqLogic {
 		}
 		cache::set('arrosageAuto::Statistique::'.$this->getId(),json_encode($value), 0);
 	}
-	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Template='') {
+	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Template='',$unite='') {
 		$Commande = $this->getCmd(null,$_logicalId);
 		if (!is_object($Commande))
 		{
@@ -453,8 +453,9 @@ class arrosageAuto extends eqLogic {
 			$Commande->setSubType($SubType);
 			$Commande->setTemplate('dashboard',$Template );
 			$Commande->setTemplate('mobile', $Template);
-			$Commande->save();
 		}
+		$Commande->setUnite($unite);
+		$Commande->save();
 		return $Commande;
 	}
 	public static function getGraph($_startTime = null, $_endTime = null, $_object_id) {	
