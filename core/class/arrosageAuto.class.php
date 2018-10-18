@@ -161,7 +161,7 @@ class arrosageAuto extends eqLogic {
 				continue;
 			}
 			$startDate = $Zone->getCmd(null,'NextStart');
-			if(is_object($startDate)){
+			if(is_object($startDate) && $startDate->execCmd() != ''){
 				$start = strtotime($startDate->execCmd());
 				if($start < $NextProg){
 					log::add('arrosageAuto','debug',$Zone->getHumanName().' : Une programmation plus tot existe deja');
@@ -177,7 +177,6 @@ class arrosageAuto extends eqLogic {
 				$PressionsArroseurs=0;
 				$TempsArroseurs+=$ActiveTime+config::byKey('temps','arrosageAuto');
 			}
-			
 			$Zone->checkAndUpdateCmd('NextStart',date('d/m/Y H:i',$NextProg+$TempsArroseurs));
 		}
 	}
