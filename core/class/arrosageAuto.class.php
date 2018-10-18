@@ -47,22 +47,22 @@ class arrosageAuto extends eqLogic {
 			$Zone->EvaluateTime($Precipitation);
 			if(!$Zone->getCmd(null,'isArmed')->execCmd())
 				continue;
+          		$start=time();
 			$startDate = $Zone->getCmd(null,'NextStart');
-			if(is_object($startDate)){
+			if(is_object($startDate))
 				$start = strtotime($startDate->execCmd());
-				if(time() >= $start){
-					if($Zone->startArrosage()){
-						$Temps = $Zone->getCmd(null,'Temps');
-						if(is_object($Temps)){
-							$stop= $start + $Temps->execCmd();
-							if(time()- $stop >= 30)
-							//if(time() >=  $stop)
-								$Zone->stopArrosage($Precipitation);
-						}
-					}else
+          		$stop=time();
+            		$Temps = $Zone->getCmd(null,'Temps');
+            		if(is_object($Temps))
+               			$stop= $start + $Temps->execCmd();
+			if(time() >= $start && time() < $stop){
+				if($Zone->startArrosage()){
+					if(time() - $stop < 30)
 						$Zone->stopArrosage($Precipitation);
-				}
-			}
+				}else
+					$Zone->stopArrosage($Precipitation);
+            		}else
+				$Zone->stopArrosage($Precipitation);
 		}
 	}
 	public static function pull($_option) {
@@ -126,17 +126,20 @@ class arrosageAuto extends eqLogic {
 		return true;
 	}
 	public function stopArrosage($Precipitation){
-		$this->ExecuteAction('stop');
-		cache::set('arrosageAuto::isStart::'.$this->getId(),false, 0);
-		$_parameter['Start']=time();
-		$startDate = $Zone->getCmd(null,'Temps');
-		if(is_object($startDate))
-			$_parameter['Start'] = strtotime($startDate->execCmd());
-		$_parameter['ActiveTime'] = time() - $_parameter['Start'];
-		$_parameter['ConsomationEau']=$this->ConsomationEau($_parameter['ActiveTime']);
-		$_parameter['Pluviometrie']=$this->CalculPluviometrie();
-		$this->addCacheStatistique(mktime(0,0,0),$Precipitation,$_parameter);
-		$this->NextProg();
+		$isStart=cache::byKey('arrosageAuto::isStart::'.$this->getId());
+		if (is_object($isStart) && $isStart->getValue(false)){
+			$this->ExecuteAction('stop');
+			cache::set('arrosageAuto::isStart::'.$this->getId(),false, 0);
+			$_parameter['Start']=time();
+			$startDate = $this->getCmd(null,'Temps');
+			if(is_object($startDate))
+				$_parameter['Start'] = strtotime($startDate->execCmd());
+			$_parameter['ActiveTime'] = time() - $_parameter['Start'];
+			$_parameter['ConsomationEau']=$this->ConsomationEau($_parameter['ActiveTime']);
+			$_parameter['Pluviometrie']=$this->CalculPluviometrie();
+			$this->addCacheStatistique(mktime(0,0,0),$Precipitation,$_parameter);
+			$this->NextProg();
+		}
 	}
 	public function CheckProgActiveBranche($Branches,$NextProg){
 		if($NextProg == null){
