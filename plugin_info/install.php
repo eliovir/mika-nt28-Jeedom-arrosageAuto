@@ -9,6 +9,7 @@ function arrosageAuto_update(){
 		$cache = cache::byKey('arrosageAuto::Statistique::'.$arrosageAuto->getId());
 		if(is_object($cache))
 			$cache->remove();
+		$arrosageAuto->save();
 	}
 	log::add('arrosageAuto','debug','Fin du script de mise a jours');
 }
