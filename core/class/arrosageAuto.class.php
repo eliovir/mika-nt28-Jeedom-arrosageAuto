@@ -87,7 +87,7 @@ class arrosageAuto extends eqLogic {
 	}
 	public function zoneStop() {	
 		$this->checkAndUpdateCmd('Temps',0);
-		$this->checkAndUpdateCmd('NextStart','{{Pas de programmation}}');
+		$this->checkAndUpdateCmd('NextStart','');
 		$cron = cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('Zone_id' => $this->getId()));
 		if (is_object($cron)) 	
 			$cron->remove();
