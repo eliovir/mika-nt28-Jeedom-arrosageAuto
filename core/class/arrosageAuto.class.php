@@ -86,13 +86,14 @@ class arrosageAuto extends eqLogic {
 		$this->NextProg();
 	}
 	public function zoneStop() {	
+		$this->checkAndUpdateCmd('Temps',0);
+		$this->checkAndUpdateCmd('NextStart','{{Pas de programmation}}');
 		$cron = cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('Zone_id' => $this->getId()));
 		if (is_object($cron)) 	
 			$cron->remove();
 		$listener = listener::byClassAndFunction('arrosageAuto', 'pull', array('Zone_id' => $this->getId()));
 		if (is_object($listener))
 			$listener->remove();
-
 		$isStart=cache::byKey('arrosageAuto::isStart::'.$this->getId());
 		if (is_object($isStart)) 	
 			$isStart->remove();
@@ -210,21 +211,6 @@ class arrosageAuto extends eqLogic {
 		}
 		$this->CheckProgActiveBranche($Branches,$nextTime);
 		return $nextTime;
-	}
-	public function CreateCron($Schedule,$Timeout='999999') {
-		log::add('arrosageAuto','debug',$this->getHumanName().' : Création du cron  ID --> '.$Schedule);
-		$cron = cron::byClassAndFunction('arrosageAuto', "Arrosage" ,array('Zone_id' => $this->getId()));
-		if (!is_object($cron)) 
-			$cron = new cron();
-		$cron->setClass('arrosageAuto');
-		$cron->setFunction("Arrosage");
-		$cron->setOption(array('Zone_id' => $this->getId()));
-		$cron->setEnable(1);
-		$cron->setSchedule($Schedule);
-		$cron->setTimeout($Timeout);
-		$cron->setOnce(true);
-		$cron->save();
-		return $cron;
 	}
 	public static function CheckPompe($Debit,$Pressions){
 		$DebitPmp=config::byKey('debit','arrosageAuto');
