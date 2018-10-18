@@ -61,9 +61,8 @@ class arrosageAuto extends eqLogic {
 					$Temps = $Zone->getCmd(null,'Temps');
 					if(is_object($Temps)){
 						$stop= $start + $Temps->execCmd();
-						if(time()- $stop < 60)
-							sleep(time()- $stop);
-						if(time() >=  $stop)
+						if(time()- $stop >= 30)
+						//if(time() >=  $stop)
 							$Zone->stopArrosage();
 					}
 				}
