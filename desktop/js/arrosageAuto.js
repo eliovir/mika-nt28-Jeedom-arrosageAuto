@@ -165,24 +165,22 @@ function addArroseur(_arroseur,  _el) {
 		$(this).closest('tr').remove();
 	});
 	$('.ArroseurGroup .expressionAttr[data-l1key=Distance]').off().on('change',function(){
-		if($('.ArroseurGroup .expressionAttr[data-l1key=Model]').val() != ''){
-			_arroseur=ArroseurModel[$('.ArroseurGroup .expressionAttr[data-l1key=Model]').val()];
+		if($(this).closest('tr').find('.expressionAttr[data-l1key=Model]').val() != ''){
+			_arroseur=ArroseurModel[$(this).closest('tr').find('.expressionAttr[data-l1key=Model]').val()];
 			if($(this).val() != ""){
-				_arroseur.Debit *=$(this).val() / _arroseur.Distance;
-				$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').val(_arroseur.Debit);
-				_arroseur.Pression *=$(this).val() / _arroseur.Distance;
-				$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').val(_arroseur.Pression);
+				var ratio = $(this).val() / _arroseur.Distance;
+				$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').val(_arroseur.Debit*ratio);
+				$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').val(_arroseur.Pression*ratio);
 			}
 		}
 	});
 	$('.ArroseurGroup .expressionAttr[data-l1key=Angle]').off().on('change',function(){
-		if($('.ArroseurGroup .expressionAttr[data-l1key=Model]').val() != ''){
-			_arroseur=ArroseurModel[$('.ArroseurGroup .expressionAttr[data-l1key=Model]').val()];
+		if($(this).closest('tr').find('.expressionAttr[data-l1key=Model]').val() != ''){
+			_arroseur=ArroseurModel[$(this).closest('tr').find('.expressionAttr[data-l1key=Model]').val()];
 			if($(this).val() != ""){
-				_arroseur.Debit *=$(this).val() / _arroseur.Angle;
-				$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').val(_arroseur.Debit);
-				_arroseur.Pression *=$(this).val() / _arroseur.Angle;
-				$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').val(_arroseur.Pression);
+				var ratio = $(this).val() / _arroseur.Angle;
+				$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').val(_arroseur.Debit*ratio);
+				$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').val(_arroseur.Pression*ratio);
 			}
 		}
 	});
@@ -195,18 +193,7 @@ function addArroseur(_arroseur,  _el) {
 			$(this).closest('tr').find('.expressionAttr[data-l1key=Type]').attr('disabled',true);
 			$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').attr('disabled',true);
 			$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').attr('disabled',true);
-			_arroseur=ArroseurModel[$(this).val()];
-			/*if($(this).closest('tr').find('.expressionAttr[data-l1key=Distance]').val() != ""){
-				_arroseur.Debit *=$(this).closest('tr').find('.expressionAttr[data-l1key=Distance]').val() / _arroseur.Distance;
-				_arroseur.Pression *=$(this).closest('tr').find('.expressionAttr[data-l1key=Distance]').val() / _arroseur.Distance;
-				_arroseur.Distance=$(this).closest('tr').find('.expressionAttr[data-l1key=Distance]').val();
-			}
-			if($(this).closest('tr').find('.expressionAttr[data-l1key=Angle]').val() != ""){
-				_arroseur.Debit *=$(this).closest('tr').find('.expressionAttr[data-l1key=Angle]').val() / _arroseur.Angle;
-				_arroseur.Pression *=$(this).closest('tr').find('.expressionAttr[data-l1key=Angle]').val() / _arroseur.Angle;
-				_arroseur.Angle=$(this).closest('tr').find('.expressionAttr[data-l1key=Angle]').val();
-			}*/
-        		$(this).closest('tr').setValues(_arroseur, '.expressionAttr');
+        		$(this).closest('tr').setValues(ArroseurModel[$(this).val()], '.expressionAttr');
 		}
 	});
 	$('.ArroseurGroup .expressionAttr[data-l1key=Type]').off().on('change',function(){
