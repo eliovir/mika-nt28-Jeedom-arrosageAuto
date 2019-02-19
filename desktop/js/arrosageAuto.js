@@ -166,10 +166,13 @@ function addArroseur(_arroseur,  _el) {
 	});
 	$('.ArroseurGroup .expressionAttr[data-l1key=Model]').off().on('change',function(){
 		if($(this).val() == ""){
-			$(this).closest('tr').find('.expressionAttr').attr('disabled',false);
+			$(this).closest('tr').find('.expressionAttr[data-l1key=Type]').attr('disabled',false);
+			$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').attr('disabled',false);
+			$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').attr('disabled',false);
 		}else{
-			$(this).closest('tr').find('.expressionAttr').attr('disabled',true);
-			$(this).attr('disabled',false);
+			$(this).closest('tr').find('.expressionAttr[data-l1key=Type]').attr('disabled',true);
+			$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').attr('disabled',true);
+			$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').attr('disabled',true);
         		$(this).closest('tr').setValues(ArroseurModel[$(this).val()], '.expressionAttr');
 		}
 	});
