@@ -109,18 +109,20 @@ function printEqLogic(_eqLogic) {
 		}
 	}
 }
-function getModel() {
+function getModelSelect() {
 	var Model = $('<select class="expressionAttr form-control" data-l1key="Model" >');
 	$.each(ArroseurModel,function(index, value){
-		Model.append($('<option value="'+value.id+'">')
+		Model.append($('<option value="'+index+'">')
 			.text(value.name));
 	});
 	return Model;
 }
+function getModelParameter(id) {
+}
 function addArroseur(_arroseur,  _el) {
 	var tr = $('<tr class="ArroseurGroup">')
 	tr.append($('<td>')
-		.append(getModel())
+		.append(getModelSelect())
 		.append($('<span class="input-group-btn">')
 			.append($('<a class="btn btn-default ArroseurAttr btn-sm" data-action="remove">')
 				.append($('<i class="fa fa-minus-circle">')))));	
