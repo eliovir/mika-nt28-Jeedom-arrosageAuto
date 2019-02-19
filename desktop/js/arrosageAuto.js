@@ -111,12 +111,12 @@ function printEqLogic(_eqLogic) {
 }
 function getModelSelect() {
 	var Model = $('<select class="expressionAttr form-control" data-l1key="Model" >');
+	Model.append($('<option value="">')
+		.text('{{Autre}}'));
 	$.each(ArroseurModel,function(index, value){
 		Model.append($('<option value="'+index+'">')
 			.text(value.name));
 	});
-	Model.append($('<option value="">')
-		.text('{{Autre}}'));
 	return Model;
 }
 function addArroseur(_arroseur,  _el) {
