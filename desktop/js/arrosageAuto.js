@@ -115,9 +115,9 @@ function getModelSelect() {
 		Model.append($('<option value="'+index+'">')
 			.text(value.name));
 	});
+	Model.append($('<option value="">')
+		.text('{{Autre}}'));
 	return Model;
-}
-function getModelParameter(id) {
 }
 function addArroseur(_arroseur,  _el) {
 	var tr = $('<tr class="ArroseurGroup">')
@@ -163,6 +163,15 @@ function addArroseur(_arroseur,  _el) {
 	_el.find('tr:last .turbine').hide();
 	$('.ArroseurAttr[data-action=remove]').off().on('click',function(){
 		$(this).closest('tr').remove();
+	});
+	$('.ArroseurGroup .expressionAttr[data-l1key=Model]').off().on('change',function(){
+		if($(this).val() == ""){
+			$(this).closest('tr').find('.expressionAttr').attr('disabled',false);
+		}else{
+			$(this).closest('tr').find('.expressionAttr').attr('disabled',true);
+			$(this).attr('disabled',false);
+        		$(this).closest('tr').setValues(ArroseurModel[$(this).val()], '.expressionAttr');
+		}
 	});
 	$('.ArroseurGroup .expressionAttr[data-l1key=Type]').off().on('change',function(){
 		switch($(this).val()){
