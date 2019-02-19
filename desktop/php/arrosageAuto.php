@@ -3,6 +3,7 @@ if (!isConnect('admin')) {
 throw new Exception('{{401 - Accès non autorisé}}');
 }
 sendVarToJS('eqType', 'arrosageAuto');
+sendVarToJS('ArroseurModel', arrosageAuto::devicesParameters());
 $eqLogics = eqLogic::byType('arrosageAuto');
 ?>
 <div class="row row-overflow">

@@ -1,0 +1,13 @@
+{
+	"t380":{
+		"name":"Gardena - T380",
+    		"Type":"turbine",
+    		"Debit":"250",
+    		"Pression":"1",
+    		"EspacementLateral":"",
+    		"EspacemenGoutteurs":"",
+    		"Quart":"0,25",
+    		"Distance":"6",
+    		"Angle":"360"
+  	}
+}

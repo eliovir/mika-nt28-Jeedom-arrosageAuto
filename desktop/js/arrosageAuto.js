@@ -109,9 +109,20 @@ function printEqLogic(_eqLogic) {
 		}
 	}
 }
+function getModelSelect() {
+	var Model = $('<select class="expressionAttr form-control" data-l1key="Model" >');
+	$.each(ArroseurModel,function(index, value){
+		Model.append($('<option value="'+index+'">')
+			.text(value.name));
+	});
+	Model.append($('<option value="">')
+		.text('{{Autre}}'));
+	return Model;
+}
 function addArroseur(_arroseur,  _el) {
 	var tr = $('<tr class="ArroseurGroup">')
 	tr.append($('<td>')
+		.append(getModelSelect())
 		.append($('<span class="input-group-btn">')
 			.append($('<a class="btn btn-default ArroseurAttr btn-sm" data-action="remove">')
 				.append($('<i class="fa fa-minus-circle">')))));	
@@ -152,6 +163,18 @@ function addArroseur(_arroseur,  _el) {
 	_el.find('tr:last .turbine').hide();
 	$('.ArroseurAttr[data-action=remove]').off().on('click',function(){
 		$(this).closest('tr').remove();
+	});
+	$('.ArroseurGroup .expressionAttr[data-l1key=Model]').off().on('change',function(){
+		if($(this).val() == ""){
+			$(this).closest('tr').find('.expressionAttr[data-l1key=Type]').attr('disabled',false);
+			$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').attr('disabled',false);
+			$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').attr('disabled',false);
+		}else{
+			$(this).closest('tr').find('.expressionAttr[data-l1key=Type]').attr('disabled',true);
+			$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').attr('disabled',true);
+			$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').attr('disabled',true);
+        		$(this).closest('tr').setValues(ArroseurModel[$(this).val()], '.expressionAttr');
+		}
 	});
 	$('.ArroseurGroup .expressionAttr[data-l1key=Type]').off().on('change',function(){
 		switch($(this).val()){
