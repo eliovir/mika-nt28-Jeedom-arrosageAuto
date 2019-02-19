@@ -1,6 +1,6 @@
 {
-	"t380":{
-		"name":"Gardena - T380",
+	"t200":{
+		"name":"Gardena - T200",
     		"Type":"turbine",
     		"Debit":"250",
     		"Pression":"1",

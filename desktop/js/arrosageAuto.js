@@ -111,12 +111,12 @@ function printEqLogic(_eqLogic) {
 }
 function getModelSelect() {
 	var Model = $('<select class="expressionAttr form-control" data-l1key="Model" >');
+	Model.append($('<option value="">')
+		.text('{{Autre}}'));
 	$.each(ArroseurModel,function(index, value){
 		Model.append($('<option value="'+index+'">')
 			.text(value.name));
 	});
-	Model.append($('<option value="">')
-		.text('{{Autre}}'));
 	return Model;
 }
 function addArroseur(_arroseur,  _el) {
@@ -163,6 +163,26 @@ function addArroseur(_arroseur,  _el) {
 	_el.find('tr:last .turbine').hide();
 	$('.ArroseurAttr[data-action=remove]').off().on('click',function(){
 		$(this).closest('tr').remove();
+	});
+	$('.ArroseurGroup .expressionAttr[data-l1key=Distance]').off().on('change',function(){
+		if($(this).closest('tr').find('.expressionAttr[data-l1key=Model]').val() != ''){
+			_arroseur=ArroseurModel[$(this).closest('tr').find('.expressionAttr[data-l1key=Model]').val()];
+			if($(this).val() != ""){
+				var ratio = $(this).val() / _arroseur.Distance;
+				$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').val(_arroseur.Debit*ratio);
+				$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').val(_arroseur.Pression*ratio);
+			}
+		}
+	});
+	$('.ArroseurGroup .expressionAttr[data-l1key=Angle]').off().on('change',function(){
+		if($(this).closest('tr').find('.expressionAttr[data-l1key=Model]').val() != ''){
+			_arroseur=ArroseurModel[$(this).closest('tr').find('.expressionAttr[data-l1key=Model]').val()];
+			if($(this).val() != ""){
+				var ratio = $(this).val() / _arroseur.Angle;
+				$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').val(_arroseur.Debit*ratio);
+				$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').val(_arroseur.Pression*ratio);
+			}
+		}
 	});
 	$('.ArroseurGroup .expressionAttr[data-l1key=Model]').off().on('change',function(){
 		if($(this).val() == ""){
