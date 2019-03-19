@@ -141,8 +141,11 @@
 				return;
 			}
 			if (data.result['configuration']!=''){
+				var configuration = data.result['configuration'];
+				if (typeof configuration === 'string')
+					configuration = JSON.parse(configuration);
 				var TypePlantation= new Object();
-				$.each(data.result['configuration'], function(param,valeur){
+				$.each(configuration, function(param,valeur){
 					switch(typeof(valeur)){
 						case 'object':
 							$.each(valeur, function(TypePlantationkey,value ){
