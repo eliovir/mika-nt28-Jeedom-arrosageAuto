@@ -1,0 +1,13 @@
+{
+	"t200":{
+		"name":"Gardena - T200",
+    		"Type":"turbine",
+    		"Debit":"250",
+    		"Pression":"1",
+    		"EspacementLateral":"",
+    		"EspacemenGoutteurs":"",
+    		"Quart":"0,25",
+    		"Distance":"6",
+    		"Angle":"360"
+  	}
+}

@@ -79,6 +79,41 @@ class arrosageAuto extends eqLogic {
 			}
 		}
 	}
+	public static function devicesParameters($_device = '') {
+		$path = dirname(__FILE__) . '/../config/devices';
+		if (isset($_device) && $_device != '') {
+			$files = ls($path, $_device . '.json', false, array('files', 'quiet'));
+			if (count($files) == 1) {
+				try {
+					$content = file_get_contents($path . '/' . $files[0]);
+					if (is_json($content)) {
+						$deviceConfiguration = json_decode($content, true);
+						return $deviceConfiguration[$_device];
+					}
+				} catch (Exception $e) {
+					return array();
+				}
+			}
+		}
+		$files = ls($path, '*.json', false, array('files', 'quiet'));
+		$return = array();
+		foreach ($files as $file) {
+			try {
+				$content = file_get_contents($path . '/' . $file);
+				if (is_json($content)) {
+					$return = array_merge($return, json_decode($content, true));
+				}
+			} catch (Exception $e) {
+			}
+		}
+		if (isset($_device) && $_device != '') {
+			if (isset($return[$_device])) {
+				return $return[$_device];
+			}
+			return array();
+		}
+		return $return;
+	}
 	public function zoneStart() {
 		cache::set('arrosageAuto::isStart::'.$this->getId(),false, 0);
 		if($this->getConfiguration('EtatElectrovanne') != '')
@@ -291,8 +326,10 @@ class arrosageAuto extends eqLogic {
 		$Pluviometrie=$this->CalculPluviometrie();
 		if($Pluviometrie == 0)
 			return $Pluviometrie;
-		log::add('arrosageAuto','info',$this->getHumanName().' : Nous devons arroser '.$QtsEau.' mm/m² avec un pluviometrie de '.$Pluviometrie.'mm/s');
-		$Temps=$this->UpdateCoefficient($QtsEau/$Pluviometrie);
+		if($this->getCmd(null,'Temps')->execCmd() != $Temps){
+			log::add('arrosageAuto','info',$this->getHumanName().' : Nous devons arroser '.$QtsEau.' mm/m² avec un pluviometrie de '.$Pluviometrie.'mm/s');
+			$Temps=$this->UpdateCoefficient($QtsEau/$Pluviometrie);
+		}
 		$this->checkAndUpdateCmd('Temps',$Temps);
 		return $Temps;
 	}

@@ -171,9 +171,6 @@
 	$('#bt_AddTypePlantation').on('click',function(){
 		AddTypePlantation($('#table_type_plantation tbody'),'');
 	});
-	$('body').on('click','#bt_RemoveTypePlantation',function(){
-		$(this).closest('tr').remove();
-	});
 	function AddTypePlantation(_el,data){
 		var tr=$('<tr>')
 			.append($('<td>')
@@ -187,5 +184,8 @@
 
 		_el.append(tr);
 		_el.find('tr:last').setValues(data, '.configKey');
+		$('.bt_RemoveTypePlantation').off().on('click',function(){
+			$(this).closest('tr').remove();
+		});
 	}
 </script>
