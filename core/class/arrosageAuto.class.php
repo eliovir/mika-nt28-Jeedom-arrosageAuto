@@ -326,8 +326,10 @@ class arrosageAuto extends eqLogic {
 		$Pluviometrie=$this->CalculPluviometrie();
 		if($Pluviometrie == 0)
 			return $Pluviometrie;
-		log::add('arrosageAuto','info',$this->getHumanName().' : Nous devons arroser '.$QtsEau.' mm/m² avec un pluviometrie de '.$Pluviometrie.'mm/s');
-		$Temps=$this->UpdateCoefficient($QtsEau/$Pluviometrie);
+		if($this->getCmd(null,'Temps')->execCmd() != $Temps){
+			log::add('arrosageAuto','info',$this->getHumanName().' : Nous devons arroser '.$QtsEau.' mm/m² avec un pluviometrie de '.$Pluviometrie.'mm/s');
+			$Temps=$this->UpdateCoefficient($QtsEau/$Pluviometrie);
+		}
 		$this->checkAndUpdateCmd('Temps',$Temps);
 		return $Temps;
 	}
