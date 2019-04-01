@@ -73,7 +73,7 @@ if (init('groupBy', 'day') == 'month') {
 		</legend>
 		<div class="row">
 			<div class="col-lg-6">
-				<legend><i class="fa fa-eur"></i>  {{Pluviometerie}}</legend>
+				<legend><i class="fa fa-eur"></i>  {{Pluviométrie}}</legend>
 				<div id='div_graphPluviometerie'></div>
 			</div>
 			<div class="col-lg-6">

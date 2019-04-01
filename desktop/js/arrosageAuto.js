@@ -26,7 +26,7 @@ $('#bt_programArrosageAuto').off('click').on('click', function () {
 				callback: function () {
 					var ProgramationArray= new Array();
 					$('#table_programation .ProgramationGroup').each(function( index ) {
-						ProgramationArray.push($(this).getValues('.expressionAttr')[0])
+						ProgramationArray.push($(this).getValues('.expressionAttr')[0]);
 					});
 					jeedom.config.save({
 						plugin:'arrosageAuto',
@@ -47,7 +47,7 @@ $('#bt_programArrosageAuto').off('click').on('click', function () {
 								    handleAjaxError(request, status, error);
 								},
 								success: function (data) {
-								    	if (data.state != 'ok') {
+								    	if (data.state !== 'ok') {
 										$('#div_alert').showAlert({message: data.result, level: 'danger'});
 										return;
 								    	}
@@ -57,7 +57,7 @@ $('#bt_programArrosageAuto').off('click').on('click', function () {
 						 }
 					});
 				}
-			},
+			}
 		}
 	});
 });
@@ -73,13 +73,13 @@ function saveEqLogic(_eqLogic) {
 	var ActionArray= new Array();
 	var ArroseurArray= new Array();
 	$('#arroseurtab .ArroseurGroup').each(function( index ) {
-		ArroseurArray.push($(this).getValues('.expressionAttr')[0])
+		ArroseurArray.push($(this).getValues('.expressionAttr')[0]);
 	});
 	$('#conditiontab .ConditionGroup').each(function( index ) {
-		ConditionArray.push($(this).getValues('.expressionAttr')[0])
+		ConditionArray.push($(this).getValues('.expressionAttr')[0]);
 	});
 	$('#actiontab .ActionGroup').each(function( index ) {
-		ActionArray.push($(this).getValues('.expressionAttr')[0])
+		ActionArray.push($(this).getValues('.expressionAttr')[0]);
 	});
 	_eqLogic.configuration.arroseur=ArroseurArray;
 	_eqLogic.configuration.condition=ConditionArray;
@@ -167,7 +167,7 @@ function addArroseur(_arroseur,  _el) {
 	$('.ArroseurGroup .expressionAttr[data-l1key=Distance]').off().on('change',function(){
 		if($(this).closest('tr').find('.expressionAttr[data-l1key=Model]').val() != ''){
 			_arroseur=ArroseurModel[$(this).closest('tr').find('.expressionAttr[data-l1key=Model]').val()];
-			if($(this).val() != ""){
+			if($(this).val() !== ""){
 				var ratio = $(this).val() / _arroseur.Distance;
 				$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').val(_arroseur.Debit*ratio);
 				$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').val(_arroseur.Pression*ratio);
@@ -177,7 +177,7 @@ function addArroseur(_arroseur,  _el) {
 	$('.ArroseurGroup .expressionAttr[data-l1key=Angle]').off().on('change',function(){
 		if($(this).closest('tr').find('.expressionAttr[data-l1key=Model]').val() != ''){
 			_arroseur=ArroseurModel[$(this).closest('tr').find('.expressionAttr[data-l1key=Model]').val()];
-			if($(this).val() != ""){
+			if($(this).val() !== ""){
 				var ratio = $(this).val() / _arroseur.Angle;
 				$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').val(_arroseur.Debit*ratio);
 				$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').val(_arroseur.Pression*ratio);
@@ -185,7 +185,7 @@ function addArroseur(_arroseur,  _el) {
 		}
 	});
 	$('.ArroseurGroup .expressionAttr[data-l1key=Model]').off().on('change',function(){
-		if($(this).val() == ""){
+		if($(this).val() === ""){
 			$(this).closest('tr').find('.expressionAttr[data-l1key=Type]').attr('disabled',false);
 			$(this).closest('tr').find('.expressionAttr[data-l1key=Debit]').attr('disabled',false);
 			$(this).closest('tr').find('.expressionAttr[data-l1key=Pression]').attr('disabled',false);
@@ -284,7 +284,7 @@ $('body').on('click','.listCmdCondition',function(){
 	var el = $(this).closest('tr').find('.expressionAttr[data-l1key=expression]');
 	jeedom.cmd.getSelectModal({cmd: {type: 'info'}}, function (result) {
 		var message = 'Aucun choix possible';
-		if(result.cmd.subType == 'numeric'){
+		if(result.cmd.subType === 'numeric'){
 			message = '<div class="row">  ' +
 			'<div class="col-md-12"> ' +
 			'<form class="form-horizontal" onsubmit="return false;"> ' +
@@ -314,7 +314,7 @@ $('body').on('click','.listCmdCondition',function(){
 			'</div> </div>' +
 			'</form> </div>  </div>';
 		}
-		if(result.cmd.subType == 'string'){
+		if(result.cmd.subType === 'string'){
 			message = '<div class="row">  ' +
 			'<div class="col-md-12"> ' +
 			'<form class="form-horizontal" onsubmit="return false;"> ' +
@@ -343,7 +343,7 @@ $('body').on('click','.listCmdCondition',function(){
 			'</div> </div>' +
 			'</form> </div>  </div>';
 		}
-		if(result.cmd.subType == 'binary'){
+		if(result.cmd.subType === 'binary'){
 			message = '<div class="row">  ' +
 			'<div class="col-md-12"> ' +
 			'<form class="form-horizontal" onsubmit="return false;"> ' +
@@ -390,8 +390,8 @@ $('body').on('click','.listCmdCondition',function(){
 					callback: function () {
     						var condition = result.human;
 						condition += ' ' + $('.conditionAttr[data-l1key=operator]').value();
-						if(result.cmd.subType == 'string'){
-							if($('.conditionAttr[data-l1key=operator]').value() == 'matches'){
+						if(result.cmd.subType === 'string'){
+							if($('.conditionAttr[data-l1key=operator]').value() === 'matches'){
 								condition += ' "/' + $('.conditionAttr[data-l1key=operande]').value()+'/"';
 							}else{
 								condition += ' "' + $('.conditionAttr[data-l1key=operande]').value()+'"';
@@ -401,7 +401,7 @@ $('body').on('click','.listCmdCondition',function(){
 						}
 						condition += ' ' + $('.conditionAttr[data-l1key=next]').value()+' ';
 						el.atCaret('insert', condition);
-						if($('.conditionAttr[data-l1key=next]').value() != ''){
+						if($('.conditionAttr[data-l1key=next]').value() !== ''){
 							el.click();
 						}
 					}
@@ -427,7 +427,7 @@ $("body").on('click', ".listCmdAction", function() {
 	var type = $(this).attr('data-type');
 	jeedom.cmd.getSelectModal({cmd: {type: type}}, function (result) {
 		el.value(result.human);
-		if(type == 'action'){
+		if(type === 'action'){
 			jeedom.cmd.displayActionOption(el.value(), '', function (html) {
 				el.closest('.form-group').find('.actionOptions').html(html);
 			});

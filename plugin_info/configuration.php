@@ -18,13 +18,13 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-5 control-label">{{Débit de l'arrivée d'eau (mm ou L/H)}}</label>
+					<label class="col-lg-5 control-label">{{Débit de l'arrivée d'eau (mm ou L/h)}}</label>
 					<div class="col-lg-6">
 						<input type="text" class="configKey"  data-l1key="debit" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-5 control-label">{{Pression maximal de l'arrivée d'eau (bar)}}</label>
+					<label class="col-lg-5 control-label">{{Pression maximale de l'arrivée d'eau (Bar)}}</label>
 					<div class="col-lg-6">
 						<input type="text" class="configKey"  data-l1key="pression" />
 					</div>
@@ -51,7 +51,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-5 control-label">{{Vitesse du vent maximum (km/h)}}</label>
+					<label class="col-lg-5 control-label">{{Vitesse du vent maximale (km/h)}}</label>
 					<div class="col-lg-6">
 						<div class="input-group">
 							<input class="configKey form-control input-sm" data-l1key="cmdWindSpeed"/>
@@ -65,7 +65,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-5 control-label">{{Humidité maximum (%)}}</label>
+					<label class="col-lg-5 control-label">{{Humidité maximale (%)}}</label>
 					<div class="col-lg-6">
 						<div class="input-group">
 							<input class="configKey form-control input-sm" data-l1key="cmdHumidity"/>
@@ -105,7 +105,7 @@
 						<thead>
 							<tr>
 								<th>{{Type de plantation}}</th>
-								<th>{{Pluviometerie (mm)}}</th>
+								<th>{{Pluviométrie (mm)}}</th>
 							</tr>
 						</thead>
 						<tbody></tbody>

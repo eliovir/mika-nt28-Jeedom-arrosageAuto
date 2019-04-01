@@ -38,7 +38,7 @@ $background = 'plugins/arrosageAuto/plan/'.$background[key($background)];
 <style>
 </style>
 <div id="plan_arrosage" class="tab-pane" usemap="#map">
-	<a class="btn btn-success arrosageAutoAction" data-action="savearroseur"><i class="fa fa-floppy-o"></i> {{Position Arroseurs}}</a>
+	<a class="btn btn-success arrosageAutoAction" data-action="savearroseur"><i class="fa fa-floppy-o"></i> {{Position arroseurs}}</a>
 	<a class="btn btn-success arrosageAutoAction" data-action="refresh"><i class="fa fa-refresh"></i></a>
 	<input type="file" name="PlanImg" id="PlanImg" data-url="plugins/arrosageAuto/core/ajax/arrosageAuto.ajax.php?action=PlanImg" placeholder="{{Image de fond}}" class="form-control input-md"/>
 	<img class="CameraSnap"  src=""/>

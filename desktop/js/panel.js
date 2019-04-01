@@ -1,4 +1,4 @@
-if((!isset(userProfils.doNotAutoHideMenu) || userProfils.doNotAutoHideMenu != 1) && !jQuery.support.touch){
+if((!isset(userProfils.doNotAutoHideMenu) || userProfils.doNotAutoHideMenu !== 1) && !jQuery.support.touch){
 	$('#sd_objectList').hide();
 	$('#div_graphiqueDisplay').removeClass('col-xs-10').addClass('col-xs-12');
 
@@ -9,7 +9,7 @@ if((!isset(userProfils.doNotAutoHideMenu) || userProfils.doNotAutoHideMenu != 1)
 	$('#sd_objectList').show();
 	$(window).resize();
 	}, 100);
-	$(this).data('timerMouseleave', timer)
+	$(this).data('timerMouseleave', timer);
 	}).on("mouseleave", function(){
 	clearTimeout($(this).data('timerMouseleave'));
 	});
@@ -58,11 +58,11 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 			handleAjaxError(request, status, error);
 		},
 		success: function (data) {
-			if (data.state != 'ok') {
+			if (data.state !== 'ok') {
 				$('#div_alert').showAlert({message: data.result, level: 'danger'});
 				return;
 			}
-			if(data.result == null)
+			if(data.result === null)
 				return;
 			var series = [];
 			var categories = [];			
@@ -84,7 +84,7 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 						},
 						tooltip: {
 							valueDecimals: 2
-						},
+						}
 					});
 				}
 				if (typeof data.result[i].Pluviometrie !== 'undefined') { 
@@ -103,7 +103,7 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 						},
 						tooltip: {
 							valueDecimals: 2
-						},
+						}
 					});
 				}
 			}
@@ -128,7 +128,7 @@ function getDatas(_object_id, _dateStart, _dateEnd) {
 					},
 					tooltip: {
 						valueDecimals: 2
-					},
+					}
 				});
 			};
 			drawSimpleGraph('div_graphConsommationEau',series,categories);

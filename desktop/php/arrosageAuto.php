@@ -60,7 +60,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 				<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Santé}}</center></span>
 			</div>
 		</div>
-		<legend>{{Mes Zones}}</legend>
+		<legend>{{Mes zones}}</legend>
 		<input class="form-control" placeholder="{{Rechercher}}" style="margin-bottom:4px;" id="in_searchEqlogic" />
 		<div class="eqLogicThumbnailContainer">
 			<?php
@@ -113,7 +113,7 @@ $eqLogics = eqLogic::byType('arrosageAuto');
 					<form class="form-horizontal">
 						<fieldset>
 							<div class="form-group ">
-								<label class="col-sm-2 control-label">{{Nom de la Zone}}
+								<label class="col-sm-2 control-label">{{Nom de la zone}}
 									<sup>
 										<i class="fa fa-question-circle tooltips" title="Indiquer le nom de votre zone" style="font-size : 1em;color:grey;"></i>
 									</sup>
@@ -221,7 +221,7 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 				<div role="tabpanel" class="tab-pane" id="arroseurtab">
 					<form class="form-horizontal">
 						<fieldset>
-							<legend>{{Les arroseurs de la zones :}}
+							<legend>{{Les arroseurs de la zone :}}
 								<sup>
 									<i class="fa fa-question-circle tooltips" title="Saisir toutes les arroseurs connecter a la branche"></i>
 								</sup>
@@ -243,18 +243,18 @@ Si l'équipement n'est pas visible, il sera caché sur le Dashboard" style="font
 									</sup>
 								</th>
 								<th>
-									{{Debit (mm ou L/H)}}
+									{{Débit (mm ou L/h)}}
 									<sup>
 										<i class="fa fa-question-circle tooltips" title="Saisir le debit de l'arroseur  (mm/H ou L/H)" style="font-size : 1em;color:grey;"></i>
 									</sup>
 								</th>
 								<th>
-									{{Pression minimal (bar)}}
+									{{Pression minimale (Bar)}}
 									<sup>
 										<i class="fa fa-question-circle tooltips" title="Saisir la pression minimal de l'arroseur  (mm/H ou L/H)" style="font-size : 1em;color:grey;"></i>
 									</sup>
 								</th>
-								<th>{{Parametre}}</th>
+								<th>{{Paramètre}}</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
